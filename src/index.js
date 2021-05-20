@@ -26,6 +26,8 @@ import WorkerPool from './util/worker_pool';
 import {prewarm, clearPrewarmedResources} from './util/global_worker_pool';
 import {clearTileCache} from './util/tile_request_cache';
 import {PerformanceUtils} from './util/performance';
+import type {RequestParameters, ResponseCallback} from './util/ajax';
+import type {Cancelable} from './types/cancelable';
 
 const exported = {
     version,
@@ -170,7 +172,15 @@ const exported = {
         clearTileCache(callback);
     },
 
-    workerUrl: ''
+    workerUrl: '',
+
+    addProtocol(customUrl: string, loadFn: (requestParameters: RequestParameters, callback: ResponseCallback<any>) => Cancelable) {
+        config.REGISTERED_PROTOCOLS[customUrl] = loadFn;
+    },
+
+    removeProtocol(customUrl: string) {
+        delete config.REGISTERED_PROTOCOLS[customUrl];
+    }
 };
 
 //This gets automatically stripped out in production builds.
