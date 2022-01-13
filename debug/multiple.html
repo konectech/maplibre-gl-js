@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>MapLibre GL JS debug page</title>
     <meta charset='utf-8'>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel='stylesheet' href='../dist/maplibre-gl.css' />
     <style>
         body { margin: 0; padding: 0; }
@@ -18,38 +18,37 @@
 <div class='map'></div>
 
 <script src='../dist/maplibre-gl-dev.js'></script>
-<script src='../debug/access_token_generated.js'></script>
 <script>
 
 var style = {
-    "version": 8,
-    "sources": {
-        "satellite": {
-            "type": "raster",
-            "url": "mapbox://mapbox.satellite",
-            "tileSize": 256
+    'version': 8,
+    'sources': {
+        'satellite': {
+            'type': 'raster',
+            'url': 'mapbox://mapbox.satellite',
+            'tileSize': 256
         },
-        "streets": {
-            "type": "vector",
-            "url": "mapbox://mapbox.mapbox-streets-v7"
+        'streets': {
+            'type': 'vector',
+            'url': 'mapbox://mapbox.mapbox-streets-v7'
         }
     },
-    "layers": [{
-        "id": "background",
-        "type": "background",
-        "paint": {
-            "background-color": "rgb(4,7,14)"
+    'layers': [{
+        'id': 'background',
+        'type': 'background',
+        'paint': {
+            'background-color': 'rgb(4,7,14)'
         }
     }, {
-        "id": "satellite",
-        "type": "raster",
-        "source": "satellite"
+        'id': 'satellite',
+        'type': 'raster',
+        'source': 'satellite'
     }, {
-        "id": "road",
-        "type": "line",
-        "source": "streets",
-        "source-layer": "road",
-        "paint": {"line-color": "rgb(55,89,144)",  "line-width": 4}
+        'id': 'road',
+        'type': 'line',
+        'source': 'streets',
+        'source-layer': 'road',
+        'paint': {'line-color': 'rgb(55,89,144)',  'line-width': 4}
     }]
 };
 

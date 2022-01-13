@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>MapLibre GL JS debug page</title>
     <meta charset='utf-8'>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel='stylesheet' href='../dist/maplibre-gl.css' />
     <style>
         body { margin: 0; padding: 0; }
@@ -15,14 +15,13 @@
 <div id='map'></div>
 
 <script src='../dist/maplibre-gl-dev.js'></script>
-<script src='../debug/access_token_generated.js'></script>
 <script>
 
 var map = window.map = new maplibregl.Map({
     container: 'map',
     zoom: 16,
     center: [-74.0447, 40.6892],
-    style: 'mapbox://styles/mapbox/streets-v9',
+    style: 'https://demotiles.maplibre.org/style.json',
     hash: true
 });
 
@@ -30,17 +29,17 @@ map.addControl(new maplibregl.NavigationControl());
 
 map.on('load', function() {
     map.addSource('wms-test', {
-        "type": "raster",
-        "tiles": ['https://img.nj.gov/imagerywms/Natural2015?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=Natural2015'
+        'type': 'raster',
+        'tiles': ['https://img.nj.gov/imagerywms/Natural2015?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=Natural2015'
         ],
-        "tileSize": 256
+        'tileSize': 256
     });
 
     map.addLayer({
-        "id": "wms-test-layer",
-        "type": "raster",
-        "source": "wms-test",
-        "paint": {}
+        'id': 'wms-test-layer',
+        'type': 'raster',
+        'source': 'wms-test',
+        'paint': {}
     });
 });
 

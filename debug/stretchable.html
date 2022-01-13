@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>MapLibre GL JS debug page</title>
     <meta charset='utf-8'>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel='stylesheet' href='../dist/maplibre-gl.css' />
     <style>
         body { margin: 0; padding: 0; }
@@ -15,12 +15,11 @@
 <div id='map'></div>
 
 <script src='../dist/maplibre-gl-dev.js'></script>
-<script src='../debug/access_token_generated.js'></script>
 <script>
 
 var map = window.map = new maplibregl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v10',
+    style: 'https://demotiles.maplibre.org/style.json',
     hash: true
 });
 
@@ -73,53 +72,53 @@ map.on('styleimagemissing', function(e) {
 
 map.on('load', function () {
     map.addLayer({
-        "id": "points",
-        "type": "symbol",
-        "source": {
-            "type": "geojson",
-            "data": {
-                "type": "FeatureCollection",
-                "features": [{
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [0, 0]
+        'id': 'points',
+        'type': 'symbol',
+        'source': {
+            'type': 'geojson',
+            'data': {
+                'type': 'FeatureCollection',
+                'features': [{
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': [0, 0]
                     },
-                    "properties": {
-                        "text": "ASDF",
-                        "size": 36,
-                        "color": "255,0,0"
+                    'properties': {
+                        'text': 'ASDF',
+                        'size': 36,
+                        'color': '255,0,0'
                     }
                 }, {
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [50, 0]
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': [50, 0]
                     },
-                    "properties": {
-                        "text": "ASDF \n - \nqwer",
-                        "size": 24,
-                        "color": "255,209,28"
+                    'properties': {
+                        'text': 'ASDF \n - \nqwer',
+                        'size': 24,
+                        'color': '255,209,28'
                     }
                 }, {
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [-50, 0]
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': [-50, 0]
                     },
-                    "properties": {
-                        "text": "ASDF",
-                        "size": 18,
-                        "color": "242,127,32"
+                    'properties': {
+                        'text': 'ASDF',
+                        'size': 18,
+                        'color': '242,127,32'
                     }
                 }]
             }
         },
-        "layout": {
-            "text-field": ["get", "text"],
-            "icon-text-fit": "both",
-            "text-size": ["get", "size"],
-            "icon-image": ["concat", "stretchable-", ["get", "color"]]
+        'layout': {
+            'text-field': ['get', 'text'],
+            'icon-text-fit': 'both',
+            'text-size': ['get', 'size'],
+            'icon-image': ['concat', 'stretchable-', ['get', 'color']]
         }
     });
 });

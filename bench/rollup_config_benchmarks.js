@@ -2,31 +2,34 @@ import fs from 'fs';
 import sourcemaps from 'rollup-plugin-sourcemaps';
 import replace from 'rollup-plugin-replace';
 import {plugins} from '../build/rollup_plugins';
-import buble from 'rollup-plugin-buble';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
+import buble from 'rollup-plugin-buble';
+import typescript from '@rollup/plugin-typescript';
 
-let styles = ['mapbox://styles/mapbox/streets-v10'];
+let styles = ['https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'];
 
-if (process.env.MAPBOX_STYLES) {
-    styles = process.env.MAPBOX_STYLES
+if (process.env.MAPLIBRE_STYLES) {
+    styles = process.env.MAPLIBRE_STYLES
         .split(',')
         .map(style => style.match(/\.json$/) ? require(style) : style);
 }
 
 const replaceConfig = {
     'process.env.BENCHMARK_VERSION': JSON.stringify(process.env.BENCHMARK_VERSION),
-    'process.env.MAPBOX_ACCESS_TOKEN': JSON.stringify(process.env.MAPBOX_ACCESS_TOKEN),
-    'process.env.MapboxAccessToken': JSON.stringify(process.env.MapboxAccessToken),
-    'process.env.MAPBOX_STYLES': JSON.stringify(styles),
+    'process.env.MAPLIBRE_STYLES': JSON.stringify(styles),
     'process.env.NODE_ENV': JSON.stringify('production')
 };
 
-const allPlugins = plugins(true, true).concat(replace(replaceConfig));
+const watch = process.env.ROLLUP_WATCH === 'true';
+const srcDir = watch ? '' : 'rollup/build/tsc/';
+const inputExt = watch ? 'ts' : 'js';
+
+const allPlugins = plugins(true, true, watch).concat(replace(replaceConfig));
 const intro = fs.readFileSync('rollup/bundle_prelude.js', 'utf8');
 
 const splitConfig = (name) => [{
-    input: [`bench/${name}/benchmarks.js`, 'src/source/worker.js'],
+    input: [`${srcDir}bench/${name}/benchmarks.${inputExt}`, `${srcDir}src/source/worker.${inputExt}`],
     output: {
         dir: `rollup/build/benchmarks/${name}`,
         format: 'amd',
@@ -49,7 +52,7 @@ const splitConfig = (name) => [{
 }];
 
 const viewConfig = {
-    input: 'bench/benchmarks_view.js',
+    input: `${srcDir}bench/benchmarks_view.${inputExt}x`,
     output: {
         name: 'Benchmarks',
         file: 'bench/benchmarks_view_generated.js',
@@ -60,9 +63,10 @@ const viewConfig = {
     plugins: [
         buble({transforms: {dangerousForOf: true}, objectAssign: true}),
         resolve({browser: true, preferBuiltins: false}),
+        watch ? typescript() : false,
         commonjs(),
         replace(replaceConfig)
-    ]
+    ].filter(Boolean)
 };
 
 export default splitConfig('versions').concat(splitConfig('styles')).concat(viewConfig);

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>MapLibre GL JS debug page</title>
     <meta charset='utf-8'>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel='stylesheet' href='../dist/maplibre-gl.css' />
     <style>
         body { margin: 0; padding: 0; }
@@ -15,7 +15,6 @@
 <div id='map'></div>
 
 <script src='../dist/maplibre-gl-dev.js'></script>
-<script src='../debug/access_token_generated.js'></script>
 <script>
 
 var map = new maplibregl.Map({
@@ -23,7 +22,7 @@ var map = new maplibregl.Map({
     zoom: 12.5,
     center: [-77.01866, 38.888],
     hash: true,
-    style: 'mapbox://styles/mapbox/streets-v9'
+    style: 'https://demotiles.maplibre.org/style.json'
 });
 
 map.addControl(new maplibregl.NavigationControl());
@@ -33,25 +32,25 @@ var emptyFc = {type: 'FeatureCollection', features: []};
 map.on('style.load', function() {
     map.addSource('queried', {type: 'geojson', data: emptyFc});
     map.addLayer({
-        "id": "query",
-        "type": "line",
-        "source": "queried",
-        "paint": {
-            "line-color": "#8D8DEC",
-            "line-width": {base: 1.5, stops: [[5, 0.75], [18, 32]]}
+        'id': 'query',
+        'type': 'line',
+        'source': 'queried',
+        'paint': {
+            'line-color': '#8D8DEC',
+            'line-width': {base: 1.5, stops: [[5, 0.75], [18, 32]]}
         }
     }, 'country-label-sm');
 
     map.addSource('boxsource', {type: 'geojson', data: emptyFc});
     map.addLayer({
-        "id": "box",
-        "type": "fill",
-        "source": "boxsource",
-        "paint": {
-            "fill-color": "#8D8DEC",
-            "fill-opacity": 0.5
+        'id': 'box',
+        'type': 'fill',
+        'source': 'boxsource',
+        'paint': {
+            'fill-color': '#8D8DEC',
+            'fill-opacity': 0.5
         },
-        "interactive": true
+        'interactive': true
     }, 'country-label-sm');
 });
 
