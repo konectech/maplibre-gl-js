@@ -20,7 +20,8 @@ import type Dispatcher from '../util/dispatcher';
 import type Transform from '../geo/transform';
 import type {TileState} from './tile';
 import type {Callback} from '../types/callback';
-import type {SourceSpecification} from '../style-spec/types';
+//import type {SourceSpecification} from '../style-spec/types';
+import type {SourceSpecification, VectorSourceSpecification} from '../style-spec/types';
 
 /**
  * `SourceCache` is responsible for
@@ -95,6 +96,12 @@ class SourceCache extends Evented {
         this._timers = {};
         this._cacheTimers = {};
         this._maxTileCacheSize = null;
+        if (options.type === 'vector') {
+            if (options.volatile === true) {
+              //console.log('Vector tile layer has volatile setting. Set maxTileCacheSize to 0');
+                this._maxTileCacheSize = 0;
+            }
+        }
         this._loadedParentTiles = {};
 
         this._coveredTiles = {};
@@ -103,7 +110,10 @@ class SourceCache extends Evented {
 
     onAdd(map: Map) {
         this.map = map;
-        this._maxTileCacheSize = map ? map._maxTileCacheSize : null;
+        //this._maxTileCacheSize = map ? map._maxTileCacheSize : null;
+        if (this._maxTileCacheSize === null || this._maxTileCacheSize === undefined) {
+            this._maxTileCacheSize = map ? map._maxTileCacheSize : null;
+        }
         if (this._source && this._source.onAdd) {
             this._source.onAdd(map);
         }
