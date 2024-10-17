@@ -1,4 +1,4 @@
-import Wrapper from './geojson_wrapper';
+import {GeoJSONWrapper} from './geojson_wrapper';
 
 describe('geojsonwrapper', () => {
     test('linestring', () => {
@@ -8,13 +8,13 @@ describe('geojsonwrapper', () => {
             tags: {hello: 'world'}
         }];
 
-        const wrap = new Wrapper(features as any);
+        const wrap = new GeoJSONWrapper(features as any);
         const feature = wrap.feature(0);
 
         expect(feature).toBeTruthy();
         expect(feature.loadGeometry()).toEqual([[{x: 0, y: 0}, {x: 10, y: 10}]]);
         expect(feature.type).toBe(2);
-        expect(feature.properties).toEqual({hello:'world'});
+        expect(feature.properties).toEqual({hello: 'world'});
 
     });
 
@@ -25,7 +25,7 @@ describe('geojsonwrapper', () => {
             tags: {}
         }];
 
-        const wrap = new Wrapper(features as any);
+        const wrap = new GeoJSONWrapper(features as any);
         const feature = wrap.feature(0);
         expect(feature.loadGeometry()).toEqual([[{x: 0, y: 1}]]);
     });

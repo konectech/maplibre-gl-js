@@ -1,4 +1,4 @@
-import Map from '../../../src/ui/map';
+import {Map} from '../../../src/ui/map';
 
 const createMap = (options: any): Promise<Map> => {
     return new Promise((resolve, reject) => {
@@ -27,9 +27,9 @@ const createMap = (options: any): Promise<Map> => {
             .on(options.idle ? 'idle' : 'load', () => {
                 if (options.stubRender) {
                     // If there's a pending rerender, cancel it.
-                    if (map._frame) {
-                        map._frame.cancel();
-                        map._frame = null;
+                    if (map._frameRequest) {
+                        map._frameRequest.abort();
+                        map._frameRequest = null;
                     }
                 }
                 resolve(map);

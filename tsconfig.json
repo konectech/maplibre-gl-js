@@ -1,43 +1,54 @@
 {
-  "ts-node": {
-    "swc": true
-  },
   "compilerOptions": {
-    "allowJs": false,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "checkJs": false,
+    "checkJs": true,
+    "isolatedModules": false,
+    "noEmit": true,
     "esModuleInterop": true,
     "importHelpers": false,
-    "isolatedModules": true,
-    //"importsNotUsedAsValues": "preserve",
     "jsx": "react",
-    "module": "es2022",
-    "moduleResolution": "Node",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
+    "skipLibCheck": false,
     "strict": false,
-    "target": "es2017",
+    "target": "ES2016",
     "lib": [
       "ESNext",
       "DOM",
-      "DOM.Iterable",
-      "WebWorker"
+      "DOM.Iterable"
     ],
-    "types": ["node", "jest", "geojson", "offscreencanvas"]
+    "types": [
+      "geojson",
+      "offscreencanvas",
+      "jest"
+    ]
+  },
+  "ts-node": {
+    "experimentalSpecifierResolution": "node",
+    "esm": true,
+    "compilerOptions": {
+      "target": "es2019",
+      "types": [
+        "node"
+      ]
+    }
   },
   "include": [
-    "rollup.config.**",
-    "src/**/*.ts",
-    "test/bench/**/*.ts",
-    "test/bench/**/*.tsx",
-    "build/**/*.ts"
+    "rollup.config.*",
+    "src/**/*",
+    "test/bench/**/*",
+    "test/integration/**/*"
   ],
   "exclude": [
     "node_modules",
-    "lib",
     "dist",
-    "test/bench/**/*generated*",
-    "src/**/*.test.ts"
+    "build/rollup",
+    "test/bench/rollup",
+    "test/bench/run-benchmarks.ts",
+    "test/bench/gl-stats.ts"  ,
+    "test/bench/**/*generated*"
   ]
 }

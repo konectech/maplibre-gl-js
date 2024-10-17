@@ -1,22 +1,25 @@
 import Point from '@mapbox/point-geometry';
 import {indexTouches} from './handler_util';
+import {Handler} from '../handler_manager';
+import type {Map} from '../map';
 
-export default class TouchPanHandler {
+/**
+ * A `TouchPanHandler` allows the user to pan the map using touch gestures.
+ */
+export class TouchPanHandler implements Handler {
 
     _enabled: boolean;
     _active: boolean;
     _touches: {
         [k in string | number]: Point;
     };
-    _minTouches: number;
     _clickTolerance: number;
     _sum: Point;
+    _map: Map;
 
-    constructor(options: {
-        clickTolerance: number;
-    }) {
-        this._minTouches = 1;
+    constructor(options: {clickTolerance: number}, map: Map) {
         this._clickTolerance = options.clickTolerance || 1;
+        this._map = map;
         this.reset();
     }
 
@@ -26,12 +29,21 @@ export default class TouchPanHandler {
         this._sum = new Point(0, 0);
     }
 
+    _shouldBePrevented(touchesCount: number) {
+        const minTouches = this._map.cooperativeGestures.isEnabled() ? 2 : 1;
+        return touchesCount < minTouches;
+    }
+
     touchstart(e: TouchEvent, points: Array<Point>, mapTouches: Array<Touch>) {
         return this._calculateTransform(e, points, mapTouches);
     }
 
     touchmove(e: TouchEvent, points: Array<Point>, mapTouches: Array<Touch>) {
-        if (!this._active || mapTouches.length < this._minTouches) return;
+        if (!this._active) return;
+        if (this._shouldBePrevented(mapTouches.length)) {
+            this._map.cooperativeGestures.notifyGestureBlocked('touch_pan', e);
+            return;
+        }
         e.preventDefault();
         return this._calculateTransform(e, points, mapTouches);
     }
@@ -39,7 +51,7 @@ export default class TouchPanHandler {
     touchend(e: TouchEvent, points: Array<Point>, mapTouches: Array<Touch>) {
         this._calculateTransform(e, points, mapTouches);
 
-        if (this._active && mapTouches.length < this._minTouches) {
+        if (this._active && this._shouldBePrevented(mapTouches.length)) {
             this.reset();
         }
     }
@@ -70,7 +82,7 @@ export default class TouchPanHandler {
 
         this._touches = touches;
 
-        if (touchDeltaCount < this._minTouches || !touchDeltaSum.mag()) return;
+        if (this._shouldBePrevented(touchDeltaCount) || !touchDeltaSum.mag()) return;
 
         const panDelta = touchDeltaSum.div(touchDeltaCount);
         this._sum._add(panDelta);

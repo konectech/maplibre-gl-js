@@ -1,6 +1,6 @@
-import type {StyleSpecification} from '../../../src/style-spec/types';
+import type {StyleSpecification} from '@maplibre/maplibre-gl-style-spec';
 import Benchmark from '../lib/benchmark';
-import validateStyle from '../../../src/style-spec/validate_style.min';
+import {validateStyleMin} from '@maplibre/maplibre-gl-style-spec';
 import fetchStyle from '../lib/fetch_style';
 
 export default class StyleValidate extends Benchmark {
@@ -12,12 +12,11 @@ export default class StyleValidate extends Benchmark {
         this.style = style;
     }
 
-    setup(): Promise<void> {
-        return fetchStyle(this.style)
-            .then(json => { this.json = json; });
+    async setup() {
+        this.json = await fetchStyle(this.style);
     }
 
     bench() {
-        validateStyle(this.json);
+        validateStyleMin(this.json);
     }
 }

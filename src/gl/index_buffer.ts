@@ -1,10 +1,13 @@
-import assert from 'assert';
 
 import type {StructArray} from '../util/struct_array';
 import type {TriangleIndexArray, LineIndexArray, LineStripIndexArray} from '../data/index_array_type';
-import type Context from '../gl/context';
+import type {Context} from '../gl/context';
 
-class IndexBuffer {
+/**
+ * @internal
+ * an index buffer class
+ */
+export class IndexBuffer {
     context: Context;
     buffer: WebGLBuffer;
     dynamicDraw: boolean;
@@ -34,7 +37,7 @@ class IndexBuffer {
 
     updateData(array: StructArray) {
         const gl = this.context.gl;
-        assert(this.dynamicDraw);
+        if (!this.dynamicDraw) throw new Error('Attempted to update data while not in dynamic mode.');
         // The right VAO will get this buffer re-bound later in VertexArrayObject#bind
         // See https://github.com/mapbox/mapbox-gl-js/issues/5620
         this.context.unbindVAO();
@@ -50,5 +53,3 @@ class IndexBuffer {
         }
     }
 }
-
-export default IndexBuffer;

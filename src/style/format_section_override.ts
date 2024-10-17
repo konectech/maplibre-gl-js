@@ -1,20 +1,16 @@
-import assert from 'assert';
-import type {Expression} from '../style-spec/expression/expression';
-import type EvaluationContext from '../style-spec/expression/evaluation_context';
-import type {Type} from '../style-spec/expression/types';
-import type {ZoomConstantExpression} from '../style-spec/expression';
-import {NullType} from '../style-spec/expression/types';
+import type {Expression, EvaluationContext, Type, ZoomConstantExpression} from '@maplibre/maplibre-gl-style-spec';
+import {NullType} from '@maplibre/maplibre-gl-style-spec';
 import {PossiblyEvaluatedPropertyValue} from './properties';
 import {register} from '../util/web_worker_transfer';
 
 // This is an internal expression class. It is only used in GL JS and
 // has GL JS dependencies which can break the standalone style-spec module
-export default class FormatSectionOverride<T> implements Expression {
+export class FormatSectionOverride<T> implements Expression {
     type: Type;
     defaultValue: PossiblyEvaluatedPropertyValue<T>;
 
     constructor(defaultValue: PossiblyEvaluatedPropertyValue<T>) {
-        assert(defaultValue.property.overrides !== undefined);
+        if (defaultValue.property.overrides === undefined) throw new Error('overrides must be provided to instantiate FormatSectionOverride class');
         this.type = defaultValue.property.overrides ? defaultValue.property.overrides.runtimeType : NullType;
         this.defaultValue = defaultValue;
     }

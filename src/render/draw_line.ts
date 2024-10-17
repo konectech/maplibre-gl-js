@@ -1,6 +1,6 @@
-import DepthMode from '../gl/depth_mode';
-import CullFaceMode from '../gl/cull_face_mode';
-import Texture from './texture';
+import {DepthMode} from '../gl/depth_mode';
+import {CullFaceMode} from '../gl/cull_face_mode';
+import {Texture} from './texture';
 import {
     lineUniformValues,
     linePatternUniformValues,
@@ -8,16 +8,16 @@ import {
     lineGradientUniformValues
 } from './program/line_program';
 
-import type Painter from './painter';
-import type SourceCache from '../source/source_cache';
-import type LineStyleLayer from '../style/style_layer/line_style_layer';
-import type LineBucket from '../data/bucket/line_bucket';
+import type {Painter} from './painter';
+import type {SourceCache} from '../source/source_cache';
+import type {LineStyleLayer} from '../style/style_layer/line_style_layer';
+import type {LineBucket} from '../data/bucket/line_bucket';
 import type {OverscaledTileID} from '../source/tile_id';
 import {clamp, nextPowerOfTwo} from '../util/util';
 import {renderColorRamp} from '../util/color_ramp';
-import EXTENT from '../data/extent';
+import {EXTENT} from '../data/extent';
 
-export default function drawLine(painter: Painter, sourceCache: SourceCache, layer: LineStyleLayer, coords: Array<OverscaledTileID>) {
+export function drawLine(painter: Painter, sourceCache: SourceCache, layer: LineStyleLayer, coords: Array<OverscaledTileID>) {
     if (painter.renderPass !== 'translucent') return;
 
     const opacity = layer.paint.get('line-opacity');
@@ -41,6 +41,7 @@ export default function drawLine(painter: Painter, sourceCache: SourceCache, lay
 
     const context = painter.context;
     const gl = context.gl;
+    const transform = painter.transform;
 
     let firstTile = true;
 
@@ -56,6 +57,7 @@ export default function drawLine(painter: Painter, sourceCache: SourceCache, lay
         const prevProgram = painter.context.program.get();
         const program = painter.useProgram(programId, programConfiguration);
         const programChanged = firstTile || program.program !== prevProgram;
+        const terrainData = painter.style.map.terrain &&  painter.style.map.terrain.getTerrainData(coord);
 
         const constantPattern = patternProperty.constantOr(null);
         if (constantPattern && tile.imageAtlas) {
@@ -65,10 +67,13 @@ export default function drawLine(painter: Painter, sourceCache: SourceCache, lay
             if (posTo && posFrom) programConfiguration.setConstantPatternPositions(posTo, posFrom);
         }
 
-        const uniformValues = image ? linePatternUniformValues(painter, tile, layer, crossfade) :
-            dasharray ? lineSDFUniformValues(painter, tile, layer, dasharray, crossfade) :
-                gradient ? lineGradientUniformValues(painter, tile, layer, bucket.lineClipsArray.length) :
-                    lineUniformValues(painter, tile, layer);
+        const projectionData = transform.getProjectionData(coord);
+        const pixelRatio = transform.getPixelScale();
+
+        const uniformValues = image ? linePatternUniformValues(painter, tile, layer, pixelRatio, crossfade) :
+            dasharray ? lineSDFUniformValues(painter, tile, layer, pixelRatio, dasharray, crossfade) :
+                gradient ? lineGradientUniformValues(painter, tile, layer, pixelRatio, bucket.lineClipsArray.length) :
+                    lineUniformValues(painter, tile, layer, pixelRatio);
 
         if (image) {
             context.activeTexture.set(gl.TEXTURE0);
@@ -113,7 +118,7 @@ export default function drawLine(painter: Painter, sourceCache: SourceCache, lay
         }
 
         program.draw(context, gl.TRIANGLES, depthMode,
-            painter.stencilModeForClipping(coord), colorMode, CullFaceMode.disabled, uniformValues,
+            painter.stencilModeForClipping(coord), colorMode, CullFaceMode.disabled, uniformValues, terrainData, projectionData,
             layer.id, bucket.layoutVertexBuffer, bucket.indexBuffer, bucket.segments,
             layer.paint, painter.transform.zoom, programConfiguration, bucket.layoutVertexBuffer2);
 

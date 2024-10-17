@@ -8,19 +8,18 @@ import {
     UniformMatrix4f,
     Uniform4f
 } from '../uniform_binding';
-import EXTENT from '../../data/extent';
-import MercatorCoordinate from '../../geo/mercator_coordinate';
+import {EXTENT} from '../../data/extent';
+import {MercatorCoordinate} from '../../geo/mercator_coordinate';
 
-import type Context from '../../gl/context';
+import type {Context} from '../../gl/context';
 import type {UniformValues, UniformLocations} from '../uniform_binding';
-import type Tile from '../../source/tile';
-import type Painter from '../painter';
-import type HillshadeStyleLayer from '../../style/style_layer/hillshade_style_layer';
-import type DEMData from '../../data/dem_data';
+import type {Tile} from '../../source/tile';
+import type {Painter} from '../painter';
+import type {HillshadeStyleLayer} from '../../style/style_layer/hillshade_style_layer';
+import type {DEMData} from '../../data/dem_data';
 import type {OverscaledTileID} from '../../source/tile_id';
 
 export type HillshadeUniformsType = {
-    'u_matrix': UniformMatrix4f;
     'u_image': Uniform1i;
     'u_latrange': Uniform2f;
     'u_light': Uniform2f;
@@ -38,7 +37,6 @@ export type HillshadePrepareUniformsType = {
 };
 
 const hillshadeUniforms = (context: Context, locations: UniformLocations): HillshadeUniformsType => ({
-    'u_matrix': new UniformMatrix4f(context, locations.u_matrix),
     'u_image': new Uniform1i(context, locations.u_image),
     'u_latrange': new Uniform2f(context, locations.u_latrange),
     'u_light': new Uniform2f(context, locations.u_light),
@@ -55,7 +53,11 @@ const hillshadePrepareUniforms = (context: Context, locations: UniformLocations)
     'u_unpack': new Uniform4f(context, locations.u_unpack)
 });
 
-const hillshadeUniformValues = (painter: Painter, tile: Tile, layer: HillshadeStyleLayer): UniformValues<HillshadeUniformsType> => {
+const hillshadeUniformValues = (
+    painter: Painter,
+    tile: Tile,
+    layer: HillshadeStyleLayer,
+): UniformValues<HillshadeUniformsType> => {
     const shadow = layer.paint.get('hillshade-shadow-color');
     const highlight = layer.paint.get('hillshade-highlight-color');
     const accent = layer.paint.get('hillshade-accent-color');
@@ -65,9 +67,7 @@ const hillshadeUniformValues = (painter: Painter, tile: Tile, layer: HillshadeSt
     if (layer.paint.get('hillshade-illumination-anchor') === 'viewport') {
         azimuthal -= painter.transform.angle;
     }
-    const align = !painter.options.moving;
     return {
-        'u_matrix': painter.transform.calculatePosMatrix(tile.tileID.toUnwrapped(), align),
         'u_image': 0,
         'u_latrange': getTileLatRange(painter, tile.tileID),
         'u_light': [layer.paint.get('hillshade-exaggeration'), azimuthal],

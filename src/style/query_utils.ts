@@ -1,9 +1,9 @@
 import Point from '@mapbox/point-geometry';
 
 import type {PossiblyEvaluatedPropertyValue} from './properties';
-import type StyleLayer from '../style/style_layer';
-import type CircleBucket from '../data/bucket/circle_bucket';
-import type LineBucket from '../data/bucket/line_bucket';
+import type {StyleLayer} from '../style/style_layer';
+import type {CircleBucket} from '../data/bucket/circle_bucket';
+import type {LineBucket} from '../data/bucket/line_bucket';
 
 export function getMaximumPaintValue(
     property: string,
@@ -42,4 +42,29 @@ export function translate(queryGeometry: Array<Point>,
         translated.push(point.sub(pt));
     }
     return translated;
+}
+
+export function offsetLine(rings: Array<Array<Point>>, offset: number) {
+    const newRings: Array<Array<Point>> = [];
+    for (let ringIndex = 0; ringIndex < rings.length; ringIndex++) {
+        const ring = rings[ringIndex];
+        const newRing: Array<Point> = [];
+        for (let index = 0; index < ring.length; index++) {
+            const a = ring[index - 1];
+            const b = ring[index];
+            const c = ring[index + 1];
+            const aToB = index === 0 ? new Point(0, 0) : b.sub(a)._unit()._perp();
+            const bToC = index === ring.length - 1 ? new Point(0, 0) : c.sub(b)._unit()._perp();
+            const extrude = aToB._add(bToC)._unit();
+
+            const cosHalfAngle = extrude.x * bToC.x + extrude.y * bToC.y;
+            if (cosHalfAngle !== 0) {
+                extrude._mult(1 / cosHalfAngle);
+            }
+
+            newRing.push(extrude._mult(offset)._add(b));
+        }
+        newRings.push(newRing);
+    }
+    return newRings;
 }

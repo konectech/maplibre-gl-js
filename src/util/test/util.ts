@@ -1,7 +1,43 @@
-import Map from '../../ui/map';
+import {Map} from '../../ui/map';
 import {extend} from '../../util/util';
-import Dispatcher from '../../util/dispatcher';
-import gl from 'gl';
+import {Dispatcher} from '../../util/dispatcher';
+import {IActor} from '../actor';
+import {Evented} from '../evented';
+import {SourceSpecification, StyleSpecification, TerrainSpecification} from '@maplibre/maplibre-gl-style-spec';
+import {MercatorTransform} from '../../geo/projection/mercator_transform';
+import {RequestManager} from '../request_manager';
+import {IReadonlyTransform, ITransform} from '../../geo/transform_interface';
+import {Style} from '../../style/style';
+import type {GlobeProjection} from '../../geo/projection/globe';
+
+export class StubMap extends Evented {
+    style: Style;
+    transform: IReadonlyTransform;
+    private _requestManager: RequestManager;
+    _terrain: TerrainSpecification;
+
+    constructor() {
+        super();
+        this.transform = new MercatorTransform();
+        this._requestManager = new RequestManager();
+    }
+
+    _getMapId() {
+        return 1;
+    }
+
+    getPixelRatio() {
+        return 1;
+    }
+
+    setTerrain(terrain) { this._terrain = terrain; }
+    getTerrain() { return this._terrain; }
+
+    migrateProjection(newTransform: ITransform) {
+        newTransform.apply(this.transform);
+        this.transform = newTransform;
+    }
+}
 
 export function createMap(options?, callback?) {
     const container = window.document.createElement('div');
@@ -9,6 +45,7 @@ export function createMap(options?, callback?) {
         container,
         interactive: false,
         attributionControl: false,
+        maplibreLogo: false,
         trackResize: true,
         style: {
             'version': 8,
@@ -20,7 +57,7 @@ export function createMap(options?, callback?) {
     Object.defineProperty(container, 'clientWidth', {value: 200, configurable: true});
     Object.defineProperty(container, 'clientHeight', {value: 200, configurable: true});
 
-    if (options && options.deleteStyle) delete defaultOptions.style;
+    if (options?.deleteStyle) delete defaultOptions.style;
 
     const map = new Map(extend(defaultOptions, options));
     if (callback) map.on('load', () => {
@@ -36,23 +73,6 @@ export function equalWithPrecision(test, expected, actual, multiplier, message, 
     const actualRounded = Math.round(actual / multiplier) * multiplier;
 
     return test.equal(expectedRounded, actualRounded, message, extra);
-}
-
-// Add webgl context with the supplied GL
-export function setWebGlContext() {
-    const originalGetContext = global.HTMLCanvasElement.prototype.getContext;
-
-    function imitateWebGlGetContext(type, attributes) {
-        if (type === 'webgl') {
-            if (!this._webGLContext) {
-                this._webGLContext = gl(this.width, this.height, attributes);
-            }
-            return this._webGLContext;
-        }
-        // Fallback to existing HTMLCanvasElement getContext behaviour
-        return originalGetContext.call(this, type, attributes);
-    }
-    global.HTMLCanvasElement.prototype.getContext = imitateWebGlGetContext;
 }
 
 export function setPerformance() {
@@ -78,11 +98,38 @@ export function setMatchMedia() {
     });
 }
 
+function setResizeObserver() {
+    global.ResizeObserver = jest.fn().mockImplementation(() => ({
+        observe: jest.fn(),
+        unobserve: jest.fn(),
+        disconnect: jest.fn(),
+    }));
+}
+
+export function beforeMapTest() {
+    setPerformance();
+    setMatchMedia();
+    setResizeObserver();
+    // remove the following when the following is merged and released: https://github.com/Adamfsk/jest-webgl-canvas-mock/pull/5
+    (WebGLRenderingContext.prototype as any).bindVertexArray = WebGLRenderingContext.prototype.getExtension('OES_vertex_array_object').bindVertexArrayOES;
+    (WebGLRenderingContext.prototype as any).createVertexArray = WebGLRenderingContext.prototype.getExtension('OES_vertex_array_object').createVertexArrayOES;
+    if (!WebGLRenderingContext.prototype.drawingBufferHeight && !WebGLRenderingContext.prototype.drawingBufferWidth) {
+        Object.defineProperty(WebGLRenderingContext.prototype, 'drawingBufferWidth', {
+            get: jest.fn(),
+            configurable: true,
+        });
+        Object.defineProperty(WebGLRenderingContext.prototype, 'drawingBufferHeight', {
+            get: jest.fn(),
+            configurable: true,
+        });
+    }
+}
+
 export function getWrapDispatcher() {
-    const wrapDispatcher = (dispatcher) => {
+    const wrapDispatcher = (actor: IActor) => {
         return {
             getActor() {
-                return dispatcher;
+                return actor;
             }
         } as any as Dispatcher;
     };
@@ -94,7 +141,7 @@ export function getMockDispatcher() {
     const wrapDispatcher = getWrapDispatcher();
 
     const mockDispatcher = wrapDispatcher({
-        send() {}
+        sendAsync() { return Promise.resolve({}); },
     });
 
     return mockDispatcher;
@@ -108,8 +155,88 @@ export function stubAjaxGetImage(createImageBitmap) {
 
     // eslint-disable-next-line accessor-pairs
     Object.defineProperty(global.Image.prototype, 'src', {
-        set(_) {
-            this.onload();
+        set(url: string) {
+            if (url === 'error') {
+                this.onerror();
+            } else if (this.onload) {
+                this.onload();
+            }
         }
     });
+}
+
+/**
+ * This should be used in test that use nise since the internal buffer returned from a file is not an instance of ArrayBuffer for some reason.
+ * @param data - the data read from a file, for example by `fs.readFileSync(...)`
+ * @returns a copy of the data in the file in `ArrayBuffer` format
+ */
+export function bufferToArrayBuffer(data: Buffer): ArrayBuffer {
+    const newBuffer = new ArrayBuffer(data.buffer.byteLength);
+    const view = new Uint8Array(newBuffer);
+    data.copy(view);
+    return view.buffer;
+}
+
+/**
+ * This allows test to wait for a certain amount of time before continuing.
+ * @param milliseconds - the amount of time to wait in milliseconds
+ * @returns - a promise that resolves after the specified amount of time
+ */
+export const sleep = (milliseconds: number = 0) => {
+    return new Promise<void>(resolve => setTimeout(resolve, milliseconds));
+};
+
+export function waitForMetadataEvent(source: Evented): Promise<void> {
+    return new Promise((resolve) => {
+        source.on('data', (e) => {
+            if (e.sourceDataType === 'metadata') {
+                resolve();
+            }
+        });
+    });
+}
+
+export function createStyleSource() {
+    return {
+        type: 'geojson',
+        data: {
+            type: 'FeatureCollection',
+            features: []
+        }
+    } as SourceSpecification;
+}
+
+export function createStyle(): StyleSpecification {
+    return {
+        version: 8,
+        center: [-73.9749, 40.7736],
+        zoom: 12.5,
+        bearing: 29,
+        pitch: 50,
+        sources: {},
+        layers: []
+    };
+}
+
+export function expectToBeCloseToArray(actual: Array<number>, expected: Array<number>, precision?: number) {
+    expect(actual).toHaveLength(expected.length);
+    for (let i = 0; i < expected.length; i++) {
+        expect(actual[i]).toBeCloseTo(expected[i], precision);
+    }
+}
+
+export function getGlobeProjectionMock(): GlobeProjection {
+    return {
+        get useGlobeControls(): boolean {
+            return true;
+        },
+        get useGlobeRendering(): boolean {
+            return true;
+        },
+        set useGlobeRendering(_value: boolean) {
+            // do not set
+        },
+        latitudeErrorCorrectionRadians: 0,
+        errorQueryLatitudeDegrees: 0,
+    } as GlobeProjection;
 }

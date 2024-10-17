@@ -1,5 +1,3 @@
-import assert from 'assert';
-
 import {register} from './web_worker_transfer';
 
 export type Size = {
@@ -71,7 +69,7 @@ function copyImage(srcImg: any, dstImg: any, srcPt: Point2D, dstPt: Point2D, siz
     const srcData = srcImg.data;
     const dstData = dstImg.data;
 
-    assert(srcData !== dstData);
+    if (srcData === dstData) throw new Error('srcData equals dstData, so image is already copied');
 
     for (let y = 0; y < size.height; y++) {
         const srcOffset = ((srcPt.y + y) * srcImg.width + srcPt.x) * channels;
@@ -83,6 +81,9 @@ function copyImage(srcImg: any, dstImg: any, srcPt: Point2D, dstPt: Point2D, siz
     return dstImg;
 }
 
+/**
+ * An image with alpha color value
+ */
 export class AlphaImage {
     width: number;
     height: number;
@@ -105,14 +106,17 @@ export class AlphaImage {
     }
 }
 
-// Not premultiplied, because ImageData is not premultiplied.
-// UNPACK_PREMULTIPLY_ALPHA_WEBGL must be used when uploading to a texture.
+/**
+ * An object to store image data not premultiplied, because ImageData is not premultiplied.
+ * UNPACK_PREMULTIPLY_ALPHA_WEBGL must be used when uploading to a texture.
+ */
 export class RGBAImage {
     width: number;
     height: number;
 
-    // data must be a Uint8Array instead of Uint8ClampedArray because texImage2D does not
-    // support Uint8ClampedArray in all browsers
+    /**
+     * data must be a Uint8Array instead of Uint8ClampedArray because texImage2D does not support Uint8ClampedArray in all browsers.
+     */
     data: Uint8Array;
 
     constructor(size: Size, data?: Uint8Array | Uint8ClampedArray) {

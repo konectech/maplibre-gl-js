@@ -1,4 +1,4 @@
-import type {StyleSpecification} from '../../../src/style-spec/types';
+import type {StyleSpecification} from '@maplibre/maplibre-gl-style-spec';
 import Benchmark from '../lib/benchmark';
 import fetchStyle from '../lib/fetch_style';
 import TileParser from '../lib/tile_parser';
@@ -24,30 +24,17 @@ export default class Layout extends Benchmark {
         ];
     }
 
-    setup(): Promise<void> {
-        return fetchStyle(this.style)
-            .then((styleJSON) => {
-                this.parser = new TileParser(styleJSON, 'openmaptiles');
-                return this.parser.setup();
-            })
-            .then(() => {
-                return Promise.all(this.tileIDs.map(tileID => this.parser.fetchTile(tileID)));
-            })
-            .then((tiles) => {
-                this.tiles = tiles;
-                // parse tiles once to populate glyph/icon cache
-                return Promise.all(tiles.map(tile => this.parser.parseTile(tile)));
-            })
-            .then(() => {});
+    async setup(): Promise<void> {
+        const styleJSON = await fetchStyle(this.style);
+        this.parser = new TileParser(styleJSON, 'openmaptiles');
+        await this.parser.setup();
+        this.tiles = await Promise.all(this.tileIDs.map(tileID => this.parser.fetchTile(tileID)));
+        await Promise.all(this.tiles.map(tile => this.parser.parseTile(tile)));
     }
 
-    bench() {
-        let promise = Promise.resolve();
+    async bench() {
         for (const tile of this.tiles) {
-            promise = promise.then(() => {
-                return this.parser.parseTile(tile).then(() => {});
-            });
+            await this.parser.parseTile(tile);
         }
-        return promise;
     }
 }

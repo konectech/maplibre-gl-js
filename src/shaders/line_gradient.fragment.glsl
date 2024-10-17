@@ -1,10 +1,13 @@
 uniform lowp float u_device_pixel_ratio;
 uniform sampler2D u_image;
 
-varying vec2 v_width2;
-varying vec2 v_normal;
-varying float v_gamma_scale;
-varying highp vec2 v_uv;
+in vec2 v_width2;
+in vec2 v_normal;
+in float v_gamma_scale;
+in highp vec2 v_uv;
+#ifdef GLOBE
+in float v_depth;
+#endif
 
 #pragma mapbox: define lowp float blur
 #pragma mapbox: define lowp float opacity
@@ -24,11 +27,18 @@ void main() {
 
     // For gradient lines, v_lineprogress is the ratio along the
     // entire line, the gradient ramp is stored in a texture.
-    vec4 color = texture2D(u_image, v_uv);
+    vec4 color = texture(u_image, v_uv);
 
-    gl_FragColor = color * (alpha * opacity);
+    fragColor = color * (alpha * opacity);
+
+    #ifdef GLOBE
+    if (v_depth > 1.0) {
+        // See comment in line.fragment.glsl
+        discard;
+    }
+    #endif
 
 #ifdef OVERDRAW_INSPECTOR
-    gl_FragColor = vec4(1.0);
+    fragColor = vec4(1.0);
 #endif
 }

@@ -1,12 +1,8 @@
-import path, {dirname} from 'path';
+import path from 'path';
 import fs from 'fs';
-import {fileURLToPath} from 'url';
-import {createRequire} from 'module';
+import {StyleSpecification} from '@maplibre/maplibre-gl-style-spec';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const requireFn = createRequire(import.meta.url);
-
-export default function localizeURLs(style, port) {
+export function localizeURLs(style: any, port: number, baseTestsDir: string) {
     localizeStyleURLs(style, port);
     if (style.metadata && style.metadata.test && style.metadata.test.operations) {
         style.metadata.test.operations.forEach((op) => {
@@ -21,12 +17,7 @@ export default function localizeURLs(style, port) {
                 let styleJSON;
                 try {
                     const relativePath = op[1].replace(/^local:\/\//, '');
-                    if (relativePath.startsWith('mapbox-gl-styles')) {
-                        styleJSON = fs.readFileSync(path.join(path.dirname(requireFn.resolve('mapbox-gl-styles')), '..', relativePath));
-                    } else {
-                        styleJSON = fs.readFileSync(path.join(__dirname, '../assets', relativePath));
-                    }
-
+                    styleJSON = fs.readFileSync(path.join(baseTestsDir, 'assets', relativePath));
                 } catch (error) {
                     console.log(`* ${error}`);
                     return;
@@ -48,27 +39,27 @@ export default function localizeURLs(style, port) {
     }
 }
 
-function localizeURL(url, port) {
+function localizeURL(url: string, port: number) {
     return url.replace(/^local:\/\//, `http://localhost:${port}/`);
 }
 
-function localizeMapboxSpriteURL(url, port) {
+function localizeMapboxSpriteURL(url: string, port: number) {
     return url.replace(/^mapbox:\/\//, `http://localhost:${port}/`);
 }
 
-function localizeMapboxFontsURL(url, port) {
+function localizeMapboxFontsURL(url: string, port: number) {
     return url.replace(/^mapbox:\/\/fonts/, `http://localhost:${port}/glyphs`);
 }
 
-function localizeMapboxTilesURL(url, port) {
+function localizeMapboxTilesURL(url: string, port: number) {
     return url.replace(/^mapbox:\/\//, `http://localhost:${port}/tiles/`);
 }
 
-function localizeMapboxTilesetURL(url, port) {
+function localizeMapboxTilesetURL(url: string, port: number) {
     return url.replace(/^mapbox:\/\//, `http://localhost:${port}/tilesets/`);
 }
 
-function localizeSourceURLs(source, port) {
+function localizeSourceURLs(source: any, port: number) {
     for (const tile in source.tiles) {
         source.tiles[tile] = localizeMapboxTilesURL(source.tiles[tile], port);
         source.tiles[tile] = localizeURL(source.tiles[tile], port);
@@ -89,14 +80,21 @@ function localizeSourceURLs(source, port) {
     }
 }
 
-function localizeStyleURLs (style, port) {
+function localizeStyleURLs(style: StyleSpecification, port: number) {
     for (const source in style.sources) {
         localizeSourceURLs(style.sources[source], port);
     }
 
     if (style.sprite) {
-        style.sprite = localizeMapboxSpriteURL(style.sprite, port);
-        style.sprite = localizeURL(style.sprite, port);
+        if (typeof style.sprite === 'string') {
+            style.sprite = localizeMapboxSpriteURL(style.sprite, port);
+            style.sprite = localizeURL(style.sprite, port);
+        } else if (Array.isArray(style.sprite)) {
+            for (const sprite of style.sprite) {
+                sprite.url = localizeMapboxSpriteURL(sprite.url, port);
+                sprite.url = localizeURL(sprite.url, port);
+            }
+        }
     }
 
     if (style.glyphs) {

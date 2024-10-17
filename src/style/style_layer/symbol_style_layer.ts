@@ -1,8 +1,7 @@
-import StyleLayer from '../style_layer';
+import {StyleLayer} from '../style_layer';
 
-import assert from 'assert';
-import SymbolBucket from '../../data/bucket/symbol_bucket';
-import resolveTokens from '../../util/resolve_tokens';
+import {SymbolBucket, SymbolFeature} from '../../data/bucket/symbol_bucket';
+import {resolveTokens} from '../../util/resolve_tokens';
 import properties, {SymbolLayoutPropsPossiblyEvaluated, SymbolPaintPropsPossiblyEvaluated} from './symbol_style_layer_properties.g';
 
 import {
@@ -18,24 +17,21 @@ import {
     isExpression,
     StyleExpression,
     ZoomConstantExpression,
-    ZoomDependentExpression
-} from '../../style-spec/expression';
+    ZoomDependentExpression,
+    FormattedType,
+    typeOf,
+    Formatted,
+    FormatExpression,
+    Literal} from '@maplibre/maplibre-gl-style-spec';
 
 import type {BucketParameters} from '../../data/bucket';
 import type {SymbolLayoutProps, SymbolPaintProps} from './symbol_style_layer_properties.g';
-import type EvaluationParameters from '../evaluation_parameters';
-import type {LayerSpecification} from '../../style-spec/types';
-import type {Feature, SourceExpression, CompositeExpression} from '../../style-spec/expression';
-import type {Expression} from '../../style-spec/expression/expression';
+import type {EvaluationParameters} from '../evaluation_parameters';
+import type {Expression, Feature, SourceExpression, LayerSpecification} from '@maplibre/maplibre-gl-style-spec';
 import type {CanonicalTileID} from '../../source/tile_id';
-import {FormattedType} from '../../style-spec/expression/types';
-import {typeOf} from '../../style-spec/expression/values';
-import Formatted from '../../style-spec/expression/types/formatted';
-import FormatSectionOverride from '../format_section_override';
-import FormatExpression from '../../style-spec/expression/definitions/format';
-import Literal from '../../style-spec/expression/definitions/literal';
+import {FormatSectionOverride} from '../format_section_override';
 
-class SymbolStyleLayer extends StyleLayer {
+export class SymbolStyleLayer extends StyleLayer {
     _unevaluatedLayout: Layout<SymbolLayoutProps>;
     layout: PossiblyEvaluated<SymbolLayoutProps, SymbolLayoutPropsPossiblyEvaluated>;
 
@@ -68,7 +64,7 @@ class SymbolStyleLayer extends StyleLayer {
 
         // If unspecified, `*-pitch-alignment` inherits `*-rotation-alignment`
         if (this.layout.get('text-pitch-alignment') === 'auto') {
-            this.layout._values['text-pitch-alignment'] = this.layout.get('text-rotation-alignment');
+            this.layout._values['text-pitch-alignment'] = this.layout.get('text-rotation-alignment') === 'map' ? 'map' : 'viewport';
         }
         if (this.layout.get('icon-pitch-alignment') === 'auto') {
             this.layout._values['icon-pitch-alignment'] = this.layout.get('icon-rotation-alignment');
@@ -110,8 +106,7 @@ class SymbolStyleLayer extends StyleLayer {
     }
 
     queryIntersectsFeature(): boolean {
-        assert(false); // Should take a different path in FeatureIndex
-        return false;
+        throw new Error('Should take a different path in FeatureIndex');
     }
 
     _setPaintOverrides() {
@@ -119,21 +114,20 @@ class SymbolStyleLayer extends StyleLayer {
             if (!SymbolStyleLayer.hasPaintOverride(this.layout, overridable)) {
                 continue;
             }
-            const overriden = this.paint.get(overridable as keyof SymbolPaintPropsPossiblyEvaluated) as PossiblyEvaluatedPropertyValue<number>;
-            const override = new FormatSectionOverride(overriden);
-            const styleExpression = new StyleExpression(override, overriden.property.specification);
+            const overridden = this.paint.get(overridable as keyof SymbolPaintPropsPossiblyEvaluated) as PossiblyEvaluatedPropertyValue<number>;
+            const override = new FormatSectionOverride(overridden);
+            const styleExpression = new StyleExpression(override, overridden.property.specification);
             let expression = null;
-            if (overriden.value.kind === 'constant' || overriden.value.kind === 'source') {
-                expression = (new ZoomConstantExpression('source', styleExpression) as SourceExpression);
+            if (overridden.value.kind === 'constant' || overridden.value.kind === 'source') {
+                expression = new ZoomConstantExpression('source', styleExpression) as SourceExpression;
             } else {
-                expression = (new ZoomDependentExpression('composite',
+                expression = new ZoomDependentExpression('composite',
                     styleExpression,
-                    overriden.value.zoomStops,
-                    (overriden.value as any)._interpolationType) as CompositeExpression);
+                    overridden.value.zoomStops);
             }
-            this.paint._values[overridable] = new PossiblyEvaluatedPropertyValue(overriden.property,
+            this.paint._values[overridable] = new PossiblyEvaluatedPropertyValue(overridden.property,
                 expression,
-                overriden.parameters);
+                overridden.parameters);
         }
     }
 
@@ -185,23 +179,17 @@ class SymbolStyleLayer extends StyleLayer {
     }
 }
 
-export type OverlapMode = 'never' | 'always' | 'cooperative';
+export type SymbolPadding = [number, number, number, number];
 
-export function getOverlapMode(layout: PossiblyEvaluated<SymbolLayoutProps, SymbolLayoutPropsPossiblyEvaluated>, overlapProp: 'icon-overlap', allowOverlapProp: 'icon-allow-overlap'): OverlapMode;
-export function getOverlapMode(layout: PossiblyEvaluated<SymbolLayoutProps, SymbolLayoutPropsPossiblyEvaluated>, overlapProp: 'text-overlap', allowOverlapProp: 'text-allow-overlap'): OverlapMode;
-export function getOverlapMode(layout: PossiblyEvaluated<SymbolLayoutProps, SymbolLayoutPropsPossiblyEvaluated>, overlapProp: 'icon-overlap' | 'text-overlap', allowOverlapProp: 'icon-allow-overlap' | 'text-allow-overlap'): OverlapMode {
-    let result: OverlapMode = 'never';
-    const overlap = layout.get(overlapProp);
+export function getIconPadding(layout: PossiblyEvaluated<SymbolLayoutProps, SymbolLayoutPropsPossiblyEvaluated>, feature: SymbolFeature, canonical: CanonicalTileID, pixelRatio = 1): SymbolPadding {
+    // Support text-padding in addition to icon-padding? Unclear how to apply asymmetric text-padding to the radius for collision circles.
+    const result = layout.get('icon-padding').evaluate(feature, {}, canonical);
+    const values = result && result.values;
 
-    if (overlap) {
-        // if -overlap is set, use it
-        result = overlap;
-    } else if (layout.get(allowOverlapProp)) {
-        // fall back to -allow-overlap, with false='never', true='always'
-        result = 'always';
-    }
-
-    return result;
+    return [
+        values[0] * pixelRatio,
+        values[1] * pixelRatio,
+        values[2] * pixelRatio,
+        values[3] * pixelRatio,
+    ];
 }
-
-export default SymbolStyleLayer;

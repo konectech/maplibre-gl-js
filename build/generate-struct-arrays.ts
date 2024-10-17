@@ -6,7 +6,7 @@
  *    - Particular, named StructArray subclasses, when fancy struct accessors are needed (e.g. CollisionBoxArray)
  */
 
-'use strict'; // eslint-disable-line strict
+'use strict';
 
 import * as fs from 'fs';
 import * as util from '../src/util/util';
@@ -14,13 +14,14 @@ import {createLayout, viewTypes} from '../src/util/struct_array';
 import type {ViewType, StructArrayLayout} from '../src/util/struct_array';
 
 import posAttributes from '../src/data/pos_attributes';
+import pos3dAttributes from '../src/data/pos3d_attributes';
 import rasterBoundsAttributes from '../src/data/raster_bounds_attributes';
 import circleAttributes from '../src/data/bucket/circle_attributes';
 import fillAttributes from '../src/data/bucket/fill_attributes';
 import fillExtrusionAttributes from '../src/data/bucket/fill_extrusion_attributes';
-import lineAttributes from '../src/data/bucket/line_attributes';
-import lineAttributesExt from '../src/data/bucket/line_attributes_ext';
-import patternAttributes from '../src/data/bucket/pattern_attributes';
+import {lineLayoutAttributes} from '../src/data/bucket/line_attributes';
+import {lineLayoutAttributesExt} from '../src/data/bucket/line_attributes_ext';
+import {patternAttributes} from '../src/data/bucket/pattern_attributes';
 // symbol layer specific arrays
 import {
     symbolLayoutAttributes,
@@ -34,7 +35,8 @@ import {
     placement,
     symbolInstance,
     glyphOffset,
-    lineVertex
+    lineVertex,
+    textAnchorOffset
 } from '../src/data/bucket/symbol_attributes';
 
 const typeAbbreviations = {
@@ -109,8 +111,7 @@ function createStructArrayLayoutType({members, size, alignment}) {
 
     const key = `${members.map(m => `${m.components}${typeAbbreviations[m.type]}`).join('')}${size}`;
     const className = `StructArrayLayout${key}`;
-    // Layout alignment to 4 bytes boundaries can be an issue on some set of graphics cards. Particularly AMD.
-    if (size % 4 !== 0) { console.warn(`Warning: The layout ${className} is not aligned to 4-bytes boundaries.`); }
+
     if (!layoutCache[key]) {
         layoutCache[key] = {
             className,
@@ -134,6 +135,7 @@ function camelize (str) {
 }
 
 createStructArrayType('pos', posAttributes);
+createStructArrayType('pos3d', pos3dAttributes);
 createStructArrayType('raster_bounds', rasterBoundsAttributes);
 
 // layout vertex arrays
@@ -142,8 +144,8 @@ const layoutAttributes = {
     fill: fillAttributes,
     'fill-extrusion': fillExtrusionAttributes,
     heatmap: circleAttributes,
-    line: lineAttributes,
-    lineExt: lineAttributesExt,
+    line: lineLayoutAttributes,
+    lineExt: lineLayoutAttributesExt,
     pattern: patternAttributes
 };
 for (const name in layoutAttributes) {
@@ -162,6 +164,7 @@ createStructArrayType('placed_symbol', placement, true);
 createStructArrayType('symbol_instance', symbolInstance, true);
 createStructArrayType('glyph_offset', glyphOffset, true);
 createStructArrayType('symbol_line_vertex', lineVertex, true);
+createStructArrayType('text_anchor_offset', textAnchorOffset, true);
 
 // feature index array
 createStructArrayType('feature_index', createLayout([
@@ -225,16 +228,16 @@ function emitStructArrayLayout(locals) {
 
     output.push(
         `/**
+ * @internal
  * Implementation of the StructArray layout:`);
 
     for (const member of members) {
         output.push(
-            ` * [${member.offset}]: ${member.type}[${member.components}]`);
+            ` * [${member.offset}] - ${member.type}[${member.components}]`);
     }
 
     output.push(
         ` *
- * @private
  */
 class ${structArrayLayoutClass} extends StructArray {`);
 
@@ -347,7 +350,8 @@ function emitStructArray(locals) {
 
     if (includeStructAccessors && !useComponentGetters) {
         output.push(
-            `class ${structTypeClass} extends Struct {
+            `/** @internal */
+class ${structTypeClass} extends Struct {
     _structArray: ${structArrayClass};`);
 
         for (const {name, member, component} of components) {
@@ -382,9 +386,7 @@ export type ${structTypeClass.replace('Struct', '')} = ${structTypeClass};
     } // end 'if (includeStructAccessors)'
 
     output.push(
-        `/**
- * @private
- */
+        `/** @internal */
 export class ${structArrayClass} extends ${structArrayLayoutClass} {`);
 
     if (useComponentGetters) {
@@ -405,11 +407,9 @@ export class ${structArrayClass} extends ${structArrayLayoutClass} {`);
         output.push(
             `    /**
      * Return the ${structTypeClass} at the given location in the array.
-     * @param {number} index The index of the element.
-     * @private
+     * @param index The index of the element.
      */
     get(index: number): ${structTypeClass} {
-        assert(!this.isTransferred);
         return new ${structTypeClass}(this, index);
     }`);
     }
@@ -425,7 +425,6 @@ register('${structArrayClass}', ${structArrayClass});
 fs.writeFileSync('src/data/array_types.g.ts',
     `// This file is generated. Edit build/generate-struct-arrays.ts, then run \`npm run codegen\`.
 
-import assert from 'assert';
 import {Struct, StructArray} from '../util/struct_array';
 import {register} from '../util/web_worker_transfer';
 import Point from '@mapbox/point-geometry';

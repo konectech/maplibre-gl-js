@@ -1,46 +1,48 @@
 import Point from '@mapbox/point-geometry';
-import loadGeometry from './load_geometry';
-import toEvaluationFeature from './evaluation_feature';
-import EXTENT from './extent';
-import featureFilter from '../style-spec/feature_filter';
-import TransferableGridIndex from '../util/transferable_grid_index';
-import DictionaryCoder from '../util/dictionary_coder';
+import {loadGeometry} from './load_geometry';
+import {toEvaluationFeature} from './evaluation_feature';
+import {EXTENT} from './extent';
+import {featureFilter} from '@maplibre/maplibre-gl-style-spec';
+import {TransferableGridIndex} from '../util/transferable_grid_index';
+import {DictionaryCoder} from '../util/dictionary_coder';
 import vt from '@mapbox/vector-tile';
 import Protobuf from 'pbf';
-import GeoJSONFeature from '../util/vectortile_to_geojson';
-import {arraysIntersect, mapObject, extend} from '../util/util';
+import {GeoJSONFeature} from '../util/vectortile_to_geojson';
+import type {MapGeoJSONFeature} from '../util/vectortile_to_geojson';
+import {mapObject, extend} from '../util/util';
 import {OverscaledTileID} from '../source/tile_id';
 import {register} from '../util/web_worker_transfer';
-import EvaluationParameters from '../style/evaluation_parameters';
-import SourceFeatureState from '../source/source_state';
+import {EvaluationParameters} from '../style/evaluation_parameters';
+import {SourceFeatureState} from '../source/source_state';
 import {polygonIntersectsBox} from '../util/intersection_tests';
 import {PossiblyEvaluated} from '../style/properties';
 import {FeatureIndexArray} from './array_types.g';
 import {mat4} from 'gl-matrix';
 
-import type StyleLayer from '../style/style_layer';
-import type {FeatureFilter} from '../style-spec/feature_filter';
-import type Transform from '../geo/transform';
-import type {FilterSpecification, PromoteIdSpecification} from '../style-spec/types';
-import type {FeatureState} from '../style-spec/expression';
+import type {StyleLayer} from '../style/style_layer';
+import type {FeatureFilter, FeatureState, FilterSpecification, PromoteIdSpecification} from '@maplibre/maplibre-gl-style-spec';
+import type {IReadonlyTransform} from '../geo/transform_interface';
 import type {VectorTileFeature, VectorTileLayer} from '@mapbox/vector-tile';
 
 type QueryParameters = {
     scale: number;
     pixelPosMatrix: mat4;
-    transform: Transform;
+    transform: IReadonlyTransform;
     tileSize: number;
     queryGeometry: Array<Point>;
     cameraQueryGeometry: Array<Point>;
     queryPadding: number;
     params: {
-        filter: FilterSpecification;
-        layers: Array<string>;
-        availableImages: Array<string>;
+        filter?: FilterSpecification;
+        layers?: Set<string> | null;
+        availableImages?: Array<string>;
     };
 };
 
-class FeatureIndex {
+/**
+ * An in memory index class to allow fast interaction with features
+ */
+export class FeatureIndex {
     tileID: OverscaledTileID;
     x: number;
     y: number;
@@ -111,9 +113,9 @@ class FeatureIndex {
     ): {[_: string]: Array<{featureIndex: number; feature: GeoJSONFeature}>} {
         this.loadVTLayers();
 
-        const params = args.params || {} as { filter: any; layers: string[]; availableImages: string[] },
-            pixelsToTileUnits = EXTENT / args.tileSize / args.scale,
-            filter = featureFilter(params.filter);
+        const params = args.params;
+        const pixelsToTileUnits = EXTENT / args.tileSize / args.scale;
+        const filter = featureFilter(params.filter);
 
         const queryGeometry = args.queryGeometry;
         const queryPadding = args.queryPadding * pixelsToTileUnits;
@@ -156,7 +158,7 @@ class FeatureIndex {
                 styleLayers,
                 serializedLayers,
                 sourceFeatureState,
-                (feature: VectorTileFeature, styleLayer: StyleLayer, featureState: FeatureState) => { // eslint-disable-line no-loop-func
+                (feature: VectorTileFeature, styleLayer: StyleLayer, featureState: FeatureState) => {
                     if (!featureGeometry) {
                         featureGeometry = loadGeometry(feature);
                     }
@@ -181,7 +183,7 @@ class FeatureIndex {
         sourceLayerIndex: number,
         featureIndex: number,
         filter: FeatureFilter,
-        filterLayerIDs: Array<string>,
+        filterLayerIDs: Set<string> | undefined,
         availableImages: Array<string>,
         styleLayers: {[_: string]: StyleLayer},
         serializedLayers: {[_: string]: any},
@@ -194,7 +196,7 @@ class FeatureIndex {
         ) => boolean | number) {
 
         const layerIDs = this.bucketLayerIDs[bucketIndex];
-        if (filterLayerIDs && !arraysIntersect(filterLayerIDs, layerIDs))
+        if (filterLayerIDs && !layerIDs.some(id => filterLayerIDs.has(id)))
             return;
 
         const sourceLayerName = this.sourceLayerCoder.decode(sourceLayerIndex);
@@ -215,7 +217,7 @@ class FeatureIndex {
         for (let l = 0; l < layerIDs.length; l++) {
             const layerID = layerIDs[l];
 
-            if (filterLayerIDs && filterLayerIDs.indexOf(layerID) < 0) {
+            if (filterLayerIDs && !filterLayerIDs.has(layerID)) {
                 continue;
             }
 
@@ -240,8 +242,8 @@ class FeatureIndex {
                 continue;
             }
 
-            const geojsonFeature = new GeoJSONFeature(feature, this.z, this.x, this.y, id);
-            (geojsonFeature as any).layer = serializedLayer;
+            const geojsonFeature = new GeoJSONFeature(feature, this.z, this.x, this.y, id) as MapGeoJSONFeature;
+            geojsonFeature.layer = serializedLayer;
             let layerResult = result[layerID];
             if (layerResult === undefined) {
                 layerResult = result[layerID] = [];
@@ -257,7 +259,7 @@ class FeatureIndex {
         bucketIndex: number,
         sourceLayerIndex: number,
         filterSpec: FilterSpecification,
-        filterLayerIDs: Array<string>,
+        filterLayerIDs: Set<string> | null,
         availableImages: Array<string>,
         styleLayers: {[_: string]: StyleLayer}) {
         const result = {};
@@ -308,8 +310,6 @@ register(
     FeatureIndex,
     {omit: ['rawTileData', 'sourceLayerCoder']}
 );
-
-export default FeatureIndex;
 
 function evaluateProperties(serializedProperties, styleLayerProperties, feature, featureState, availableImages) {
     return mapObject(serializedProperties, (property, key) => {

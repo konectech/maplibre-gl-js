@@ -11,32 +11,32 @@ function translateY(y) {
     return `translate(0,${y + 0.5})`;
 }
 function number(scale) {
-    return function(d) {
+    return (d) => {
         return +scale(d);
     };
 }
 function center(scale) {
     let offset = Math.max(0, scale.bandwidth() - 1) / 2; // Adjust for 0.5px offset.
     if (scale.round()) offset = Math.round(offset);
-    return function(d) {
+    return (d) => {
         return +scale(d) + offset;
     };
 }
 
 type AxisProps = {
-  children?: any;
-  scale: ScaleBand<string> | ScaleLinear<number, number>;
-  orientation: string;
-  ticks?: number | (number | string)[];
-  tickValues?: number[];
-  tickFormat?: (n: number | {
-      valueOf(): number;
-  }) => string;
-  tickSize?: number;
-  tickSizeInner?: number;
-  tickSizeOuter?: number;
-  tickPadding?: number;
-  transform?: string;
+    children?: any;
+    scale: ScaleBand<string> | ScaleLinear<number, number>;
+    orientation: string;
+    ticks?: number | (number | string)[];
+    tickValues?: number[];
+    tickFormat?: (n: number | {
+        valueOf(): number;
+    }) => string;
+    tickSize?: number;
+    tickSizeInner?: number;
+    tickSizeOuter?: number;
+    tickPadding?: number;
+    transform?: string;
 }
 
 export const Axis = (props: AxisProps) => {

@@ -3,7 +3,10 @@
   "metadata": {
     "test": {
       "height": 256,
-      "collisionDebug": true
+      "collisionDebug": true,
+      "operations": [
+        ["wait", 100]
+      ]
     }
   },
   "center": [
@@ -14,7 +17,7 @@
   "pitch": 60,
   "bearing": 90,
   "sources": {
-    "mapbox": {
+    "maplibre": {
       "type": "vector",
       "maxzoom": 14,
       "tiles": [
@@ -35,7 +38,7 @@
     {
       "id": "top",
       "type": "symbol",
-      "source": "mapbox",
+      "source": "maplibre",
       "source-layer": "poi_label",
       "filter": [
         "==",

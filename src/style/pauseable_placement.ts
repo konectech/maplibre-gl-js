@@ -1,12 +1,11 @@
-import browser from '../util/browser';
-
+import {browser} from '../util/browser';
 import {Placement} from '../symbol/placement';
-
-import type Transform from '../geo/transform';
-import type StyleLayer from './style_layer';
-import type SymbolStyleLayer from './style_layer/symbol_style_layer';
-import type Tile from '../source/tile';
+import type {ITransform} from '../geo/transform_interface';
+import type {StyleLayer} from './style_layer';
+import type {SymbolStyleLayer} from './style_layer/symbol_style_layer';
+import type {Tile} from '../source/tile';
 import type {BucketPart} from '../symbol/placement';
+import type {Terrain} from '../render/terrain';
 
 class LayerPlacement {
     _sortAcrossTiles: boolean;
@@ -59,7 +58,7 @@ class LayerPlacement {
     }
 }
 
-class PauseablePlacement {
+export class PauseablePlacement {
     placement: Placement;
     _done: boolean;
     _currentPlacementIndex: number;
@@ -68,7 +67,8 @@ class PauseablePlacement {
     _inProgressLayer: LayerPlacement;
 
     constructor(
-        transform: Transform,
+        transform: ITransform,
+        terrain: Terrain,
         order: Array<string>,
         forceFullPlacement: boolean,
         showCollisionBoxes: boolean,
@@ -76,7 +76,7 @@ class PauseablePlacement {
         crossSourceCollisions: boolean,
         prevPlacement?: Placement
     ) {
-        this.placement = new Placement(transform, fadeDuration, crossSourceCollisions, prevPlacement);
+        this.placement = new Placement(transform, terrain, fadeDuration, crossSourceCollisions, prevPlacement);
         this._currentPlacementIndex = order.length - 1;
         this._forceFullPlacement = forceFullPlacement;
         this._showCollisionBoxes = showCollisionBoxes;
@@ -95,8 +95,7 @@ class PauseablePlacement {
         const startTime = browser.now();
 
         const shouldPausePlacement = () => {
-            const elapsedTime = browser.now() - startTime;
-            return this._forceFullPlacement ? false : elapsedTime > 2;
+            return this._forceFullPlacement ? false : (browser.now() - startTime) > 2;
         };
 
         while (this._currentPlacementIndex >= 0) {
@@ -134,5 +133,3 @@ class PauseablePlacement {
         return this.placement;
     }
 }
-
-export default PauseablePlacement;

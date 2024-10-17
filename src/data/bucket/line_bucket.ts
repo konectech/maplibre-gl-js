@@ -2,17 +2,17 @@ import {LineLayoutArray, LineExtLayoutArray} from '../array_types.g';
 
 import {members as layoutAttributes} from './line_attributes';
 import {members as layoutAttributesExt} from './line_attributes_ext';
-import SegmentVector from '../segment';
+import {SegmentVector} from '../segment';
 import {ProgramConfigurationSet} from '../program_configuration';
 import {TriangleIndexArray} from '../index_array_type';
-import EXTENT from '../extent';
+import {EXTENT} from '../extent';
 import mvt from '@mapbox/vector-tile';
 const vectorTileFeatureTypes = mvt.VectorTileFeature.types;
 import {register} from '../../util/web_worker_transfer';
 import {hasPattern, addPatternDependencies} from './pattern_bucket_features';
-import loadGeometry from '../load_geometry';
-import toEvaluationFeature from '../evaluation_feature';
-import EvaluationParameters from '../../style/evaluation_parameters';
+import {loadGeometry} from '../load_geometry';
+import {toEvaluationFeature} from '../evaluation_feature';
+import {EvaluationParameters} from '../../style/evaluation_parameters';
 
 import type {CanonicalTileID} from '../../source/tile_id';
 import type {
@@ -22,17 +22,19 @@ import type {
     IndexedFeature,
     PopulateParameters
 } from '../bucket';
-import type LineStyleLayer from '../../style/style_layer/line_style_layer';
+import type {LineStyleLayer} from '../../style/style_layer/line_style_layer';
 import type Point from '@mapbox/point-geometry';
 import type {Segment} from '../segment';
 import {RGBAImage} from '../../util/image';
-import type Context from '../../gl/context';
-import type Texture from '../../render/texture';
-import type IndexBuffer from '../../gl/index_buffer';
-import type VertexBuffer from '../../gl/vertex_buffer';
+import type {Context} from '../../gl/context';
+import type {Texture} from '../../render/texture';
+import type {IndexBuffer} from '../../gl/index_buffer';
+import type {VertexBuffer} from '../../gl/vertex_buffer';
 import type {FeatureStates} from '../../source/source_state';
 import type {ImagePosition} from '../../render/image_atlas';
 import type {VectorTileLayer} from '@mapbox/vector-tile';
+import {subdivideVertexLine} from '../../render/subdivision';
+import type {SubdivisionGranularitySetting} from '../../render/subdivision_granularity_settings';
 
 // NOTE ON EXTRUDE SCALE:
 // scale the extrusion vector so that the normal length is this value.
@@ -82,9 +84,10 @@ type GradientTexture = {
 };
 
 /**
- * @private
+ * @internal
+ * Line bucket class
  */
-class LineBucket implements Bucket {
+export class LineBucket implements Bucket {
     distance: number;
     totalDistance: number;
     maxLineLength: number;
@@ -187,7 +190,7 @@ class LineBucket implements Bucket {
                 // so are stored during populate until later updated with positions by tile worker in addFeatures
                 this.patternFeatures.push(patternBucketFeature);
             } else {
-                this.addFeature(bucketFeature, geometry, index, canonical, {});
+                this.addFeature(bucketFeature, geometry, index, canonical, {}, options.subdivisionGranularity);
             }
 
             const feature = features[index].feature;
@@ -202,7 +205,7 @@ class LineBucket implements Bucket {
 
     addFeatures(options: PopulateParameters, canonical: CanonicalTileID, imagePositions: {[_: string]: ImagePosition}) {
         for (const feature of this.patternFeatures) {
-            this.addFeature(feature, feature.geometry, feature.index, canonical, imagePositions);
+            this.addFeature(feature, feature.geometry, feature.index, canonical, imagePositions, options.subdivisionGranularity);
         }
     }
 
@@ -242,7 +245,7 @@ class LineBucket implements Bucket {
         }
     }
 
-    addFeature(feature: BucketFeature, geometry: Array<Array<Point>>, index: number, canonical: CanonicalTileID, imagePositions: {[_: string]: ImagePosition}) {
+    addFeature(feature: BucketFeature, geometry: Array<Array<Point>>, index: number, canonical: CanonicalTileID, imagePositions: {[_: string]: ImagePosition}, subdivisionGranularity: SubdivisionGranularitySetting) {
         const layout = this.layers[0].layout;
         const join = layout.get('line-join').evaluate(feature, {});
         const cap = layout.get('line-cap');
@@ -251,16 +254,20 @@ class LineBucket implements Bucket {
         this.lineClips = this.lineFeatureClips(feature);
 
         for (const line of geometry) {
-            this.addLine(line, feature, join, cap, miterLimit, roundLimit);
+            this.addLine(line, feature, join, cap, miterLimit, roundLimit, canonical, subdivisionGranularity);
         }
 
         this.programConfigurations.populatePaintArrays(this.layoutVertexArray.length, feature, index, imagePositions, canonical);
     }
 
-    addLine(vertices: Array<Point>, feature: BucketFeature, join: string, cap: string, miterLimit: number, roundLimit: number) {
+    addLine(vertices: Array<Point>, feature: BucketFeature, join: string, cap: string, miterLimit: number, roundLimit: number, canonical: CanonicalTileID | undefined, subdivisionGranularity: SubdivisionGranularitySetting) {
         this.distance = 0;
         this.scaledDistance = 0;
         this.totalDistance = 0;
+
+        // First, subdivide the line if needed (mostly for globe rendering)
+        const granularity = canonical ? subdivisionGranularity.line.getGranularityForZoomLevel(canonical.z) : 1;
+        vertices = subdivideVertexLine(vertices, granularity);
 
         if (this.lineClips) {
             this.lineClipsArray.push(this.lineClips);
@@ -503,13 +510,12 @@ class LineBucket implements Bucket {
     /**
      * Add two vertices to the buffers.
      *
-     * @param p the line vertex to add buffer vertices for
-     * @param normal vertex normal
-     * @param endLeft extrude to shift the left vertex along the line
-     * @param endRight extrude to shift the left vertex along the line
-     * @param segment the segment object to add the vertex to
-     * @param round whether this is a round cap
-     * @private
+     * @param p - the line vertex to add buffer vertices for
+     * @param normal - vertex normal
+     * @param endLeft - extrude to shift the left vertex along the line
+     * @param endRight - extrude to shift the left vertex along the line
+     * @param segment - the segment object to add the vertex to
+     * @param round - whether this is a round cap
      */
     addCurrentVertex(p: Point, normal: Point, endLeft: number, endRight: number, segment: Segment, round: boolean = false) {
         // left and right extrude vectors, perpendicularly shifted by endLeft/endRight
@@ -527,6 +533,7 @@ class LineBucket implements Bucket {
         // to `linesofar`.
         if (this.distance > MAX_LINE_DISTANCE / 2 && this.totalDistance === 0) {
             this.distance = 0;
+            this.updateScaledDistance();
             this.addCurrentVertex(p, normal, endLeft, endRight, segment, round);
         }
     }
@@ -562,7 +569,7 @@ class LineBucket implements Bucket {
 
         const e = segment.vertexLength++;
         if (this.e1 >= 0 && this.e2 >= 0) {
-            this.indexArray.emplaceBack(this.e1, this.e2, e);
+            this.indexArray.emplaceBack(this.e1, e, this.e2);
             segment.primitiveLength++;
         }
         if (up) {
@@ -589,5 +596,3 @@ class LineBucket implements Bucket {
 }
 
 register('LineBucket', LineBucket, {omit: ['layers', 'patternFeatures']});
-
-export default LineBucket;

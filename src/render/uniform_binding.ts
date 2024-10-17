@@ -1,17 +1,21 @@
-import Color from '../style-spec/util/color';
+import {Color} from '@maplibre/maplibre-gl-style-spec';
 
-import type Context from '../gl/context';
+import type {Context} from '../gl/context';
 import {mat4, vec2, vec3, vec4} from 'gl-matrix';
 
 type $ObjMap<T extends {}, F extends (v: any) => any> = {
     [K in keyof T]: F extends (v: T[K]) => infer R ? R : never;
 };
 
-export type UniformValues<Us extends any> = $ObjMap<Us, <V>(u: Uniform<V>) => V>;
+export type UniformValues<Us extends {}> = $ObjMap<Us, <V>(u: Uniform<V>) => V>;
 export type UniformLocations = {[_: string]: WebGLUniformLocation};
 
+/**
+ * @internal
+ * A base uniform abstract class
+ */
 abstract class Uniform<T> {
-    gl: WebGLRenderingContext;
+    gl: WebGLRenderingContext|WebGL2RenderingContext;
     location: WebGLUniformLocation;
     current: T;
 
@@ -146,4 +150,8 @@ export {
     UniformMatrix4f
 };
 
+/**
+ * @internal
+ * A uniform bindings
+ */
 export type UniformBindings = {[_: string]: Uniform<any>};

@@ -3,12 +3,15 @@ import path from 'path';
 import Protobuf from 'pbf';
 import {VectorTile} from '@mapbox/vector-tile';
 import Point from '@mapbox/point-geometry';
-import segment from '../segment';
-import LineBucket from './line_bucket';
-import LineStyleLayer from '../../style/style_layer/line_style_layer';
-import {LayerSpecification} from '../../style-spec/types';
-import EvaluationParameters from '../../style/evaluation_parameters';
+import {SegmentVector} from '../segment';
+import {LineBucket} from './line_bucket';
+import {LineStyleLayer} from '../../style/style_layer/line_style_layer';
+import {LayerSpecification} from '@maplibre/maplibre-gl-style-spec';
+import {EvaluationParameters} from '../../style/evaluation_parameters';
 import {BucketFeature, BucketParameters} from '../bucket';
+import {SubdivisionGranularitySetting} from '../../render/subdivision_granularity_settings';
+
+const noSubdivision = SubdivisionGranularitySetting.noSubdivision;
 
 // Load a line feature from fixture tile.
 const vt = new VectorTile(new Protobuf(fs.readFileSync(path.resolve(__dirname, '../../../test/unit/assets/mbsv5-6-18-23.vector.pbf'))));
@@ -42,61 +45,61 @@ describe('LineBucket', () => {
 
             bucket.addLine([
                 new Point(0, 0)
-            ], line, undefined, undefined, undefined, undefined);
+            ], line, undefined, undefined, undefined, undefined, undefined, noSubdivision);
 
             bucket.addLine([
                 new Point(0, 0)
-            ], polygon, undefined, undefined, undefined, undefined);
-
-            bucket.addLine([
-                new Point(0, 0),
-                new Point(0, 0)
-            ], line, undefined, undefined, undefined, undefined);
+            ], polygon, undefined, undefined, undefined, undefined, undefined, noSubdivision);
 
             bucket.addLine([
                 new Point(0, 0),
                 new Point(0, 0)
-            ], polygon, undefined, undefined, undefined, undefined);
+            ], line, undefined, undefined, undefined, undefined, undefined, noSubdivision);
 
             bucket.addLine([
                 new Point(0, 0),
-                new Point(10, 10),
                 new Point(0, 0)
-            ], line, undefined, undefined, undefined, undefined);
+            ], polygon, undefined, undefined, undefined, undefined, undefined, noSubdivision);
 
             bucket.addLine([
                 new Point(0, 0),
                 new Point(10, 10),
                 new Point(0, 0)
-            ], polygon, undefined, undefined, undefined, undefined);
+            ], line, undefined, undefined, undefined, undefined, undefined, noSubdivision);
 
             bucket.addLine([
                 new Point(0, 0),
                 new Point(10, 10),
-                new Point(10, 20)
-            ], line, undefined, undefined, undefined, undefined);
+                new Point(0, 0)
+            ], polygon, undefined, undefined, undefined, undefined, undefined, noSubdivision);
 
             bucket.addLine([
                 new Point(0, 0),
                 new Point(10, 10),
                 new Point(10, 20)
-            ], polygon, undefined, undefined, undefined, undefined);
+            ], line, undefined, undefined, undefined, undefined, undefined, noSubdivision);
+
+            bucket.addLine([
+                new Point(0, 0),
+                new Point(10, 10),
+                new Point(10, 20)
+            ], polygon, undefined, undefined, undefined, undefined, undefined, noSubdivision);
 
             bucket.addLine([
                 new Point(0, 0),
                 new Point(10, 10),
                 new Point(10, 20),
                 new Point(0, 0)
-            ], line, undefined, undefined, undefined, undefined);
+            ], line, undefined, undefined, undefined, undefined, undefined, noSubdivision);
 
             bucket.addLine([
                 new Point(0, 0),
                 new Point(10, 10),
                 new Point(10, 20),
                 new Point(0, 0)
-            ], polygon, undefined, undefined, undefined, undefined);
+            ], polygon, undefined, undefined, undefined, undefined, undefined, noSubdivision);
 
-            bucket.addFeature(feature as any, feature.loadGeometry(), undefined, undefined, undefined);
+            bucket.addFeature(feature as any, feature.loadGeometry(), undefined, undefined, undefined, noSubdivision);
         }).not.toThrow();
     });
 
@@ -105,7 +108,7 @@ describe('LineBucket', () => {
 
         // Stub MAX_VERTEX_ARRAY_LENGTH so we can test features
         // breaking across array groups without tests taking a _long_ time.
-        segment.MAX_VERTEX_ARRAY_LENGTH = 256;
+        SegmentVector.MAX_VERTEX_ARRAY_LENGTH = 256;
 
         const layer = new LineStyleLayer({id: 'test', type: 'line'} as LayerSpecification);
         layer.recalculate({zoom: 0, zoomHistory: {}} as EvaluationParameters, undefined);
@@ -114,10 +117,10 @@ describe('LineBucket', () => {
 
         // first add an initial, small feature to make sure the next one starts at
         // a non-zero offset
-        bucket.addFeature({} as BucketFeature, [createLine(10)], undefined, undefined, undefined);
+        bucket.addFeature({} as BucketFeature, [createLine(10)], undefined, undefined, undefined, noSubdivision);
 
         // add a feature that will break across the group boundary
-        bucket.addFeature({} as BucketFeature, [createLine(128)], undefined, undefined, undefined);
+        bucket.addFeature({} as BucketFeature, [createLine(128)], undefined, undefined, undefined, noSubdivision);
 
         // Each polygon must fit entirely within a segment, so we expect the
         // first segment to include the first feature and the first polygon
@@ -127,11 +130,13 @@ describe('LineBucket', () => {
         expect(bucket.segments.get()).toEqual([{
             vertexOffset: 0,
             vertexLength: 20,
+            vaos: {},
             primitiveOffset: 0,
             primitiveLength: 18
         }, {
             vertexOffset: 20,
             vertexLength: 256,
+            vaos: {},
             primitiveOffset: 18,
             primitiveLength: 254
         }]);

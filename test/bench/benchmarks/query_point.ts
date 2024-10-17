@@ -1,6 +1,6 @@
 import Benchmark from '../lib/benchmark';
 import createMap from '../lib/create_map';
-import type Map from '../../../src/ui/map';
+import type {Map} from '../../../src/ui/map';
 import type {LngLatLike} from '../../../src/geo/lng_lat';
 
 const width = 1024;
@@ -31,22 +31,20 @@ export default class QueryPoint extends Benchmark {
         this.locations = locations;
     }
 
-    setup(): Promise<void> {
-        return Promise.all(this.locations.map(location => {
-            return createMap({
-                zoom: location.zoom,
-                width,
-                height,
-                center: location.center,
-                style: this.style
-            });
-        }))
-            .then(maps => {
-                this.maps = maps;
-            })
-            .catch(error => {
-                console.error(error);
-            });
+    async setup() {
+        try {
+            this.maps = await Promise.all(this.locations.map(location => {
+                return createMap({
+                    zoom: location.zoom,
+                    width,
+                    height,
+                    center: location.center,
+                    style: this.style
+                });
+            }));
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     bench() {

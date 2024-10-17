@@ -1,11 +1,16 @@
 uniform vec2 u_texsize;
 uniform float u_fade;
 
+#ifdef GLOBE
+    in vec3 v_sphere_pos;
+    uniform vec3 u_camera_pos_globe;
+#endif
+
 uniform sampler2D u_image;
 
-varying vec2 v_pos_a;
-varying vec2 v_pos_b;
-varying vec4 v_lighting;
+in vec2 v_pos_a;
+in vec2 v_pos_b;
+in vec4 v_lighting;
 
 #pragma mapbox: define lowp float base
 #pragma mapbox: define lowp float height
@@ -29,17 +34,30 @@ void main() {
 
     vec2 imagecoord = mod(v_pos_a, 1.0);
     vec2 pos = mix(pattern_tl_a / u_texsize, pattern_br_a / u_texsize, imagecoord);
-    vec4 color1 = texture2D(u_image, pos);
+    vec4 color1 = texture(u_image, pos);
 
     vec2 imagecoord_b = mod(v_pos_b, 1.0);
     vec2 pos2 = mix(pattern_tl_b / u_texsize, pattern_br_b / u_texsize, imagecoord_b);
-    vec4 color2 = texture2D(u_image, pos2);
+    vec4 color2 = texture(u_image, pos2);
 
     vec4 mixedColor = mix(color1, color2, u_fade);
 
-    gl_FragColor = mixedColor * v_lighting;
+    fragColor = mixedColor * v_lighting;
 
-#ifdef OVERDRAW_INSPECTOR
-    gl_FragColor = vec4(1.0);
-#endif
+    #ifdef OVERDRAW_INSPECTOR
+        fragColor = vec4(1.0);
+    #endif
+
+    #ifdef GLOBE
+        // Discard fragments that are occluded by the planet
+        // See comment in fill_extrusion.fragment.glsl
+        vec3 toPlanetCenter = -v_sphere_pos;
+        vec3 toCameraNormalized = normalize(u_camera_pos_globe - v_sphere_pos);
+        float t = dot(toPlanetCenter, toCameraNormalized);
+        vec3 nearest = v_sphere_pos + toCameraNormalized * max(t, 0.0);
+        float distance_to_planet_center_squared = dot(nearest, nearest);
+        if (distance_to_planet_center_squared < u_projection_transition) {
+            discard;
+        }
+    #endif
 }

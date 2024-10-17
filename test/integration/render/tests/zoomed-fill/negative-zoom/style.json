@@ -2,7 +2,6 @@
   "version": 8,
   "metadata": {
     "test": {
-      "allowed": 0.0002,
       "width": 256,
       "height": 256
     }
@@ -13,7 +12,7 @@
   ],
   "zoom": -1,
   "sources": {
-    "mapbox": {
+    "maplibre": {
       "type": "vector",
       "maxzoom": 14,
       "tiles": [
@@ -32,7 +31,7 @@
     {
       "id": "fill",
       "type": "fill",
-      "source": "mapbox",
+      "source": "maplibre",
       "source-layer": "water",
       "paint": {
         "fill-color": "black"

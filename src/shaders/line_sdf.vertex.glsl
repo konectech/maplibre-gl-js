@@ -10,10 +10,10 @@
 // long distances for long segments. Use this value to unscale the distance.
 #define LINE_DISTANCE_SCALE 2.0
 
-attribute vec2 a_pos_normal;
-attribute vec4 a_data;
+in vec2 a_pos_normal;
+in vec4 a_data;
 
-uniform mat4 u_matrix;
+uniform vec2 u_translation;
 uniform mediump float u_ratio;
 uniform lowp float u_device_pixel_ratio;
 uniform vec2 u_patternscale_a;
@@ -22,11 +22,14 @@ uniform vec2 u_patternscale_b;
 uniform float u_tex_y_b;
 uniform vec2 u_units_to_pixels;
 
-varying vec2 v_normal;
-varying vec2 v_width2;
-varying vec2 v_tex_a;
-varying vec2 v_tex_b;
-varying float v_gamma_scale;
+out vec2 v_normal;
+out vec2 v_width2;
+out vec2 v_tex_a;
+out vec2 v_tex_b;
+out float v_gamma_scale;
+#ifdef GLOBE
+out float v_depth;
+#endif
 
 #pragma mapbox: define highp vec4 color
 #pragma mapbox: define lowp float blur
@@ -73,7 +76,7 @@ void main() {
 
     // Scale the extrusion vector down to a normal and then up by the line width
     // of this vertex.
-    mediump vec2 dist =outset * a_extrude * scale;
+    mediump vec2 dist = outset * a_extrude * scale;
 
     // Calculate the offset when drawing a line that is to the side of the actual line.
     // We do this by creating a vector that points towards the extrude, but rotate
@@ -83,16 +86,24 @@ void main() {
     mediump float t = 1.0 - abs(u);
     mediump vec2 offset2 = offset * a_extrude * scale * normal.y * mat2(t, -u, u, t);
 
-    vec4 projected_extrude = u_matrix * vec4(dist / u_ratio, 0.0, 0.0);
-    gl_Position = u_matrix * vec4(pos + offset2 / u_ratio, 0.0, 1.0) + projected_extrude;
+    float adjustedThickness = projectLineThickness(pos.y);
+    vec4 projected_no_extrude = projectTile(pos + offset2 / u_ratio * adjustedThickness + u_translation);
+    vec4 projected_with_extrude = projectTile(pos + offset2 / u_ratio * adjustedThickness + u_translation + dist / u_ratio * adjustedThickness);
+    gl_Position = projected_with_extrude;
+    #ifdef GLOBE
+    v_depth = gl_Position.z / gl_Position.w;
+    #endif
 
     // calculate how much the perspective view squishes or stretches the extrude
-    float extrude_length_without_perspective = length(dist);
-    float extrude_length_with_perspective = length(projected_extrude.xy / gl_Position.w * u_units_to_pixels);
-    v_gamma_scale = extrude_length_without_perspective / extrude_length_with_perspective;
+    #ifdef TERRAIN3D
+        v_gamma_scale = 1.0; // not needed, because this is done automatically via the mesh
+    #else
+        float extrude_length_without_perspective = length(dist);
+        float extrude_length_with_perspective = length((projected_with_extrude.xy - projected_no_extrude.xy) / projected_with_extrude.w * u_units_to_pixels);
+        v_gamma_scale = extrude_length_without_perspective / extrude_length_with_perspective;
+    #endif
 
     v_tex_a = vec2(a_linesofar * u_patternscale_a.x / floorwidth, normal.y * u_patternscale_a.y + u_tex_y_a);
     v_tex_b = vec2(a_linesofar * u_patternscale_b.x / floorwidth, normal.y * u_patternscale_b.y + u_tex_y_b);
-
     v_width2 = vec2(outset, inset);
 }

@@ -1,13 +1,14 @@
 import type {CollisionBoxArray} from './array_types.g';
-import type Style from '../style/style';
+import type {Style} from '../style/style';
 import type {TypedStyleLayer} from '../style/style_layer/typed_style_layer';
-import type FeatureIndex from './feature_index';
-import type Context from '../gl/context';
+import type {FeatureIndex} from './feature_index';
+import type {Context} from '../gl/context';
 import type {FeatureStates} from '../source/source_state';
 import type {ImagePosition} from '../render/image_atlas';
 import type {CanonicalTileID} from '../source/tile_id';
 import type {VectorTileFeature, VectorTileLayer} from '@mapbox/vector-tile';
 import Point from '@mapbox/point-geometry';
+import type {SubdivisionGranularitySetting} from '../render/subdivision_granularity_settings';
 
 export type BucketParameters<Layer extends TypedStyleLayer> = {
     index: number;
@@ -26,6 +27,7 @@ export type PopulateParameters = {
     patternDependencies: {};
     glyphDependencies: {};
     availableImages: Array<string>;
+    subdivisionGranularity: SubdivisionGranularitySetting;
 };
 
 export type IndexedFeature = {
@@ -40,7 +42,7 @@ export type BucketFeature = {
     sourceLayerIndex: number;
     geometry: Array<Array<Point>>;
     properties: any;
-    type: 1 | 2 | 3;
+    type: 0 | 1 | 2 | 3;
     id?: any;
     readonly patterns: {
         [_: string]: {
@@ -67,13 +69,11 @@ export type BucketFeature = {
  *
  * Buckets are designed to be built on a worker thread and then serialized and
  * transferred back to the main thread for rendering.  On the worker side, a
- * bucket's vertex, index, and attribute data is stored in `bucket.arrays:
- * ArrayGroup`.  When a bucket's data is serialized and sent back to the main
- * thread, is gets deserialized (using `new Bucket(serializedBucketData)`, with
- * the array data now stored in `bucket.buffers: BufferGroup`.  BufferGroups
+ * bucket's vertex, index, and attribute data is stored in `bucket.arrays: ArrayGroup`.
+ * When a bucket's data is serialized and sent back to the main thread,
+ * is gets deserialized (using `new Bucket(serializedBucketData)`, with
+ * the array data now stored in `bucket.buffers: BufferGroup`. BufferGroups
  * hold the same data as ArrayGroups, but are tuned for consumption by WebGL.
- *
- * @private
  */
 export interface Bucket {
     layerIds: Array<string>;
@@ -90,8 +90,6 @@ export interface Bucket {
      * Release the WebGL resources associated with the buffers. Note that because
      * buckets are shared between layers having the same layout properties, they
      * must be destroyed in groups (all buckets for a tile, or all symbol buckets).
-     *
-     * @private
      */
     destroy(): void;
 }

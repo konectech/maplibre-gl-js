@@ -1,9 +1,7 @@
-import Light from './light';
-import styleSpec from '../style-spec/reference/latest';
-import Color from '../style-spec/util/color';
+import {Light} from './light';
+import {Color, latest as styleSpec, LightSpecification} from '@maplibre/maplibre-gl-style-spec';
 import {sphericalToCartesian} from '../util/util';
-import EvaluationParameters from './evaluation_parameters';
-import {LightSpecification} from '../style-spec/types';
+import {EvaluationParameters} from './evaluation_parameters';
 import {TransitionParameters} from './properties';
 
 const spec = styleSpec.light;
@@ -77,7 +75,7 @@ describe('Light#setLight', () => {
         const light = new Light({});
 
         const lightSpy = jest.spyOn(light, '_validate');
-        light.setLight({color: [999]}, {validate: false});
+        light.setLight({color: [999]} as any, {validate: false});
         light.updateTransitions({transition: false} as any as TransitionParameters);
         light.recalculate({zoom: 16, zoomHistory: {}, now: 10} as EvaluationParameters);
 

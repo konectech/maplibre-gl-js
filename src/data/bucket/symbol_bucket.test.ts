@@ -2,22 +2,23 @@ import fs from 'fs';
 import path from 'path';
 import Protobuf from 'pbf';
 import {VectorTile} from '@mapbox/vector-tile';
-import SymbolBucket from './symbol_bucket';
+import {SymbolBucket} from './symbol_bucket';
 import {CollisionBoxArray} from '../../data/array_types.g';
 import {performSymbolLayout} from '../../symbol/symbol_layout';
 import {Placement} from '../../symbol/placement';
-import Transform from '../../geo/transform';
-import {OverscaledTileID} from '../../source/tile_id';
-import Tile from '../../source/tile';
-import CrossTileSymbolIndex from '../../symbol/cross_tile_symbol_index';
-import FeatureIndex from '../../data/feature_index';
+import {CanonicalTileID, OverscaledTileID} from '../../source/tile_id';
+import {Tile} from '../../source/tile';
+import {CrossTileSymbolIndex} from '../../symbol/cross_tile_symbol_index';
+import {FeatureIndex} from '../../data/feature_index';
 import {createSymbolBucket, createSymbolIconBucket} from '../../../test/unit/lib/create_symbol_layer';
 import {RGBAImage} from '../../util/image';
 import {ImagePosition} from '../../render/image_atlas';
 import {IndexedFeature, PopulateParameters} from '../bucket';
 import {StyleImage} from '../../style/style_image';
-import glyphs from '../../../test/unit/assets/fontstack-glyphs.json';
+import glyphs from '../../../test/unit/assets/fontstack-glyphs.json' with {type: 'json'};
 import {StyleGlyph} from '../../style/style_glyph';
+import {SubdivisionGranularitySetting} from '../../render/subdivision_granularity_settings';
+import {MercatorTransform} from '../../geo/projection/mercator_transform';
 
 // Load a point feature from fixture tile.
 const vt = new VectorTile(new Protobuf(fs.readFileSync(path.resolve(__dirname, '../../../test/unit/assets/mbsv5-6-18-23.vector.pbf'))));
@@ -25,10 +26,8 @@ const feature = vt.layers.place_label.feature(10);
 
 /*eslint new-cap: 0*/
 const collisionBoxArray = new CollisionBoxArray();
-const transform = new Transform();
-transform.width = 100;
-transform.height = 100;
-transform.cameraToCenterDistance = 100;
+const transform = new MercatorTransform();
+transform.resize(100, 100);
 
 const stacks = {'Test': glyphs} as any as {
     [_: string]: {
@@ -64,26 +63,34 @@ describe('SymbolBucket', () => {
         const bucketA = bucketSetup() as any as SymbolBucket;
         const bucketB = bucketSetup() as any as SymbolBucket;
         const options = {iconDependencies: {}, glyphDependencies: {}} as PopulateParameters;
-        const placement = new Placement(transform, 0, true);
+        const placement = new Placement(transform, undefined as any, 0, true);
         const tileID = new OverscaledTileID(0, 0, 0, 0, 0);
         const crossTileSymbolIndex = new CrossTileSymbolIndex();
 
         // add feature from bucket A
-        bucketA.populate([{feature} as IndexedFeature], options, undefined);
-        performSymbolLayout(bucketA, stacks, {}, undefined, undefined, undefined, undefined);
+        bucketA.populate([{feature} as IndexedFeature], options, undefined as any);
+        performSymbolLayout(
+            {
+                bucket: bucketA,
+                glyphMap: stacks,
+                glyphPositions: {},
+                subdivisionGranularity: SubdivisionGranularitySetting.noSubdivision
+            } as any);
         const tileA = new Tile(tileID, 512);
         tileA.latestFeatureIndex = new FeatureIndex(tileID);
         tileA.buckets = {test: bucketA};
         tileA.collisionBoxArray = collisionBoxArray;
 
         // add same feature from bucket B
-        bucketB.populate([{feature} as IndexedFeature], options, undefined);
-        performSymbolLayout(bucketB, stacks, {}, undefined, undefined, undefined, undefined);
+        bucketB.populate([{feature} as IndexedFeature], options, undefined as any);
+        performSymbolLayout({
+            bucket: bucketB, glyphMap: stacks, glyphPositions: {}, subdivisionGranularity: SubdivisionGranularitySetting.noSubdivision
+        } as any);
         const tileB = new Tile(tileID, 512);
         tileB.buckets = {test: bucketB};
         tileB.collisionBoxArray = collisionBoxArray;
 
-        crossTileSymbolIndex.addLayer(bucketA.layers[0], [tileA, tileB], undefined);
+        crossTileSymbolIndex.addLayer(bucketA.layers[0], [tileA, tileB], undefined as any);
 
         const place = (layer, tile) => {
             const parts = [];
@@ -110,9 +117,14 @@ describe('SymbolBucket', () => {
         const bucket = bucketSetup() as any as SymbolBucket;
         const options = {iconDependencies: {}, glyphDependencies: {}} as PopulateParameters;
 
-        bucket.populate([{feature} as IndexedFeature], options, undefined);
+        bucket.populate([{feature} as IndexedFeature], options, undefined as any);
         const fakeGlyph = {rect: {w: 10, h: 10}, metrics: {left: 10, top: 10, advance: 10}};
-        performSymbolLayout(bucket, stacks, {'Test': {97: fakeGlyph, 98: fakeGlyph, 99: fakeGlyph, 100: fakeGlyph, 101: fakeGlyph, 102: fakeGlyph} as any}, undefined, undefined, undefined, undefined);
+        performSymbolLayout({
+            bucket,
+            glyphMap: stacks,
+            glyphPositions: {'Test': {97: fakeGlyph, 98: fakeGlyph, 99: fakeGlyph, 100: fakeGlyph, 101: fakeGlyph, 102: fakeGlyph} as any},
+            subdivisionGranularity: SubdivisionGranularitySetting.noSubdivision
+        } as any);
 
         expect(spy).toHaveBeenCalledTimes(1);
         expect(spy.mock.calls[0][0].includes('Too many glyphs being rendered in a tile.')).toBeTruthy();
@@ -144,14 +156,17 @@ describe('SymbolBucket', () => {
                 createIndexedFeature(1, 1, 'b'),
                 createIndexedFeature(2, 2, 'a')
             ] as any as IndexedFeature[],
-            options, undefined
+            options, undefined as any
         );
 
         const icons = options.iconDependencies as any;
         expect(icons.a).toBe(true);
         expect(icons.b).toBe(true);
 
-        performSymbolLayout(bucket, null, null, imageMap, imagePos, undefined, undefined);
+        performSymbolLayout({
+            bucket, imageMap, imagePositions: imagePos,
+            subdivisionGranularity: SubdivisionGranularitySetting.noSubdivision
+        } as any);
 
         // undefined SDF should be treated the same as false SDF - no warning raised
         expect(spy).not.toHaveBeenCalledTimes(1);
@@ -184,14 +199,14 @@ describe('SymbolBucket', () => {
                 createIndexedFeature(1, 1, 'b'),
                 createIndexedFeature(2, 2, 'a')
             ] as any as IndexedFeature[],
-            options, undefined
+            options, undefined as unknown as CanonicalTileID
         );
 
         const icons = options.iconDependencies as any;
         expect(icons.a).toBe(true);
         expect(icons.b).toBe(true);
 
-        performSymbolLayout(bucket, null, null, imageMap, imagePos, undefined, undefined);
+        performSymbolLayout({bucket, imageMap, imagePositions: imagePos, subdivisionGranularity: SubdivisionGranularitySetting.noSubdivision} as any);
 
         // true SDF and false SDF in same bucket should trigger warning
         expect(spy).toHaveBeenCalledTimes(1);
@@ -201,8 +216,8 @@ describe('SymbolBucket', () => {
         const rtlBucket = bucketSetup('مرحبا');
         const ltrBucket = bucketSetup('hello');
         const options = {iconDependencies: {}, glyphDependencies: {}} as PopulateParameters;
-        rtlBucket.populate([{feature} as IndexedFeature], options, undefined);
-        ltrBucket.populate([{feature} as IndexedFeature], options, undefined);
+        rtlBucket.populate([{feature} as IndexedFeature], options, undefined as any);
+        ltrBucket.populate([{feature} as IndexedFeature], options, undefined as any);
 
         expect(rtlBucket.hasRTLText).toBeTruthy();
         expect(ltrBucket.hasRTLText).toBeFalsy();
@@ -213,7 +228,7 @@ describe('SymbolBucket', () => {
         const rtlBucket = bucketSetup('مرحبا');
         const options = {iconDependencies: {}, glyphDependencies: {}} as PopulateParameters;
         rtlBucket.createArrays();
-        rtlBucket.populate([{feature} as IndexedFeature], options, undefined);
+        rtlBucket.populate([{feature} as IndexedFeature], options, undefined as any);
 
         expect(rtlBucket.isEmpty()).toBeFalsy();
         expect(rtlBucket.symbolInstances).toHaveLength(0);
@@ -222,7 +237,7 @@ describe('SymbolBucket', () => {
     test('SymbolBucket detects rtl text mixed with ltr text', () => {
         const mixedBucket = bucketSetup('مرحبا translates to hello');
         const options = {iconDependencies: {}, glyphDependencies: {}} as PopulateParameters;
-        mixedBucket.populate([{feature} as IndexedFeature], options, undefined);
+        mixedBucket.populate([{feature} as IndexedFeature], options, undefined as any);
 
         expect(mixedBucket.hasRTLText).toBeTruthy();
     });

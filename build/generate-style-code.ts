@@ -2,7 +2,7 @@
 
 import * as fs from 'fs';
 
-import spec from '../src/style-spec/reference/v8.json';
+import {v8} from '@maplibre/maplibre-gl-style-spec';
 
 function camelCase(str: string): string {
     return str.replace(/-(.)/g, (_, x) => {
@@ -27,6 +27,12 @@ function nativeType(property) {
             return Object.keys(property.values).map(v => JSON.stringify(v)).join(' | ');
         case 'color':
             return 'Color';
+        case 'padding':
+            return 'Padding';
+        case 'variableAnchorOffsetCollection':
+            return 'VariableAnchorOffsetCollection';
+        case 'sprite':
+            return 'Sprite';
         case 'formatted':
             return 'Formatted';
         case 'resolvedImage':
@@ -37,7 +43,7 @@ function nativeType(property) {
             } else {
                 return `Array<${nativeType({type: property.value, values: property.values})}>`;
             }
-        default: throw new Error(`unknown type for ${property.name}`);
+        default: throw new Error(`unknown type "${property.type}" for "${property.name}"`);
     }
 }
 
@@ -87,6 +93,12 @@ function runtimeType(property) {
             return 'StringType';
         case 'color':
             return 'ColorType';
+        case 'padding':
+            return 'PaddingType';
+        case 'variableAnchorOffsetCollection':
+            return 'VariableAnchorOffsetCollectionType';
+        case 'sprite':
+            return 'SpriteType';
         case 'formatted':
             return 'FormattedType';
         case 'Image':
@@ -97,7 +109,7 @@ function runtimeType(property) {
             } else {
                 return `array(${runtimeType({type: property.value})})`;
             }
-        default: throw new Error(`unknown type for ${property.name}`);
+        default: throw new Error(`unknown type "${property.type}" for "${property.name}"`);
     }
 }
 
@@ -129,20 +141,20 @@ function propertyValue(property, type) {
     }
 }
 
-const layers = Object.keys(spec.layer.type.values).map((type) => {
-    const layoutProperties = Object.keys(spec[`layout_${type}`]).reduce((memo, name) => {
+const layers = Object.keys(v8.layer.type.values).map((type) => {
+    const layoutProperties = Object.keys(v8[`layout_${type}`]).reduce((memo, name) => {
         if (name !== 'visibility') {
-            spec[`layout_${type}`][name].name = name;
-            spec[`layout_${type}`][name].layerType = type;
-            memo.push(spec[`layout_${type}`][name]);
+            v8[`layout_${type}`][name].name = name;
+            v8[`layout_${type}`][name].layerType = type;
+            memo.push(v8[`layout_${type}`][name]);
         }
         return memo;
     }, []);
 
-    const paintProperties = Object.keys(spec[`paint_${type}`]).reduce((memo, name) => {
-        spec[`paint_${type}`][name].name = name;
-        spec[`paint_${type}`][name].layerType = type;
-        memo.push(spec[`paint_${type}`][name]);
+    const paintProperties = Object.keys(v8[`paint_${type}`]).reduce((memo, name) => {
+        v8[`paint_${type}`][name].name = name;
+        v8[`paint_${type}`][name].layerType = type;
+        memo.push(v8[`paint_${type}`][name]);
         return memo;
     }, []);
 
@@ -161,7 +173,7 @@ function emitlayerProperties(locals) {
         `// This file is generated. Edit build/generate-style-code.ts, then run 'npm run codegen'.
 /* eslint-disable */
 
-import styleSpec from '../../style-spec/reference/latest';
+import {latest as styleSpec} from '@maplibre/maplibre-gl-style-spec';
 
 import {
     Properties,
@@ -174,21 +186,17 @@ import {
     CrossFaded
 } from '../properties';
 
-import type Color from '../../style-spec/util/color';
-
-import type Formatted from '../../style-spec/expression/types/formatted';
-
-import type ResolvedImage from '../../style-spec/expression/types/resolved_image';
-import {StylePropertySpecification} from '../../style-spec/style-spec';
+import type {Color, Formatted, Padding, ResolvedImage, VariableAnchorOffsetCollection} from '@maplibre/maplibre-gl-style-spec';
+import {StylePropertySpecification} from '@maplibre/maplibre-gl-style-spec';
 `);
 
     const overridables = paintProperties.filter(p => p.overridable);
     if (overridables.length) {
-        output.push(
-            `import {
-    ${overridables.reduce((imports, prop) => { imports.push(runtimeType(prop)); return imports; }, []).join(',\n    ')}
-} from '../../style-spec/expression/types';
-`);
+        const overridesArray = `import {
+            ${overridables.reduce((imports, prop) => { imports.push(runtimeType(prop)); return imports; }, []).join(',\n    ')}
+        } from '@maplibre/maplibre-gl-style-spec';
+        `;
+        output.push(overridesArray);
     }
 
     if (layoutProperties.length) {
@@ -213,7 +221,8 @@ export type ${layerType}LayoutPropsPossiblyEvaluated = {`);
         output.push(
             `};
 
-const layout: Properties<${layerType}LayoutProps> = new Properties({`);
+let layout: Properties<${layerType}LayoutProps>;
+const getLayout = () => layout = layout || new Properties({`);
 
         for (const property of layoutProperties) {
             output.push(
@@ -253,7 +262,8 @@ export type ${layerType}PaintPropsPossiblyEvaluated = {`);
 
     output.push(
         `
-const paint: Properties<${layerType}PaintProps> = new Properties({`);
+let paint: Properties<${layerType}PaintProps>;
+const getPaint = () => paint = paint || new Properties({`);
 
     for (const property of paintProperties) {
         output.push(
@@ -263,9 +273,7 @@ const paint: Properties<${layerType}PaintProps> = new Properties({`);
     output.push(
         `});
 
-export default ({ paint${layoutProperties.length ? ', layout' : ''} } as {
-    paint: Properties<${layerType}PaintProps>${layoutProperties.length ? `,\n    layout: Properties<${layerType}LayoutProps>` : ''}
-});`);
+export default ({ get paint() { return getPaint() }${layoutProperties.length ? ', get layout() { return getLayout() }' : ''} });`);
 
     return output.join('\n');
 }

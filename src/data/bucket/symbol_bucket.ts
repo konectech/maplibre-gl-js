@@ -13,32 +13,31 @@ import {SymbolLayoutArray,
     PlacedSymbolArray,
     SymbolInstanceArray,
     GlyphOffsetArray,
-    SymbolLineVertexArray
+    SymbolLineVertexArray,
+    TextAnchorOffsetArray
 } from '../array_types.g';
 
 import Point from '@mapbox/point-geometry';
-import SegmentVector from '../segment';
+import {SegmentVector} from '../segment';
 import {ProgramConfigurationSet} from '../program_configuration';
 import {TriangleIndexArray, LineIndexArray} from '../index_array_type';
-import transformText from '../../symbol/transform_text';
-import mergeLines from '../../symbol/mergelines';
+import {transformText} from '../../symbol/transform_text';
+import {mergeLines} from '../../symbol/merge_lines';
 import {allowsVerticalWritingMode, stringContainsRTLText} from '../../util/script_detection';
 import {WritingMode} from '../../symbol/shaping';
-import loadGeometry from '../load_geometry';
-import toEvaluationFeature from '../evaluation_feature';
+import {loadGeometry} from '../load_geometry';
+import {toEvaluationFeature} from '../evaluation_feature';
 import mvt from '@mapbox/vector-tile';
 const vectorTileFeatureTypes = mvt.VectorTileFeature.types;
 import {verticalizedCharacterMap} from '../../util/verticalize_punctuation';
-import Anchor from '../../symbol/anchor';
-import {getSizeData} from '../../symbol/symbol_size';
-import {MAX_PACKED_SIZE} from '../../symbol/symbol_layout';
-import {register} from '../../util/web_worker_transfer';
-import EvaluationParameters from '../../style/evaluation_parameters';
-import Formatted from '../../style-spec/expression/types/formatted';
-import ResolvedImage from '../../style-spec/expression/types/resolved_image';
-import {plugin as globalRTLTextPlugin, getRTLTextPluginStatus} from '../../source/rtl_text_plugin';
-import {mat4} from 'gl-matrix';
+import {Anchor} from '../../symbol/anchor';
+import {getSizeData, MAX_PACKED_SIZE} from '../../symbol/symbol_size';
 
+import {register} from '../../util/web_worker_transfer';
+import {EvaluationParameters} from '../../style/evaluation_parameters';
+import {Formatted, ResolvedImage} from '@maplibre/maplibre-gl-style-spec';
+import {rtlWorkerPlugin} from '../../source/rtl_text_plugin_worker';
+import {getOverlapMode} from '../../style/style_layer/overlap_mode';
 import type {CanonicalTileID} from '../../source/tile_id';
 import type {
     Bucket,
@@ -48,10 +47,10 @@ import type {
 } from '../bucket';
 import type {CollisionBoxArray, CollisionBox, SymbolInstance} from '../array_types.g';
 import type {StructArray, StructArrayMember, ViewType} from '../../util/struct_array';
-import SymbolStyleLayer, {getOverlapMode} from '../../style/style_layer/symbol_style_layer';
-import type Context from '../../gl/context';
-import type IndexBuffer from '../../gl/index_buffer';
-import type VertexBuffer from '../../gl/vertex_buffer';
+import type {SymbolStyleLayer} from '../../style/style_layer/symbol_style_layer';
+import type {Context} from '../../gl/context';
+import type {IndexBuffer} from '../../gl/index_buffer';
+import type {VertexBuffer} from '../../gl/vertex_buffer';
 import type {SymbolQuad} from '../../symbol/quads';
 import type {SizeData} from '../../symbol/symbol_size';
 import type {FeatureStates} from '../../source/source_state';
@@ -86,7 +85,7 @@ export type SymbolFeature = {
     sourceLayerIndex: number;
     geometry: Array<Array<Point>>;
     properties: any;
-    type: 'Point' | 'LineString' | 'Polygon';
+    type: 'Unknown' | 'Point' | 'LineString' | 'Polygon';
     id?: any;
 };
 
@@ -175,6 +174,7 @@ export class SymbolBuffers {
 
     opacityVertexArray: SymbolOpacityArray;
     opacityVertexBuffer: VertexBuffer;
+    hasVisibleVertices: boolean;
 
     collisionVertexArray: CollisionVertexArray;
     collisionVertexBuffer: VertexBuffer;
@@ -188,6 +188,7 @@ export class SymbolBuffers {
         this.segments = new SegmentVector();
         this.dynamicLayoutVertexArray = new SymbolDynamicLayoutArray();
         this.opacityVertexArray = new SymbolOpacityArray();
+        this.hasVisibleVertices = false;
         this.placedSymbolArray = new PlacedSymbolArray();
     }
 
@@ -275,6 +276,7 @@ class CollisionBuffers {
 register('CollisionBuffers', CollisionBuffers);
 
 /**
+ * @internal
  * Unlike other buckets, which simply implement #addFeature with type-specific
  * logic for (essentially) triangulating feature geometries, SymbolBucket
  * requires specialized behavior:
@@ -299,14 +301,12 @@ register('CollisionBuffers', CollisionBuffers);
  *      `this.textCollisionBox`: Debug SymbolBuffers for text collision boxes
  *    The results are sent to the foreground for rendering
  *
- * 4. performSymbolPlacement(bucket, collisionIndex) is run on the foreground,
+ * 4. placement.ts is run on the foreground,
  *    and uses the CollisionIndex along with current camera settings to determine
  *    which symbols can actually show on the map. Collided symbols are hidden
  *    using a dynamic "OpacityVertexArray".
- *
- * @private
  */
-class SymbolBucket implements Bucket {
+export class SymbolBucket implements Bucket {
     static MAX_GLYPHS: number;
     static addDynamicAttributes: typeof addDynamicAttributes;
 
@@ -333,6 +333,7 @@ class SymbolBucket implements Bucket {
     lineVertexArray: SymbolLineVertexArray;
     features: Array<SymbolFeature>;
     symbolInstances: SymbolInstanceArray;
+    textAnchorOffsets: TextAnchorOffsetArray;
     collisionArrays: Array<CollisionArrays>;
     sortKeyRanges: Array<SortKeyRange>;
     pixelRatio: number;
@@ -346,8 +347,6 @@ class SymbolBucket implements Bucket {
     featureSortOrder: Array<number>;
 
     collisionCircleArray: Array<number>;
-    placementInvProjMatrix: mat4;
-    placementViewportMatrix: mat4;
 
     text: SymbolBuffers;
     icon: SymbolBuffers;
@@ -375,8 +374,6 @@ class SymbolBucket implements Bucket {
         this.sortKeyRanges = [];
 
         this.collisionCircleArray = [];
-        this.placementInvProjMatrix = mat4.identity([] as any);
-        this.placementViewportMatrix = mat4.identity([] as any);
 
         const layer = this.layers[0];
         const unevaluatedLayoutValues = layer._unevaluatedLayout._values;
@@ -412,9 +409,16 @@ class SymbolBucket implements Bucket {
         this.glyphOffsetArray = new GlyphOffsetArray();
         this.lineVertexArray = new SymbolLineVertexArray();
         this.symbolInstances = new SymbolInstanceArray();
+        this.textAnchorOffsets = new TextAnchorOffsetArray();
     }
 
-    calculateGlyphDependencies(text: string, stack: {[_: number]: boolean}, textAlongLine: boolean, allowVerticalPlacement: boolean, doesAllowVerticalWritingMode: boolean) {
+    private calculateGlyphDependencies(
+        text: string,
+        stack: {[_: number]: boolean},
+        textAlongLine: boolean,
+        allowVerticalPlacement: boolean,
+        doesAllowVerticalWritingMode: boolean) {
+
         for (let i = 0; i < text.length; i++) {
             stack[text.charCodeAt(i)] = true;
             if ((textAlongLine || allowVerticalPlacement) && doesAllowVerticalWritingMode) {
@@ -473,13 +477,13 @@ class SymbolBucket implements Bucket {
                 // conversion here.
                 const resolvedTokens = layer.getValueAndResolveTokens('text-field', evaluationFeature, canonical, availableImages);
                 const formattedText = Formatted.factory(resolvedTokens);
-                if (containsRTLText(formattedText)) {
-                    this.hasRTLText = true;
-                }
+
+                // on this instance: if hasRTLText is already true, all future calls to containsRTLText can be skipped.
+                const bucketHasRTLText = this.hasRTLText = (this.hasRTLText || containsRTLText(formattedText));
                 if (
-                    !this.hasRTLText || // non-rtl text so can proceed safely
-                    getRTLTextPluginStatus() === 'unavailable' || // We don't intend to lazy-load the rtl text plugin, so proceed with incorrect shaping
-                    this.hasRTLText && globalRTLTextPlugin.isParsed() // Use the rtlText plugin to shape text
+                    !bucketHasRTLText || // non-rtl text so can proceed safely
+                    rtlWorkerPlugin.getRTLTextPluginStatus() === 'unavailable' || // We don't intend to lazy-load the rtl text plugin, so proceed with incorrect shaping
+                    bucketHasRTLText && rtlWorkerPlugin.isParsed() // Use the rtlText plugin to shape text
                 ) {
                     text = transformText(formattedText, layer, evaluationFeature);
                 }
@@ -524,7 +528,7 @@ class SymbolBucket implements Bucket {
 
             if (text) {
                 const fontStack = textFont.evaluate(evaluationFeature, {}, canonical).join(',');
-                const textAlongLine = layout.get('text-rotation-alignment') === 'map' && layout.get('symbol-placement') !== 'point';
+                const textAlongLine = layout.get('text-rotation-alignment') !== 'viewport' && layout.get('symbol-placement') !== 'point';
                 this.allowVerticalPlacement = this.writingModes && this.writingModes.indexOf(WritingMode.vertical) >= 0;
                 for (const section of text.sections) {
                     if (!section.image) {
@@ -561,7 +565,7 @@ class SymbolBucket implements Bucket {
     }
 
     isEmpty() {
-        // When the bucket encounters only rtl-text but the plugin isnt loaded, no symbol instances will be created.
+        // When the bucket encounters only rtl-text but the plugin isn't loaded, no symbol instances will be created.
         // In order for the bucket to be serialized, and not discarded as an empty bucket both checks are necessary.
         return this.symbolInstances.length === 0 && !this.hasRTLText;
     }
@@ -594,7 +598,7 @@ class SymbolBucket implements Bucket {
         }
     }
 
-    addToLineVertexArray(anchor: Anchor, line: any) {
+    addToLineVertexArray(anchor: Anchor, line: Array<Point>) {
         const lineStartIndex = this.lineVertexArray.length;
         if (anchor.segment !== undefined) {
             let sumForwardLength = anchor.dist(line[anchor.segment + 1]);
@@ -658,7 +662,7 @@ class SymbolBucket implements Bucket {
 
             addDynamicAttributes(arrays.dynamicLayoutVertexArray, labelAnchor, angle);
 
-            indexArray.emplaceBack(index, index + 1, index + 2);
+            indexArray.emplaceBack(index, index + 2, index + 1);
             indexArray.emplaceBack(index + 1, index + 2, index + 3);
 
             segment.vertexLength += 4;
@@ -850,7 +854,7 @@ class SymbolBucket implements Bucket {
 
         const endIndex = placedSymbol.vertexStartIndex + placedSymbol.numGlyphs * 4;
         for (let vertexIndex = placedSymbol.vertexStartIndex; vertexIndex < endIndex; vertexIndex += 4) {
-            iconOrText.indexArray.emplaceBack(vertexIndex, vertexIndex + 1, vertexIndex + 2);
+            iconOrText.indexArray.emplaceBack(vertexIndex, vertexIndex + 2, vertexIndex + 1);
             iconOrText.indexArray.emplaceBack(vertexIndex + 1, vertexIndex + 2, vertexIndex + 3);
         }
     }
@@ -963,5 +967,4 @@ SymbolBucket.MAX_GLYPHS = 65535;
 
 SymbolBucket.addDynamicAttributes = addDynamicAttributes;
 
-export default SymbolBucket;
 export {addDynamicAttributes};

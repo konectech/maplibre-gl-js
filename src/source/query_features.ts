@@ -1,12 +1,59 @@
-import type SourceCache from './source_cache';
-import type StyleLayer from '../style/style_layer';
-import type CollisionIndex from '../symbol/collision_index';
-import type Transform from '../geo/transform';
+import type {SourceCache} from './source_cache';
+import type {StyleLayer} from '../style/style_layer';
+import type {CollisionIndex} from '../symbol/collision_index';
+import type {IReadonlyTransform} from '../geo/transform_interface';
 import type {RetainedQueryData} from '../symbol/placement';
-import type {FilterSpecification} from '../style-spec/types';
+import type {FilterSpecification} from '@maplibre/maplibre-gl-style-spec';
+import type {MapGeoJSONFeature} from '../util/vectortile_to_geojson';
 import type Point from '@mapbox/point-geometry';
-import assert from 'assert';
 import {mat4} from 'gl-matrix';
+
+/**
+ * Options to pass to query the map for the rendered features
+ */
+export type QueryRenderedFeaturesOptions = {
+    /**
+     * An array or set of [style layer IDs](https://maplibre.org/maplibre-style-spec/#layer-id) for the query to inspect.
+     * Only features within these layers will be returned. If this parameter is undefined, all layers will be checked.
+     */
+    layers?: Array<string> | Set<string>;
+    /**
+     * A [filter](https://maplibre.org/maplibre-style-spec/layers/#filter) to limit query results.
+     */
+    filter?: FilterSpecification;
+    /**
+     * An array of string representing the available images
+     */
+    availableImages?: Array<string>;
+    /**
+     * Whether to check if the [options.filter] conforms to the MapLibre Style Specification. Disabling validation is a performance optimization that should only be used if you have previously validated the values you will be passing to this function.
+     */
+    validate?: boolean;
+};
+
+export type QueryRenderedFeaturesOptionsStrict = Omit<QueryRenderedFeaturesOptions, 'layers'> & {
+    layers: Set<string> | null;
+}
+
+/**
+ * The options object related to the {@link Map#querySourceFeatures} method
+ */
+export type QuerySourceFeatureOptions = {
+    /**
+     * The name of the source layer to query. *For vector tile sources, this parameter is required.* For GeoJSON sources, it is ignored.
+     */
+    sourceLayer?: string;
+    /**
+     * A [filter](https://maplibre.org/maplibre-style-spec/layers/#filter)
+     * to limit query results.
+     */
+    filter?: FilterSpecification;
+    /**
+     * Whether to check if the [parameters.filter] conforms to the MapLibre Style Specification. Disabling validation is a performance optimization that should only be used if you have previously validated the values you will be passing to this function.
+     * @defaultValue true
+     */
+    validate?: boolean;
+}
 
 /*
  * Returns a matrix that can be used to convert from tile coordinates to viewport pixel coordinates.
@@ -15,10 +62,14 @@ function getPixelPosMatrix(transform, tileID) {
     const t = mat4.create();
     mat4.translate(t, t, [1, 1, 0]);
     mat4.scale(t, t, [transform.width * 0.5, transform.height * 0.5, 1]);
-    return mat4.multiply(t, t, transform.calculatePosMatrix(tileID.toUnwrapped()));
+    if (transform.calculatePosMatrix) { // Globe: TODO: remove this hack once queryRendererFeatures supports globe properly
+        return mat4.multiply(t, t, transform.calculatePosMatrix(tileID.toUnwrapped()));
+    } else {
+        return t;
+    }
 }
 
-function queryIncludes3DLayer(layers: Array<string>, styleLayers: {[_: string]: StyleLayer}, sourceID: string) {
+function queryIncludes3DLayer(layers: Set<string> | undefined, styleLayers: {[_: string]: StyleLayer}, sourceID: string) {
     if (layers) {
         for (const layerID of layers) {
             const layer = styleLayers[layerID];
@@ -42,15 +93,11 @@ export function queryRenderedFeatures(
     styleLayers: {[_: string]: StyleLayer},
     serializedLayers: {[_: string]: any},
     queryGeometry: Array<Point>,
-    params: {
-        filter: FilterSpecification;
-        layers: Array<string>;
-        availableImages: Array<string>;
-    },
-    transform: Transform
-) {
+    params: QueryRenderedFeaturesOptionsStrict | undefined,
+    transform: IReadonlyTransform
+): { [key: string]: Array<{featureIndex: number; feature: MapGeoJSONFeature}> } {
 
-    const has3DLayer = queryIncludes3DLayer(params && params.layers, styleLayers, sourceCache.id);
+    const has3DLayer = queryIncludes3DLayer(params?.layers ?? null, styleLayers, sourceCache.id);
     const maxPitchScaleFactor = transform.maxPitchScaleFactor();
     const tilesIn = sourceCache.tilesIn(queryGeometry, maxPitchScaleFactor, has3DLayer);
 
@@ -78,7 +125,7 @@ export function queryRenderedFeatures(
     // Merge state from SourceCache into the results
     for (const layerID in result) {
         result[layerID].forEach((featureWrapper) => {
-            const feature = featureWrapper.feature;
+            const feature = featureWrapper.feature as MapGeoJSONFeature;
             const state = sourceCache.getFeatureState(feature.layer['source-layer'], feature.id);
             feature.source = feature.layer.source;
             if (feature.layer['source-layer']) {
@@ -94,18 +141,14 @@ export function queryRenderedSymbols(styleLayers: {[_: string]: StyleLayer},
     serializedLayers: {[_: string]: StyleLayer},
     sourceCaches: {[_: string]: SourceCache},
     queryGeometry: Array<Point>,
-    params: {
-        filter: FilterSpecification;
-        layers: Array<string>;
-        availableImages: Array<string>;
-    },
+    params: QueryRenderedFeaturesOptionsStrict,
     collisionIndex: CollisionIndex,
     retainedQueryData: {
         [_: number]: RetainedQueryData;
     }) {
     const result = {};
     const renderedSymbols = collisionIndex.queryRenderedSymbols(queryGeometry);
-    const bucketQueryData = [];
+    const bucketQueryData: RetainedQueryData[] = [];
     for (const bucketInstanceId of Object.keys(renderedSymbols).map(Number)) {
         bucketQueryData.push(retainedQueryData[bucketInstanceId]);
     }
@@ -136,8 +179,6 @@ export function queryRenderedSymbols(styleLayers: {[_: string]: StyleLayer},
                     // we sort each feature based on the first matching symbol instance.
                     const sortedA = featureSortOrder.indexOf(a.featureIndex);
                     const sortedB = featureSortOrder.indexOf(b.featureIndex);
-                    assert(sortedA >= 0);
-                    assert(sortedB >= 0);
                     return sortedB - sortedA;
                 } else {
                     // Bucket hasn't been re-sorted based on angle, so use the
@@ -168,11 +209,7 @@ export function queryRenderedSymbols(styleLayers: {[_: string]: StyleLayer},
     return result;
 }
 
-export function querySourceFeatures(sourceCache: SourceCache, params: {
-    sourceLayer: string;
-    filter: Array<any>;
-    validate?: boolean;
-}) {
+export function querySourceFeatures(sourceCache: SourceCache, params: QuerySourceFeatureOptions | undefined) {
     const tiles = sourceCache.getRenderableIds().map((id) => {
         return sourceCache.getTileByID(id);
     });
