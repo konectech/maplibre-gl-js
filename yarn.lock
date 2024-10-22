@@ -648,6 +648,10 @@
   version "8.57.1"
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.57.1.tgz#de633db3ec2ef6a3c89e2f19038063e8a122e2c2"
 
+"@eslint/js@^9.6.0":
+  version "9.13.0"
+  resolved "https://registry.yarnpkg.com/@eslint/js/-/js-9.13.0.tgz#c5f89bcd57eb54d5d4fa8b77693e9c28dc97e547"
+
 "@humanwhocodes/config-array@^0.13.0":
   version "0.13.0"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.13.0.tgz#fb907624df3256d04b9aa2df50d7aa97ec648748"
@@ -1253,6 +1257,13 @@
 "@sinonjs/text-encoding@^0.7.3":
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.3.tgz#282046f03e886e352b2d5f5da5eb755e01457f3f"
+
+"@stylistic/eslint-plugin-js@^2.3.0":
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/@stylistic/eslint-plugin-js/-/eslint-plugin-js-2.9.0.tgz#75c01c47c373ecbe32d3617c7c5c5b33f49fe0c3"
+  dependencies:
+    eslint-visitor-keys "^4.1.0"
+    espree "^10.2.0"
 
 "@tootallnate/once@2":
   version "2.0.0"
@@ -1897,7 +1908,7 @@ acorn-walk@^8.0.2, acorn-walk@^8.1.1, acorn-walk@^8.3.4:
   dependencies:
     acorn "^8.11.0"
 
-acorn@^8.1.0, acorn@^8.11.0, acorn@^8.12.1, acorn@^8.4.1, acorn@^8.8.1, acorn@^8.8.2, acorn@^8.9.0:
+acorn@^8.1.0, acorn@^8.11.0, acorn@^8.12.0, acorn@^8.12.1, acorn@^8.4.1, acorn@^8.8.1, acorn@^8.8.2, acorn@^8.9.0:
   version "8.13.0"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.13.0.tgz#2a30d670818ad16ddd6a35d3842dacec9e5d7ca3"
 
@@ -3561,9 +3572,13 @@ escodegen@^2.0.0, escodegen@^2.1.0:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-mourner@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npmjs.org/eslint-config-mourner/-/eslint-config-mourner-3.0.0.tgz"
+eslint-config-mourner@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/eslint-config-mourner/-/eslint-config-mourner-4.0.2.tgz#1ecd9f4be7b46a03a14626e604a3656789c8a8ac"
+  dependencies:
+    "@eslint/js" "^9.6.0"
+    "@stylistic/eslint-plugin-js" "^2.3.0"
+    globals "^15.8.0"
 
 eslint-import-resolver-node@^0.3.9:
   version "0.3.9"
@@ -3656,6 +3671,10 @@ eslint-visitor-keys@^3.3.0, eslint-visitor-keys@^3.4.1, eslint-visitor-keys@^3.4
   version "3.4.3"
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-3.4.3.tgz#0cd72fe8550e3c2eae156a96a4dddcd1c8ac5800"
 
+eslint-visitor-keys@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-4.1.0.tgz#1f785cc5e81eb7534523d85922248232077d2f8c"
+
 eslint@^8.57.0:
   version "8.57.1"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-8.57.1.tgz#7df109654aba7e3bbe5c8eae533c5e461d3c6ca9"
@@ -3698,6 +3717,14 @@ eslint@^8.57.0:
     optionator "^0.9.3"
     strip-ansi "^6.0.1"
     text-table "^0.2.0"
+
+espree@^10.2.0:
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/espree/-/espree-10.2.0.tgz#f4bcead9e05b0615c968e85f83816bc386a45df6"
+  dependencies:
+    acorn "^8.12.0"
+    acorn-jsx "^5.3.2"
+    eslint-visitor-keys "^4.1.0"
 
 espree@^9.6.0, espree@^9.6.1:
   version "9.6.1"
@@ -4147,6 +4174,10 @@ globals@^13.19.0:
   resolved "https://registry.yarnpkg.com/globals/-/globals-13.24.0.tgz#8432a19d78ce0c1e833949c36adb345400bb1171"
   dependencies:
     type-fest "^0.20.2"
+
+globals@^15.8.0:
+  version "15.11.0"
+  resolved "https://registry.yarnpkg.com/globals/-/globals-15.11.0.tgz#b96ed4c6998540c6fb824b24b5499216d2438d6e"
 
 globalthis@^1.0.3, globalthis@^1.0.4:
   version "1.0.4"
