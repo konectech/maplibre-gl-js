@@ -1334,9 +1334,9 @@
   version "1.1.1"
   resolved "https://registry.npmjs.org/@types/color-name/-/color-name-1.1.1.tgz"
 
-"@types/cssnano@^5.0.0":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@types/cssnano/-/cssnano-5.1.0.tgz#a83529c148dccc984bccbe33563941f0fa6bd1e9"
+"@types/cssnano@^5.1.3":
+  version "5.1.3"
+  resolved "https://registry.yarnpkg.com/@types/cssnano/-/cssnano-5.1.3.tgz#04323247de755b66daae895b39a16ccaf5fa864e"
   dependencies:
     cssnano "*"
 
