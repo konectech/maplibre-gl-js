@@ -7035,9 +7035,9 @@ sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.npmjs.org/sprintf-js/-/sprintf-js-1.0.3.tgz"
 
-st@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/st/-/st-3.0.0.tgz#5564e9c95650afa6853580e69ed496a8ed0adfe7"
+st@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/st/-/st-3.0.1.tgz#332492a237f347b8ab650d457d20acb57bdf7bbd"
   dependencies:
     async-cache "^1.1.0"
     bl "^5.0.0"
