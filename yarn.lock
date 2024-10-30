@@ -1527,9 +1527,9 @@
     "@types/d3-transition" "*"
     "@types/d3-zoom" "*"
 
-"@types/diff@^5.2.3":
-  version "5.2.3"
-  resolved "https://registry.yarnpkg.com/@types/diff/-/diff-5.2.3.tgz#dcdcfa40df9f011f9465180e0196dfbd921971d9"
+"@types/diff@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@types/diff/-/diff-6.0.0.tgz#031f27cf57564f3cce825f38fb19fdd4349ad07a"
 
 "@types/earcut@^2.1.4":
   version "2.1.4"
