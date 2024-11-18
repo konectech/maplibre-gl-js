@@ -7628,9 +7628,9 @@ typedoc-plugin-markdown@^4.2.10:
   version "4.2.10"
   resolved "https://registry.yarnpkg.com/typedoc-plugin-markdown/-/typedoc-plugin-markdown-4.2.10.tgz#cd386e9f2dec122cae79e487983811d92ac37161"
 
-typedoc-plugin-missing-exports@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/typedoc-plugin-missing-exports/-/typedoc-plugin-missing-exports-3.0.1.tgz#3ef4530bfb4911719896982bb0841555c05cb888"
+typedoc-plugin-missing-exports@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/typedoc-plugin-missing-exports/-/typedoc-plugin-missing-exports-3.0.2.tgz#e12a2460b4b7064ed543c6f9b040ececd54382be"
 
 typedoc@^0.26.11:
   version "0.26.11"
