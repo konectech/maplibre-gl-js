@@ -7481,9 +7481,9 @@ typedoc@^0.27.1:
     minimatch "^9.0.5"
     yaml "^2.6.1"
 
-typescript@>=5.0.2, typescript@^5.6.3:
-  version "5.6.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.6.3.tgz#5f3449e31c9d94febb17de03cc081dd56d81db5b"
+typescript@>=5.0.2, typescript@^5.7.2:
+  version "5.7.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.7.2.tgz#3169cf8c4c8a828cde53ba9ecb3d2b1d5dd67be6"
 
 uc.micro@^2.0.0, uc.micro@^2.1.0:
   version "2.1.0"
