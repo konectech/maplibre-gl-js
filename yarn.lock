@@ -276,15 +276,15 @@
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
 
-"@cspell/cspell-bundled-dicts@8.16.1":
-  version "8.16.1"
-  resolved "https://registry.yarnpkg.com/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-8.16.1.tgz#57d872bca1ff67a232bfefb1062cb92381686bc6"
+"@cspell/cspell-bundled-dicts@8.17.1":
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/@cspell/cspell-bundled-dicts/-/cspell-bundled-dicts-8.17.1.tgz#61adad73f1bb1e12b182ffa04423d6052b18f0fc"
   dependencies:
     "@cspell/dict-ada" "^4.0.5"
     "@cspell/dict-al" "^1.0.3"
     "@cspell/dict-aws" "^4.0.7"
     "@cspell/dict-bash" "^4.1.8"
-    "@cspell/dict-companies" "^3.1.7"
+    "@cspell/dict-companies" "^3.1.8"
     "@cspell/dict-cpp" "^6.0.2"
     "@cspell/dict-cryptocurrencies" "^5.0.3"
     "@cspell/dict-csharp" "^4.0.5"
@@ -297,12 +297,12 @@
     "@cspell/dict-en-common-misspellings" "^2.0.7"
     "@cspell/dict-en-gb" "1.1.33"
     "@cspell/dict-en_us" "^4.3.28"
-    "@cspell/dict-filetypes" "^3.0.8"
+    "@cspell/dict-filetypes" "^3.0.9"
     "@cspell/dict-flutter" "^1.0.3"
     "@cspell/dict-fonts" "^4.0.3"
     "@cspell/dict-fsharp" "^1.0.4"
     "@cspell/dict-fullstack" "^3.2.3"
-    "@cspell/dict-gaming-terms" "^1.0.8"
+    "@cspell/dict-gaming-terms" "^1.0.9"
     "@cspell/dict-git" "^3.0.3"
     "@cspell/dict-golang" "^6.0.17"
     "@cspell/dict-google" "^1.0.4"
@@ -319,16 +319,16 @@
     "@cspell/dict-markdown" "^2.0.7"
     "@cspell/dict-monkeyc" "^1.0.9"
     "@cspell/dict-node" "^5.0.5"
-    "@cspell/dict-npm" "^5.1.14"
+    "@cspell/dict-npm" "^5.1.17"
     "@cspell/dict-php" "^4.0.13"
     "@cspell/dict-powershell" "^5.0.13"
     "@cspell/dict-public-licenses" "^2.0.11"
-    "@cspell/dict-python" "^4.2.12"
+    "@cspell/dict-python" "^4.2.13"
     "@cspell/dict-r" "^2.0.4"
     "@cspell/dict-ruby" "^5.0.7"
     "@cspell/dict-rust" "^4.0.10"
     "@cspell/dict-scala" "^5.0.6"
-    "@cspell/dict-software-terms" "^4.1.17"
+    "@cspell/dict-software-terms" "^4.1.19"
     "@cspell/dict-sql" "^2.1.8"
     "@cspell/dict-svelte" "^1.0.5"
     "@cspell/dict-swift" "^2.0.4"
@@ -336,29 +336,29 @@
     "@cspell/dict-typescript" "^3.1.11"
     "@cspell/dict-vue" "^3.0.3"
 
-"@cspell/cspell-json-reporter@8.16.1":
-  version "8.16.1"
-  resolved "https://registry.yarnpkg.com/@cspell/cspell-json-reporter/-/cspell-json-reporter-8.16.1.tgz#1c0708e2dd365fb2713fd892681ff02dbd783f38"
+"@cspell/cspell-json-reporter@8.17.1":
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/@cspell/cspell-json-reporter/-/cspell-json-reporter-8.17.1.tgz#c1678665f183589e5fc19a1c0933b8d362165a43"
   dependencies:
-    "@cspell/cspell-types" "8.16.1"
+    "@cspell/cspell-types" "8.17.1"
 
-"@cspell/cspell-pipe@8.16.1":
-  version "8.16.1"
-  resolved "https://registry.yarnpkg.com/@cspell/cspell-pipe/-/cspell-pipe-8.16.1.tgz#e65836b145daff287c3c8d26448768209976881e"
+"@cspell/cspell-pipe@8.17.1":
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/@cspell/cspell-pipe/-/cspell-pipe-8.17.1.tgz#c247d4bd1c8ec43c49c46dc4458f00489e98232b"
 
-"@cspell/cspell-resolver@8.16.1":
-  version "8.16.1"
-  resolved "https://registry.yarnpkg.com/@cspell/cspell-resolver/-/cspell-resolver-8.16.1.tgz#26f5091974f8db2cfa1f8198dad47515dbd35b32"
+"@cspell/cspell-resolver@8.17.1":
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/@cspell/cspell-resolver/-/cspell-resolver-8.17.1.tgz#6377c9c8c05c940fee675c74e31f893b7b2f38ab"
   dependencies:
     global-directory "^4.0.1"
 
-"@cspell/cspell-service-bus@8.16.1":
-  version "8.16.1"
-  resolved "https://registry.yarnpkg.com/@cspell/cspell-service-bus/-/cspell-service-bus-8.16.1.tgz#1a50df316faf73ae66c263416312e7404e1f2d7f"
+"@cspell/cspell-service-bus@8.17.1":
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/@cspell/cspell-service-bus/-/cspell-service-bus-8.17.1.tgz#8d6d82ea3ab0fc9d7efed8523b070e4842780bd1"
 
-"@cspell/cspell-types@8.16.1":
-  version "8.16.1"
-  resolved "https://registry.yarnpkg.com/@cspell/cspell-types/-/cspell-types-8.16.1.tgz#ca49ea46f1141172333fb3b5fb1d30ca1557a690"
+"@cspell/cspell-types@8.17.1":
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/@cspell/cspell-types/-/cspell-types-8.17.1.tgz#5512030b4c2e7881a8822ab3afabbd4f5ddffb6f"
 
 "@cspell/dict-ada@^4.0.5":
   version "4.0.5"
@@ -376,9 +376,9 @@
   version "4.1.8"
   resolved "https://registry.yarnpkg.com/@cspell/dict-bash/-/dict-bash-4.1.8.tgz#26dc898e06eddea069cf1ad475ee0e867c89e632"
 
-"@cspell/dict-companies@^3.1.7":
-  version "3.1.7"
-  resolved "https://registry.yarnpkg.com/@cspell/dict-companies/-/dict-companies-3.1.7.tgz#c9abd6f5293f103062f54dde01f2bee939189f79"
+"@cspell/dict-companies@^3.1.8":
+  version "3.1.9"
+  resolved "https://registry.yarnpkg.com/@cspell/dict-companies/-/dict-companies-3.1.9.tgz#c3ae263ac6b4bdee8bd836441e665c397030abfb"
 
 "@cspell/dict-cpp@^6.0.2":
   version "6.0.2"
@@ -432,9 +432,9 @@
   version "4.3.28"
   resolved "https://registry.yarnpkg.com/@cspell/dict-en_us/-/dict-en_us-4.3.28.tgz#41169e1ed18465e7ff367a4f4488d4cbc6cf0baa"
 
-"@cspell/dict-filetypes@^3.0.8":
-  version "3.0.8"
-  resolved "https://registry.yarnpkg.com/@cspell/dict-filetypes/-/dict-filetypes-3.0.8.tgz#016d523ca2c34dea972ea0ca931255868348d81a"
+"@cspell/dict-filetypes@^3.0.9":
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/@cspell/dict-filetypes/-/dict-filetypes-3.0.9.tgz#f4d5c35c341e6c3b77c08aec00678412641e1504"
 
 "@cspell/dict-flutter@^1.0.3":
   version "1.0.3"
@@ -452,9 +452,9 @@
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/@cspell/dict-fullstack/-/dict-fullstack-3.2.3.tgz#f6fff74eff00c6759cba510168acada0619004cc"
 
-"@cspell/dict-gaming-terms@^1.0.8":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@cspell/dict-gaming-terms/-/dict-gaming-terms-1.0.8.tgz#fb8a737f61e7cf560b4de7b2aaeae952f2550398"
+"@cspell/dict-gaming-terms@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@cspell/dict-gaming-terms/-/dict-gaming-terms-1.0.9.tgz#6b920386d281b89f70857e6dacea10ab89e88658"
 
 "@cspell/dict-git@^3.0.3":
   version "3.0.3"
@@ -520,9 +520,9 @@
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/@cspell/dict-node/-/dict-node-5.0.5.tgz#11653612ebdd833208432e8b3cbe61bd6dd35dc3"
 
-"@cspell/dict-npm@^5.1.14":
-  version "5.1.14"
-  resolved "https://registry.yarnpkg.com/@cspell/dict-npm/-/dict-npm-5.1.14.tgz#cb0e086bfa951d9c10d6a35fabe0d905cbd81a33"
+"@cspell/dict-npm@^5.1.17":
+  version "5.1.18"
+  resolved "https://registry.yarnpkg.com/@cspell/dict-npm/-/dict-npm-5.1.18.tgz#5f748f24a96cae46a1c601da01e1d2fc3ccdb0c7"
 
 "@cspell/dict-php@^4.0.13":
   version "4.0.13"
@@ -536,9 +536,9 @@
   version "2.0.11"
   resolved "https://registry.yarnpkg.com/@cspell/dict-public-licenses/-/dict-public-licenses-2.0.11.tgz#37550c4e0cd445991caba528bf4ba58ce7a935c3"
 
-"@cspell/dict-python@^4.2.12":
-  version "4.2.12"
-  resolved "https://registry.yarnpkg.com/@cspell/dict-python/-/dict-python-4.2.12.tgz#ea6298bb72a6bcf2c188d5c55142e0afab8a6c1c"
+"@cspell/dict-python@^4.2.13":
+  version "4.2.13"
+  resolved "https://registry.yarnpkg.com/@cspell/dict-python/-/dict-python-4.2.13.tgz#c3dbaa7e2434c835e11540345e2168e5e685190a"
   dependencies:
     "@cspell/dict-data-science" "^2.0.5"
 
@@ -558,9 +558,9 @@
   version "5.0.6"
   resolved "https://registry.yarnpkg.com/@cspell/dict-scala/-/dict-scala-5.0.6.tgz#5e925def2fe6dc27ee2ad1c452941c3d6790fb6d"
 
-"@cspell/dict-software-terms@^4.1.17":
-  version "4.1.17"
-  resolved "https://registry.yarnpkg.com/@cspell/dict-software-terms/-/dict-software-terms-4.1.17.tgz#da5fc11e44b0fe4d8f6fd6d293bb706340c47510"
+"@cspell/dict-software-terms@^4.1.19":
+  version "4.1.20"
+  resolved "https://registry.yarnpkg.com/@cspell/dict-software-terms/-/dict-software-terms-4.1.20.tgz#8a4956bbc0df9153f792b3adb7e35035f82e679f"
 
 "@cspell/dict-sql@^2.1.8":
   version "2.1.8"
@@ -586,23 +586,24 @@
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@cspell/dict-vue/-/dict-vue-3.0.3.tgz#295c288f6fd363879898223202ec3be048663b98"
 
-"@cspell/dynamic-import@8.16.1":
-  version "8.16.1"
-  resolved "https://registry.yarnpkg.com/@cspell/dynamic-import/-/dynamic-import-8.16.1.tgz#64d55d2ce370cf413b66fd001e263a30ee245b5e"
+"@cspell/dynamic-import@8.17.1":
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/@cspell/dynamic-import/-/dynamic-import-8.17.1.tgz#2b3f3325b6013a067a1a49cda8b69ae73aaed36a"
   dependencies:
+    "@cspell/url" "8.17.1"
     import-meta-resolve "^4.1.0"
 
-"@cspell/filetypes@8.16.1":
-  version "8.16.1"
-  resolved "https://registry.yarnpkg.com/@cspell/filetypes/-/filetypes-8.16.1.tgz#14faa073a5890947c711e89af469111356875996"
+"@cspell/filetypes@8.17.1":
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/@cspell/filetypes/-/filetypes-8.17.1.tgz#d193afc5029364334f005ff23f4c4cb80170c374"
 
-"@cspell/strong-weak-map@8.16.1":
-  version "8.16.1"
-  resolved "https://registry.yarnpkg.com/@cspell/strong-weak-map/-/strong-weak-map-8.16.1.tgz#845374e60c2bdd21d13d9c98e2c1cb8d79791a9c"
+"@cspell/strong-weak-map@8.17.1":
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/@cspell/strong-weak-map/-/strong-weak-map-8.17.1.tgz#2fa88f283ef10222fad25134b5ebb54edaad985f"
 
-"@cspell/url@8.16.1":
-  version "8.16.1"
-  resolved "https://registry.yarnpkg.com/@cspell/url/-/url-8.16.1.tgz#962961ae17fdcc2fc0e8d31c23c6272a33c193b3"
+"@cspell/url@8.17.1":
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/@cspell/url/-/url-8.17.1.tgz#e7daec1597fa31b4d0a7a685e7a24a11b0c8a193"
 
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
@@ -2643,73 +2644,73 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
-cspell-config-lib@8.16.1:
-  version "8.16.1"
-  resolved "https://registry.yarnpkg.com/cspell-config-lib/-/cspell-config-lib-8.16.1.tgz#8b525b62ce130ce5b76d041a91a625e0673e6d0a"
+cspell-config-lib@8.17.1:
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/cspell-config-lib/-/cspell-config-lib-8.17.1.tgz#a87973b91d51bf23a2018042c25aeaaa8a4e69c0"
   dependencies:
-    "@cspell/cspell-types" "8.16.1"
+    "@cspell/cspell-types" "8.17.1"
     comment-json "^4.2.5"
     yaml "^2.6.1"
 
-cspell-dictionary@8.16.1:
-  version "8.16.1"
-  resolved "https://registry.yarnpkg.com/cspell-dictionary/-/cspell-dictionary-8.16.1.tgz#87ce50c42a6e68acacd16f23c685670742f683f0"
+cspell-dictionary@8.17.1:
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/cspell-dictionary/-/cspell-dictionary-8.17.1.tgz#bfc9bfdbd3720d1425260a98091acffab7b03dd5"
   dependencies:
-    "@cspell/cspell-pipe" "8.16.1"
-    "@cspell/cspell-types" "8.16.1"
-    cspell-trie-lib "8.16.1"
+    "@cspell/cspell-pipe" "8.17.1"
+    "@cspell/cspell-types" "8.17.1"
+    cspell-trie-lib "8.17.1"
     fast-equals "^5.0.1"
 
-cspell-gitignore@8.16.1:
-  version "8.16.1"
-  resolved "https://registry.yarnpkg.com/cspell-gitignore/-/cspell-gitignore-8.16.1.tgz#49cbeee78c62295e48351b77b39592b32b898138"
+cspell-gitignore@8.17.1:
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/cspell-gitignore/-/cspell-gitignore-8.17.1.tgz#38f3213a40ba86480bb5f66a91198db6e0ef37c0"
   dependencies:
-    "@cspell/url" "8.16.1"
-    cspell-glob "8.16.1"
-    cspell-io "8.16.1"
+    "@cspell/url" "8.17.1"
+    cspell-glob "8.17.1"
+    cspell-io "8.17.1"
     find-up-simple "^1.0.0"
 
-cspell-glob@8.16.1:
-  version "8.16.1"
-  resolved "https://registry.yarnpkg.com/cspell-glob/-/cspell-glob-8.16.1.tgz#88fc7af7330e5be4fd390741f0d4282e753b52c6"
+cspell-glob@8.17.1:
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/cspell-glob/-/cspell-glob-8.17.1.tgz#23d1be46b32fb4933487e4edff347d34db446f5a"
   dependencies:
-    "@cspell/url" "8.16.1"
+    "@cspell/url" "8.17.1"
     micromatch "^4.0.8"
 
-cspell-grammar@8.16.1:
-  version "8.16.1"
-  resolved "https://registry.yarnpkg.com/cspell-grammar/-/cspell-grammar-8.16.1.tgz#69beb43fc1de65a1d929eb14ba748c6663141192"
+cspell-grammar@8.17.1:
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/cspell-grammar/-/cspell-grammar-8.17.1.tgz#8f6619fbfaebff6aeee63b13d17898b4d0c09136"
   dependencies:
-    "@cspell/cspell-pipe" "8.16.1"
-    "@cspell/cspell-types" "8.16.1"
+    "@cspell/cspell-pipe" "8.17.1"
+    "@cspell/cspell-types" "8.17.1"
 
-cspell-io@8.16.1:
-  version "8.16.1"
-  resolved "https://registry.yarnpkg.com/cspell-io/-/cspell-io-8.16.1.tgz#4f65952f324ab1ab8ec2e4283384410bb806027d"
+cspell-io@8.17.1:
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/cspell-io/-/cspell-io-8.17.1.tgz#b91f1cac1c64a6fa2b61a388d0dc67437fcf3ada"
   dependencies:
-    "@cspell/cspell-service-bus" "8.16.1"
-    "@cspell/url" "8.16.1"
+    "@cspell/cspell-service-bus" "8.17.1"
+    "@cspell/url" "8.17.1"
 
-cspell-lib@8.16.1:
-  version "8.16.1"
-  resolved "https://registry.yarnpkg.com/cspell-lib/-/cspell-lib-8.16.1.tgz#35474bdd0b5620ed423c0074a333957e2f501448"
+cspell-lib@8.17.1:
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/cspell-lib/-/cspell-lib-8.17.1.tgz#21c76f1ea4e91c90245e55acddbf452d055a6607"
   dependencies:
-    "@cspell/cspell-bundled-dicts" "8.16.1"
-    "@cspell/cspell-pipe" "8.16.1"
-    "@cspell/cspell-resolver" "8.16.1"
-    "@cspell/cspell-types" "8.16.1"
-    "@cspell/dynamic-import" "8.16.1"
-    "@cspell/filetypes" "8.16.1"
-    "@cspell/strong-weak-map" "8.16.1"
-    "@cspell/url" "8.16.1"
+    "@cspell/cspell-bundled-dicts" "8.17.1"
+    "@cspell/cspell-pipe" "8.17.1"
+    "@cspell/cspell-resolver" "8.17.1"
+    "@cspell/cspell-types" "8.17.1"
+    "@cspell/dynamic-import" "8.17.1"
+    "@cspell/filetypes" "8.17.1"
+    "@cspell/strong-weak-map" "8.17.1"
+    "@cspell/url" "8.17.1"
     clear-module "^4.1.2"
     comment-json "^4.2.5"
-    cspell-config-lib "8.16.1"
-    cspell-dictionary "8.16.1"
-    cspell-glob "8.16.1"
-    cspell-grammar "8.16.1"
-    cspell-io "8.16.1"
-    cspell-trie-lib "8.16.1"
+    cspell-config-lib "8.17.1"
+    cspell-dictionary "8.17.1"
+    cspell-glob "8.17.1"
+    cspell-grammar "8.17.1"
+    cspell-io "8.17.1"
+    cspell-trie-lib "8.17.1"
     env-paths "^3.0.0"
     fast-equals "^5.0.1"
     gensequence "^7.0.0"
@@ -2719,31 +2720,31 @@ cspell-lib@8.16.1:
     vscode-uri "^3.0.8"
     xdg-basedir "^5.1.0"
 
-cspell-trie-lib@8.16.1:
-  version "8.16.1"
-  resolved "https://registry.yarnpkg.com/cspell-trie-lib/-/cspell-trie-lib-8.16.1.tgz#c4b1c538919586d891c09335e0091a8acf23fb0c"
+cspell-trie-lib@8.17.1:
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/cspell-trie-lib/-/cspell-trie-lib-8.17.1.tgz#618e5cc671b0a24cf7ec27a9a9b834b197e17392"
   dependencies:
-    "@cspell/cspell-pipe" "8.16.1"
-    "@cspell/cspell-types" "8.16.1"
+    "@cspell/cspell-pipe" "8.17.1"
+    "@cspell/cspell-types" "8.17.1"
     gensequence "^7.0.0"
 
-cspell@^8.16.1:
-  version "8.16.1"
-  resolved "https://registry.yarnpkg.com/cspell/-/cspell-8.16.1.tgz#10a9991fb8840cd004a7a93da97243298036d3be"
+cspell@^8.17.1:
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/cspell/-/cspell-8.17.1.tgz#be3c79a5b0b2e374ac0df8f921eb30ddca170110"
   dependencies:
-    "@cspell/cspell-json-reporter" "8.16.1"
-    "@cspell/cspell-pipe" "8.16.1"
-    "@cspell/cspell-types" "8.16.1"
-    "@cspell/dynamic-import" "8.16.1"
-    "@cspell/url" "8.16.1"
+    "@cspell/cspell-json-reporter" "8.17.1"
+    "@cspell/cspell-pipe" "8.17.1"
+    "@cspell/cspell-types" "8.17.1"
+    "@cspell/dynamic-import" "8.17.1"
+    "@cspell/url" "8.17.1"
     chalk "^5.3.0"
     chalk-template "^1.1.0"
     commander "^12.1.0"
-    cspell-dictionary "8.16.1"
-    cspell-gitignore "8.16.1"
-    cspell-glob "8.16.1"
-    cspell-io "8.16.1"
-    cspell-lib "8.16.1"
+    cspell-dictionary "8.17.1"
+    cspell-gitignore "8.17.1"
+    cspell-glob "8.17.1"
+    cspell-io "8.17.1"
+    cspell-lib "8.17.1"
     fast-json-stable-stringify "^2.1.0"
     file-entry-cache "^9.1.0"
     get-stdin "^9.0.0"
