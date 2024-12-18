@@ -2464,12 +2464,11 @@ chownr@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-2.0.0.tgz#15bfbe53d2eab4cf70f18a8cd68ebe5b3cb1dece"
 
-chromium-bidi@0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/chromium-bidi/-/chromium-bidi-0.8.0.tgz#ffd79dad7db1fcc874f1c55fcf46ded05a884269"
+chromium-bidi@0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/chromium-bidi/-/chromium-bidi-0.11.0.tgz#9c3c42ee7b42d8448e9fce8d649dc8bfbcc31153"
   dependencies:
     mitt "3.0.1"
-    urlpattern-polyfill "10.0.0"
     zod "3.23.8"
 
 ci-info@^3.2.0:
@@ -6392,26 +6391,26 @@ punycode@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.3.1.tgz#027422e2faec0b25e1549c3e1bd8309b9133b6e5"
 
-puppeteer-core@23.10.4:
-  version "23.10.4"
-  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-23.10.4.tgz#f0a70a0df6a0afd43e787b658064ddb062c07b5a"
+puppeteer-core@23.11.0:
+  version "23.11.0"
+  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-23.11.0.tgz#1d49f5c254b140e5021bc15cbe3a9c5916baccbc"
   dependencies:
     "@puppeteer/browsers" "2.6.1"
-    chromium-bidi "0.8.0"
+    chromium-bidi "0.11.0"
     debug "^4.4.0"
     devtools-protocol "0.0.1367902"
     typed-query-selector "^2.12.0"
     ws "^8.18.0"
 
-puppeteer@^23.10.4:
-  version "23.10.4"
-  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-23.10.4.tgz#398ff9f04924c05334514d73b61a03a7a36ad101"
+puppeteer@^23.11.0:
+  version "23.11.0"
+  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-23.11.0.tgz#9f99f4bdf752a20d778780c003da7fcf0f351135"
   dependencies:
     "@puppeteer/browsers" "2.6.1"
-    chromium-bidi "0.8.0"
+    chromium-bidi "0.11.0"
     cosmiconfig "^9.0.0"
     devtools-protocol "0.0.1367902"
-    puppeteer-core "23.10.4"
+    puppeteer-core "23.11.0"
     typed-query-selector "^2.12.0"
 
 pure-rand@^6.0.0:
@@ -7541,10 +7540,6 @@ url-parse@^1.5.3:
   dependencies:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
-
-urlpattern-polyfill@10.0.0:
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/urlpattern-polyfill/-/urlpattern-polyfill-10.0.0.tgz#f0a03a97bfb03cdf33553e5e79a2aadd22cac8ec"
 
 util-deprecate@^1.0.1, util-deprecate@^1.0.2:
   version "1.0.2"
