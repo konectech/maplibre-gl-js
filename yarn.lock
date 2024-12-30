@@ -7872,9 +7872,9 @@ typed-query-selector@^2.12.0:
   version "2.12.0"
   resolved "https://registry.yarnpkg.com/typed-query-selector/-/typed-query-selector-2.12.0.tgz#92b65dbc0a42655fccf4aeb1a08b1dddce8af5f2"
 
-typedoc-plugin-markdown@^4.3.3:
-  version "4.3.3"
-  resolved "https://registry.yarnpkg.com/typedoc-plugin-markdown/-/typedoc-plugin-markdown-4.3.3.tgz#212f51faf742f8cc918e7ae239fd814b5b096317"
+typedoc-plugin-markdown@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/typedoc-plugin-markdown/-/typedoc-plugin-markdown-4.4.0.tgz#6ae3400199aa83bfe0ce9e944443c270479ec46b"
 
 typedoc-plugin-missing-exports@^3.1.0:
   version "3.1.0"
