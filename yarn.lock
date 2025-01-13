@@ -2605,6 +2605,10 @@ commander@^12.1.0:
   version "12.1.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-12.1.0.tgz#01423b36f501259fdaac4d0e4d60c96c991585d3"
 
+commander@^13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-13.0.0.tgz#1b161f60ee3ceb8074583a0f95359a4f8701845c"
+
 commander@^2.20.0:
   version "2.20.3"
   resolved "https://registry.npmjs.org/commander/-/commander-2.20.3.tgz"
@@ -2627,9 +2631,9 @@ concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.npmjs.org/concat-map/-/concat-map-0.0.1.tgz"
 
-console-grid@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/console-grid/-/console-grid-2.2.2.tgz#7b786f6c977b1ae5dcaab21c167f97329ca3fad4"
+console-grid@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/console-grid/-/console-grid-2.2.3.tgz#0c18227ff1907c0866333bf2f844668408d5d6c1"
 
 convert-source-map@^1.7.0:
   version "1.7.0"
@@ -5838,15 +5842,15 @@ mock-geolocation@^1.0.11:
   version "1.0.11"
   resolved "https://registry.npmjs.org/mock-geolocation/-/mock-geolocation-1.0.11.tgz"
 
-monocart-coverage-reports@^2.11.4, monocart-coverage-reports@^2.8.7:
-  version "2.11.4"
-  resolved "https://registry.yarnpkg.com/monocart-coverage-reports/-/monocart-coverage-reports-2.11.4.tgz#09096ff053dc66578d0e3fddba8e7255136cbb2d"
+monocart-coverage-reports@^2.11.6, monocart-coverage-reports@^2.8.7:
+  version "2.11.6"
+  resolved "https://registry.yarnpkg.com/monocart-coverage-reports/-/monocart-coverage-reports-2.11.6.tgz#ea0f3f34de1e53cc47ae4bd99d65a85e5c084c2c"
   dependencies:
     acorn "^8.14.0"
     acorn-loose "^8.4.0"
     acorn-walk "^8.3.4"
-    commander "^12.1.0"
-    console-grid "^2.2.2"
+    commander "^13.0.0"
+    console-grid "^2.2.3"
     eight-colors "^1.3.1"
     foreground-child "^3.3.0"
     istanbul-lib-coverage "^3.2.2"
