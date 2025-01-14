@@ -7543,9 +7543,9 @@ stylelint-config-standard@^36.0.1:
   dependencies:
     stylelint-config-recommended "^14.0.1"
 
-stylelint@^16.13.1:
-  version "16.13.1"
-  resolved "https://registry.yarnpkg.com/stylelint/-/stylelint-16.13.1.tgz#bc1bb8a01052c60a1b7c1038aa54773b14fea5b7"
+stylelint@^16.13.2:
+  version "16.13.2"
+  resolved "https://registry.yarnpkg.com/stylelint/-/stylelint-16.13.2.tgz#a0e8aab7cedde55f185ac8af6f526e53df783294"
   dependencies:
     "@csstools/css-parser-algorithms" "^3.0.4"
     "@csstools/css-tokenizer" "^3.0.3"
