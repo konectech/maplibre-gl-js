@@ -1,9 +1,8 @@
 import {vec3} from 'gl-matrix';
-import {clamp, lerp, mod, remapSaturate, wrap} from '../../util/util';
+import {clamp, lerp, MAX_VALID_LATITUDE, mod, remapSaturate, scaleZoom, wrap} from '../../util/util';
 import {LngLat} from '../lng_lat';
-import {MAX_VALID_LATITUDE, scaleZoom} from '../transform_helper';
-import Point from '@mapbox/point-geometry';
 import {EXTENT} from '../../data/extent';
+import type Point from '@mapbox/point-geometry';
 
 export function getGlobeCircumferencePixels(transform: {worldSize: number; center: {lat: number}}): number {
     const radius = getGlobeRadiusPixels(transform.worldSize, transform.center.lat);
@@ -137,13 +136,13 @@ export function getDegreesPerPixel(worldSize: number, lat: number): number {
  * @returns New center location to set to the map's transform to apply the specified panning.
  */
 export function computeGlobePanCenter(panDelta: Point, tr: {
-    readonly angle: number;
+    readonly bearingInRadians: number;
     readonly worldSize: number;
     readonly center: LngLat;
     readonly zoom: number;
 }): LngLat {
     // Apply map bearing to the panning vector
-    const rotatedPanDelta = panDelta.rotate(-tr.angle);
+    const rotatedPanDelta = panDelta.rotate(tr.bearingInRadians);
     // Compute what the current zoom would be if the transform center would be moved to latitude 0.
     const normalizedGlobeZoom = tr.zoom + getZoomAdjustment(tr.center.lat, 0);
     // Note: we divide longitude speed by planet width at the given latitude. But we diminish this effect when the globe is zoomed out a lot.

@@ -14,8 +14,8 @@ import type {
     SymbolLineVertexArray
 } from '../data/array_types.g';
 import type {OverlapMode} from '../style/style_layer/overlap_mode';
-import {UnwrappedTileID} from '../source/tile_id';
-import {type PointProjection, SymbolProjectionContext, pathSlicedToLongestUnoccluded, placeFirstAndLastGlyph, projectPathSpecialProjection, xyTransformMat4} from '../symbol/projection';
+import {type OverscaledTileID, type UnwrappedTileID} from '../source/tile_id';
+import {type PointProjection, type SymbolProjectionContext, getTileSkewVectors, pathSlicedToLongestUnoccluded, placeFirstAndLastGlyph, projectPathSpecialProjection, xyTransformMat4} from '../symbol/projection';
 import {clamp, getAABB} from '../util/util';
 
 // When a symbol crosses the edge that causes it to be included in
@@ -102,6 +102,7 @@ export class CollisionIndex {
         collisionBox: SingleCollisionBox,
         overlapMode: OverlapMode,
         textPixelRatio: number,
+        tileID: OverscaledTileID,
         unwrappedTileID: UnwrappedTileID,
         pitchWithMap: boolean,
         rotateWithMap: boolean,
@@ -141,6 +142,7 @@ export class CollisionIndex {
             projectedBox = this._projectCollisionBox(
                 collisionBox,
                 tileToViewport,
+                tileID,
                 unwrappedTileID,
                 pitchWithMap,
                 rotateWithMap,
@@ -199,7 +201,8 @@ export class CollisionIndex {
 
         const tileUnitAnchorPoint = new Point(symbol.anchorX, symbol.anchorY);
         const perspectiveRatio = this.getPerspectiveRatio(tileUnitAnchorPoint.x, tileUnitAnchorPoint.y, unwrappedTileID, getElevation);
-        const labelPlaneFontSize = pitchWithMap ? fontSize / perspectiveRatio : fontSize * perspectiveRatio;
+
+        const labelPlaneFontSize = pitchWithMap ? (fontSize * this.transform.getPitchedTextCorrection(symbol.anchorX, symbol.anchorY, unwrappedTileID) / perspectiveRatio) : fontSize * perspectiveRatio;
         const labelPlaneFontScale = labelPlaneFontSize / ONE_EM;
 
         const projectionCache = {projections: {}, offsets: {}, cachedAnchorPoint: undefined, anyProjectionOccluded: false};
@@ -504,6 +507,7 @@ export class CollisionIndex {
     private _projectCollisionBox(
         collisionBox: SingleCollisionBox,
         tileToViewport: number,
+        tileID: OverscaledTileID,
         unwrappedTileID: UnwrappedTileID,
         pitchWithMap: boolean,
         rotateWithMap: boolean,
@@ -542,13 +546,11 @@ export class CollisionIndex {
             vecSouthY = cos;
         } else if (!rotateWithMap && pitchWithMap) {
             // Handles pitch-align: map texts that are always aligned with the viewport's X axis.
-            const angle = -this.transform.angle;
-            const sin = Math.sin(angle);
-            const cos = Math.cos(angle);
-            vecEastX = cos;
-            vecEastY = sin;
-            vecSouthX = -sin;
-            vecSouthY = cos;
+            const skew = getTileSkewVectors(this.transform);
+            vecEastX = skew.vecEast[0];
+            vecEastY = skew.vecEast[1];
+            vecSouthX = skew.vecSouth[0];
+            vecSouthY = skew.vecSouth[1];
         }
 
         // Configuration for screen space offsets
@@ -561,7 +563,7 @@ export class CollisionIndex {
             basePointX = translatedAnchorX;
             basePointY = translatedAnchorY;
 
-            const zoomFraction = this.transform.zoom - Math.floor(this.transform.zoom);
+            const zoomFraction = this.transform.zoom - tileID.overscaledZ;
             distanceMultiplier = Math.pow(2, -zoomFraction);
             distanceMultiplier *= this.transform.getPitchedTextCorrection(translatedAnchorX, translatedAnchorY, unwrappedTileID);
 

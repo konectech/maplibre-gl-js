@@ -5,24 +5,24 @@ import * as symbolSize from './symbol_size';
 import * as projection from './projection';
 import {getAnchorJustification} from './symbol_layout';
 import {getAnchorAlignment, WritingMode} from './shaping';
-import {mat4} from 'gl-matrix';
+import {type mat4} from 'gl-matrix';
 import {pixelsToTileUnits} from '../source/pixels_to_tile_units';
 import Point from '@mapbox/point-geometry';
 import type {IReadonlyTransform, ITransform} from '../geo/transform_interface';
 import type {StyleLayer} from '../style/style_layer';
-import {PossiblyEvaluated} from '../style/properties';
+import {type PossiblyEvaluated} from '../style/properties';
 import type {SymbolLayoutProps, SymbolLayoutPropsPossiblyEvaluated} from '../style/style_layer/symbol_style_layer_properties.g';
-import {getOverlapMode, OverlapMode} from '../style/style_layer/overlap_mode';
+import {getOverlapMode, type OverlapMode} from '../style/style_layer/overlap_mode';
 
 import type {Tile} from '../source/tile';
-import {SymbolBucket, CollisionArrays, SingleCollisionBox} from '../data/bucket/symbol_bucket';
+import {type SymbolBucket, type CollisionArrays, type SingleCollisionBox} from '../data/bucket/symbol_bucket';
 
 import type {CollisionBoxArray, CollisionVertexArray, SymbolInstance, TextAnchorOffset} from '../data/array_types.g';
 import type {FeatureIndex} from '../data/feature_index';
 import type {OverscaledTileID, UnwrappedTileID} from '../source/tile_id';
-import {Terrain} from '../render/terrain';
+import {type Terrain} from '../render/terrain';
 import {translatePosition, warnOnce} from '../util/util';
-import {TextAnchor, TextAnchorEnum} from '../style/style_layer/variable_text_anchor';
+import {type TextAnchor, TextAnchorEnum} from '../style/style_layer/variable_text_anchor';
 
 class OpacityState {
     opacity: number;
@@ -323,6 +323,7 @@ export class Placement {
         rotateWithMap: boolean,
         pitchWithMap: boolean,
         textPixelRatio: number,
+        tileID: OverscaledTileID,
         unwrappedTileID,
         collisionGroup: CollisionGroup,
         textOverlapMode: OverlapMode,
@@ -347,6 +348,7 @@ export class Placement {
             textBox,
             textOverlapMode,
             textPixelRatio,
+            tileID,
             unwrappedTileID,
             pitchWithMap,
             rotateWithMap,
@@ -362,6 +364,7 @@ export class Placement {
                 iconBox,
                 textOverlapMode,
                 textPixelRatio,
+                tileID,
                 unwrappedTileID,
                 pitchWithMap,
                 rotateWithMap,
@@ -533,6 +536,7 @@ export class Placement {
                             collisionTextBox,
                             textOverlapMode,
                             textPixelRatio,
+                            tileID,
                             unwrappedTileID,
                             pitchWithMap,
                             rotateWithMap,
@@ -592,7 +596,7 @@ export class Placement {
 
                                 const result = this.attemptAnchorPlacement(
                                     textAnchorOffset, collisionTextBox, width, height,
-                                    textBoxScale, rotateWithMap, pitchWithMap, textPixelRatio, unwrappedTileID,
+                                    textBoxScale, rotateWithMap, pitchWithMap, textPixelRatio, tileID, unwrappedTileID,
                                     collisionGroup, overlapMode, symbolInstance, bucket, orientation, translationText, translationIcon, variableIconBox, getElevation);
 
                                 if (result) {
@@ -619,6 +623,7 @@ export class Placement {
                                 textBox,
                                 'always', // Skips expensive collision check with already placed boxes
                                 textPixelRatio,
+                                tileID,
                                 unwrappedTileID,
                                 pitchWithMap,
                                 rotateWithMap,
@@ -724,6 +729,7 @@ export class Placement {
                         iconBox,
                         iconOverlapMode,
                         textPixelRatio,
+                        tileID,
                         unwrappedTileID,
                         pitchWithMap,
                         rotateWithMap,
@@ -818,7 +824,7 @@ export class Placement {
 
         if (zOrderByViewportY) {
             if (bucketPart.symbolInstanceStart !== 0) throw new Error('bucket.bucketInstanceId should be 0');
-            const symbolIndexes = bucket.getSortedSymbolIndexes(this.transform.angle);
+            const symbolIndexes = bucket.getSortedSymbolIndexes(-this.transform.bearingInRadians);
             for (let i = symbolIndexes.length - 1; i >= 0; --i) {
                 const symbolIndex = symbolIndexes[i];
                 placeSymbol(bucket.symbolInstances.get(symbolIndex), bucket.collisionArrays[symbolIndex], symbolIndex);
@@ -1174,7 +1180,7 @@ export class Placement {
                                     variableOffset.textOffset,
                                     variableOffset.textBoxScale);
                                 if (rotateWithMap) {
-                                    shift._rotate(pitchWithMap ? this.transform.angle : -this.transform.angle);
+                                    shift._rotate(pitchWithMap ? -this.transform.bearingInRadians : this.transform.bearingInRadians);
                                 }
                             } else {
                                 // No offset -> this symbol hasn't been placed since coming on-screen
@@ -1213,7 +1219,7 @@ export class Placement {
             }
         }
 
-        bucket.sortFeatures(this.transform.angle);
+        bucket.sortFeatures(-this.transform.bearingInRadians);
         if (this.retainedQueryData[bucket.bucketInstanceId]) {
             this.retainedQueryData[bucket.bucketInstanceId].featureSortOrder = bucket.featureSortOrder;
         }
