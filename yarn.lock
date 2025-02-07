@@ -859,11 +859,11 @@
     pbf "^3.0.5"
     protocol-buffers-schema "^3.3.2"
 
-"@mapbox/point-geometry@0.1.0", "@mapbox/point-geometry@^0.1.0", "@mapbox/point-geometry@~0.1.0":
+"@mapbox/point-geometry@0.1.0", "@mapbox/point-geometry@~0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@mapbox/point-geometry/-/point-geometry-0.1.0.tgz#8a83f9335c7860effa2eeeca254332aa0aeed8f2"
 
-"@mapbox/point-geometry@~1.1.0":
+"@mapbox/point-geometry@^1.1.0", "@mapbox/point-geometry@~1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@mapbox/point-geometry/-/point-geometry-1.1.0.tgz#3328fb54b3a1273bc619bf0a6baad8de37181749"
 
