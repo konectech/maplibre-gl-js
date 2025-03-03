@@ -2355,9 +2355,9 @@ chownr@^1.1.1:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.1.4.tgz#6fc9d7b42d32a583596337666e7d08084da2cc6b"
 
-chromium-bidi@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/chromium-bidi/-/chromium-bidi-2.0.0.tgz#f2f59a0c89cd1b2965e89e36b82c9e18e847deed"
+chromium-bidi@2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/chromium-bidi/-/chromium-bidi-2.1.2.tgz#b0710279f993128d4e0b41c892209ea093217d97"
   dependencies:
     mitt "^3.0.1"
     zod "^3.24.1"
@@ -6002,26 +6002,26 @@ punycode@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.3.1.tgz#027422e2faec0b25e1549c3e1bd8309b9133b6e5"
 
-puppeteer-core@24.3.0:
-  version "24.3.0"
-  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-24.3.0.tgz#7fe2e8b69923825640d1452b1083f90d2f21619e"
+puppeteer-core@24.3.1:
+  version "24.3.1"
+  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-24.3.1.tgz#7e03c35cf6a7b3a8bf4ab88cae78189a0d6d365d"
   dependencies:
     "@puppeteer/browsers" "2.7.1"
-    chromium-bidi "2.0.0"
+    chromium-bidi "2.1.2"
     debug "^4.4.0"
     devtools-protocol "0.0.1402036"
     typed-query-selector "^2.12.0"
     ws "^8.18.1"
 
-puppeteer@^24.3.0:
-  version "24.3.0"
-  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-24.3.0.tgz#27b58257053df2cec590ec0bc4874017a90157e6"
+puppeteer@^24.3.1:
+  version "24.3.1"
+  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-24.3.1.tgz#c1d7ada2c02650140ed6276aa335843f6daada3c"
   dependencies:
     "@puppeteer/browsers" "2.7.1"
-    chromium-bidi "2.0.0"
+    chromium-bidi "2.1.2"
     cosmiconfig "^9.0.0"
     devtools-protocol "0.0.1402036"
-    puppeteer-core "24.3.0"
+    puppeteer-core "24.3.1"
     typed-query-selector "^2.12.0"
 
 queue-microtask@^1.2.2:
