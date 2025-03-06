@@ -972,9 +972,9 @@
     tar-fs "^3.0.8"
     yargs "^17.7.2"
 
-"@rollup/plugin-commonjs@^28.0.2":
-  version "28.0.2"
-  resolved "https://registry.yarnpkg.com/@rollup/plugin-commonjs/-/plugin-commonjs-28.0.2.tgz#193d7a86470f112b56927c1d821ee45951a819ea"
+"@rollup/plugin-commonjs@^28.0.3":
+  version "28.0.3"
+  resolved "https://registry.yarnpkg.com/@rollup/plugin-commonjs/-/plugin-commonjs-28.0.3.tgz#44c2cc7c955c6113b96696b55e6bc2446bd67913"
   dependencies:
     "@rollup/pluginutils" "^5.0.1"
     commondir "^1.0.1"
@@ -3719,11 +3719,7 @@ fd@~0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/fd/-/fd-0.0.3.tgz#b3240de86dbf5a345baae7382a07d4713566ff0c"
 
-fdir@^6.2.0:
-  version "6.4.2"
-  resolved "https://registry.yarnpkg.com/fdir/-/fdir-6.4.2.tgz#ddaa7ce1831b161bc3657bb99cb36e1622702689"
-
-fdir@^6.4.3:
+fdir@^6.2.0, fdir@^6.4.3:
   version "6.4.3"
   resolved "https://registry.yarnpkg.com/fdir/-/fdir-6.4.3.tgz#011cdacf837eca9b811c89dbb902df714273db72"
 
@@ -4992,15 +4988,9 @@ lz-utils@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/lz-utils/-/lz-utils-2.1.0.tgz#6923e2059bf7a85fb267db495234e8a936c97d5e"
 
-magic-string@^0.30.17:
+magic-string@^0.30.17, magic-string@^0.30.3:
   version "0.30.17"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.30.17.tgz#450a449673d2460e5bbcfba9a61916a1714c7453"
-  dependencies:
-    "@jridgewell/sourcemap-codec" "^1.5.0"
-
-magic-string@^0.30.3:
-  version "0.30.12"
-  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.30.12.tgz#9eb11c9d072b9bcb4940a5b2c2e1a217e4ee1a60"
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.5.0"
 
