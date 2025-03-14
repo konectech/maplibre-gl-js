@@ -1796,9 +1796,9 @@ acorn-walk@^8.1.1, acorn-walk@^8.3.4:
   dependencies:
     acorn "^8.11.0"
 
-acorn@^8.11.0, acorn@^8.14.0, acorn@^8.4.1, acorn@^8.8.2:
-  version "8.14.0"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.14.0.tgz#063e2c70cac5fb4f6467f0b11152e04c682795b0"
+acorn@^8.11.0, acorn@^8.14.0, acorn@^8.14.1, acorn@^8.4.1, acorn@^8.8.2:
+  version "8.14.1"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.14.1.tgz#721d5dc10f7d5b5609a891773d47731796935dfb"
 
 address@^2.0.3:
   version "2.0.3"
@@ -5094,11 +5094,11 @@ mock-geolocation@^1.0.11:
   version "1.0.11"
   resolved "https://registry.npmjs.org/mock-geolocation/-/mock-geolocation-1.0.11.tgz"
 
-monocart-coverage-reports@^2.12.2:
-  version "2.12.2"
-  resolved "https://registry.yarnpkg.com/monocart-coverage-reports/-/monocart-coverage-reports-2.12.2.tgz#672ac871f837890c9aabf24daffa51cb6b4b17e4"
+monocart-coverage-reports@^2.12.3:
+  version "2.12.3"
+  resolved "https://registry.yarnpkg.com/monocart-coverage-reports/-/monocart-coverage-reports-2.12.3.tgz#f952df05e977ff9ca9c264e96713d5f9e255b94e"
   dependencies:
-    acorn "^8.14.0"
+    acorn "^8.14.1"
     acorn-loose "^8.4.0"
     acorn-walk "^8.3.4"
     commander "^13.1.0"
