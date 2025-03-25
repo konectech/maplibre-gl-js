@@ -1387,9 +1387,9 @@
     "@types/d3-transition" "*"
     "@types/d3-zoom" "*"
 
-"@types/diff@^7.0.1":
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/@types/diff/-/diff-7.0.1.tgz#acc505eb2e8337ca400503283a6ab44a59906d9f"
+"@types/diff@^7.0.2":
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/@types/diff/-/diff-7.0.2.tgz#d638edebf3c97aa4962b6f1164a7921ab3de9f83"
 
 "@types/earcut@^3.0.0":
   version "3.0.0"
