@@ -964,9 +964,9 @@
   version "1.0.0-next.28"
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.28.tgz#d45e01c4a56f143ee69c54dd6b12eade9e270a73"
 
-"@puppeteer/browsers@2.8.0":
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/@puppeteer/browsers/-/browsers-2.8.0.tgz#9d592933cbefc66c37823770844b8cbac52607dd"
+"@puppeteer/browsers@2.9.0":
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/@puppeteer/browsers/-/browsers-2.9.0.tgz#744a2395b196530d9fffbc64df549689f06bc24e"
   dependencies:
     debug "^4.4.0"
     extract-zip "^2.0.1"
@@ -2346,9 +2346,9 @@ chownr@^1.1.1:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.1.4.tgz#6fc9d7b42d32a583596337666e7d08084da2cc6b"
 
-chromium-bidi@2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/chromium-bidi/-/chromium-bidi-2.1.2.tgz#b0710279f993128d4e0b41c892209ea093217d97"
+chromium-bidi@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/chromium-bidi/-/chromium-bidi-3.0.0.tgz#bfb0549db96552d42377401aadc0198a1bbb3e9f"
   dependencies:
     mitt "^3.0.1"
     zod "^3.24.1"
@@ -5918,26 +5918,26 @@ punycode@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.3.1.tgz#027422e2faec0b25e1549c3e1bd8309b9133b6e5"
 
-puppeteer-core@24.4.0:
-  version "24.4.0"
-  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-24.4.0.tgz#a301c58344fe939b487704593681ea9f913fe6f8"
+puppeteer-core@24.5.0:
+  version "24.5.0"
+  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-24.5.0.tgz#65126c46e1701922739a8372027e5c5b1eba56fe"
   dependencies:
-    "@puppeteer/browsers" "2.8.0"
-    chromium-bidi "2.1.2"
+    "@puppeteer/browsers" "2.9.0"
+    chromium-bidi "3.0.0"
     debug "^4.4.0"
     devtools-protocol "0.0.1413902"
     typed-query-selector "^2.12.0"
     ws "^8.18.1"
 
-puppeteer@^24.4.0:
-  version "24.4.0"
-  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-24.4.0.tgz#fb45a67e72f4e6e34db8f404ef61cdd42099e6e6"
+puppeteer@^24.5.0:
+  version "24.5.0"
+  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-24.5.0.tgz#b0f533eb4613eedbc6d2bce9424feb4dcb2b9534"
   dependencies:
-    "@puppeteer/browsers" "2.8.0"
-    chromium-bidi "2.1.2"
+    "@puppeteer/browsers" "2.9.0"
+    chromium-bidi "3.0.0"
     cosmiconfig "^9.0.0"
     devtools-protocol "0.0.1413902"
-    puppeteer-core "24.4.0"
+    puppeteer-core "24.5.0"
     typed-query-selector "^2.12.0"
 
 queue-microtask@^1.2.2:
