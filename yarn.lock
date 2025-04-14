@@ -5179,9 +5179,9 @@ mock-geolocation@^1.0.11:
   version "1.0.11"
   resolved "https://registry.npmjs.org/mock-geolocation/-/mock-geolocation-1.0.11.tgz"
 
-monocart-coverage-reports@^2.12.3:
-  version "2.12.3"
-  resolved "https://registry.yarnpkg.com/monocart-coverage-reports/-/monocart-coverage-reports-2.12.3.tgz#f952df05e977ff9ca9c264e96713d5f9e255b94e"
+monocart-coverage-reports@^2.12.4:
+  version "2.12.4"
+  resolved "https://registry.yarnpkg.com/monocart-coverage-reports/-/monocart-coverage-reports-2.12.4.tgz#feff654d3323ad9377290724ab7b7fde0458358b"
   dependencies:
     acorn "^8.14.1"
     acorn-loose "^8.4.0"
