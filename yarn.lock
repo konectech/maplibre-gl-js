@@ -991,9 +991,9 @@
   version "1.0.0-next.28"
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.28.tgz#d45e01c4a56f143ee69c54dd6b12eade9e270a73"
 
-"@puppeteer/browsers@2.10.3":
-  version "2.10.3"
-  resolved "https://registry.yarnpkg.com/@puppeteer/browsers/-/browsers-2.10.3.tgz#4d89b3520359da6f7016ff96316c2c243be2b3ee"
+"@puppeteer/browsers@2.10.4":
+  version "2.10.4"
+  resolved "https://registry.yarnpkg.com/@puppeteer/browsers/-/browsers-2.10.4.tgz#9f8923b206f7932a06d32271b14bbea3368b38f2"
   dependencies:
     debug "^4.4.0"
     extract-zip "^2.0.1"
@@ -6167,26 +6167,26 @@ punycode@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.3.1.tgz#027422e2faec0b25e1549c3e1bd8309b9133b6e5"
 
-puppeteer-core@24.8.1:
-  version "24.8.1"
-  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-24.8.1.tgz#20728f431f4ed2daba23515df1f1a586c663b4ba"
+puppeteer-core@24.8.2:
+  version "24.8.2"
+  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-24.8.2.tgz#f3e939e39e001d9933e79d980371e380d9e535c1"
   dependencies:
-    "@puppeteer/browsers" "2.10.3"
+    "@puppeteer/browsers" "2.10.4"
     chromium-bidi "5.1.0"
     debug "^4.4.0"
     devtools-protocol "0.0.1439962"
     typed-query-selector "^2.12.0"
     ws "^8.18.2"
 
-puppeteer@^24.8.1:
-  version "24.8.1"
-  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-24.8.1.tgz#820ecaec7a793ab5b8fa30269ae5e1b8e7c68cc8"
+puppeteer@^24.8.2:
+  version "24.8.2"
+  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-24.8.2.tgz#3ee6cfe74e4cc8dc4dd5cb4b553f4d4416df935f"
   dependencies:
-    "@puppeteer/browsers" "2.10.3"
+    "@puppeteer/browsers" "2.10.4"
     chromium-bidi "5.1.0"
     cosmiconfig "^9.0.0"
     devtools-protocol "0.0.1439962"
-    puppeteer-core "24.8.1"
+    puppeteer-core "24.8.2"
     typed-query-selector "^2.12.0"
 
 qs@^6.14.0:
