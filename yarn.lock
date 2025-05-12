@@ -3224,9 +3224,9 @@ diff@^4.0.1:
   version "4.0.2"
   resolved "https://registry.npmjs.org/diff/-/diff-4.0.2.tgz"
 
-diff@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/diff/-/diff-7.0.0.tgz#3fb34d387cd76d803f6eebea67b921dab0182a9a"
+diff@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/diff/-/diff-8.0.0.tgz#c70061a3bb1274982cd99058b321bb172832a3a2"
 
 dir-glob@^3.0.1:
   version "3.0.1"
