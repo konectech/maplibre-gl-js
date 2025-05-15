@@ -1834,11 +1834,11 @@ acorn-jsx@^5.3.2:
   version "5.3.2"
   resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-5.3.2.tgz#7ed5bb55908b3b2f1bc55c6af1653bada7f07937"
 
-acorn-loose@^8.4.0:
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/acorn-loose/-/acorn-loose-8.4.0.tgz#26d3e219756d1e180d006f5bcc8d261a28530f55"
+acorn-loose@^8.5.0:
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/acorn-loose/-/acorn-loose-8.5.0.tgz#11fbd555827d551dd16ca812c078e382400b1bc7"
   dependencies:
-    acorn "^8.11.0"
+    acorn "^8.14.0"
 
 acorn-walk@^8.1.1, acorn-walk@^8.3.4:
   version "8.3.4"
@@ -5358,12 +5358,12 @@ mock-geolocation@^1.0.11:
   version "1.0.11"
   resolved "https://registry.npmjs.org/mock-geolocation/-/mock-geolocation-1.0.11.tgz"
 
-monocart-coverage-reports@^2.12.4:
-  version "2.12.4"
-  resolved "https://registry.yarnpkg.com/monocart-coverage-reports/-/monocart-coverage-reports-2.12.4.tgz#feff654d3323ad9377290724ab7b7fde0458358b"
+monocart-coverage-reports@^2.12.6:
+  version "2.12.6"
+  resolved "https://registry.yarnpkg.com/monocart-coverage-reports/-/monocart-coverage-reports-2.12.6.tgz#0321f89e6d4e6d00c19510a07d15806d2591c3ef"
   dependencies:
     acorn "^8.14.1"
-    acorn-loose "^8.4.0"
+    acorn-loose "^8.5.0"
     acorn-walk "^8.3.4"
     commander "^13.1.0"
     console-grid "^2.2.3"
