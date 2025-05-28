@@ -1513,9 +1513,9 @@
   version "1.4.5"
   resolved "https://registry.yarnpkg.com/@types/nise/-/nise-1.4.5.tgz#ae54fe7e2f92d78033a2e18e563631b2654e0896"
 
-"@types/node@*", "@types/node@^22.15.21":
-  version "22.15.21"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.15.21.tgz#196ef14fe20d87f7caf1e7b39832767f9a995b77"
+"@types/node@*", "@types/node@^22.15.24":
+  version "22.15.24"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.15.24.tgz#3b31f1650571c0123388db29d95c12e6f6761744"
   dependencies:
     undici-types "~6.21.0"
 
