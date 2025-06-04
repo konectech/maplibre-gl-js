@@ -1186,9 +1186,9 @@
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.3.tgz#282046f03e886e352b2d5f5da5eb755e01457f3f"
 
-"@stylistic/eslint-plugin-ts@^4.4.0":
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/@stylistic/eslint-plugin-ts/-/eslint-plugin-ts-4.4.0.tgz#b532953efb08e6806eb74661abc074a81bd6ed77"
+"@stylistic/eslint-plugin-ts@^4.4.1":
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/@stylistic/eslint-plugin-ts/-/eslint-plugin-ts-4.4.1.tgz#deca8b999d00a8dba4a42ea75db2bdd2a05c7fbe"
   dependencies:
     "@typescript-eslint/utils" "^8.32.1"
     eslint-visitor-keys "^4.2.0"
