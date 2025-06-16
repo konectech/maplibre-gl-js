@@ -1004,9 +1004,9 @@
     tar-fs "^3.0.8"
     yargs "^17.7.2"
 
-"@rollup/plugin-commonjs@^28.0.3":
-  version "28.0.3"
-  resolved "https://registry.yarnpkg.com/@rollup/plugin-commonjs/-/plugin-commonjs-28.0.3.tgz#44c2cc7c955c6113b96696b55e6bc2446bd67913"
+"@rollup/plugin-commonjs@^28.0.5":
+  version "28.0.5"
+  resolved "https://registry.yarnpkg.com/@rollup/plugin-commonjs/-/plugin-commonjs-28.0.5.tgz#9d88fbab1fb586accca5b4235813ac3d53078b3c"
   dependencies:
     "@rollup/pluginutils" "^5.0.1"
     commondir "^1.0.1"
@@ -3834,11 +3834,7 @@ fd@^0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/fd/-/fd-0.0.3.tgz#b3240de86dbf5a345baae7382a07d4713566ff0c"
 
-fdir@^6.2.0:
-  version "6.4.3"
-  resolved "https://registry.yarnpkg.com/fdir/-/fdir-6.4.3.tgz#011cdacf837eca9b811c89dbb902df714273db72"
-
-fdir@^6.4.4:
+fdir@^6.2.0, fdir@^6.4.4:
   version "6.4.4"
   resolved "https://registry.yarnpkg.com/fdir/-/fdir-6.4.4.tgz#1cfcf86f875a883e19a8fab53622cfe992e8d2f9"
 
