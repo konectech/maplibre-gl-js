@@ -2349,12 +2349,12 @@ caniuse-lite@^1.0.30001716:
   version "1.0.30001717"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001717.tgz#5d9fec5ce09796a1893013825510678928aca129"
 
-canvas@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/canvas/-/canvas-3.1.0.tgz#6cdf094b859fef8e39b0e2c386728a376f1727b2"
+canvas@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/canvas/-/canvas-3.1.1.tgz#d5399808e5cd19b0a9679248a7f98929e3f96341"
   dependencies:
     node-addon-api "^7.0.0"
-    prebuild-install "^7.1.1"
+    prebuild-install "^7.1.3"
 
 chai@^5.1.2:
   version "5.1.2"
@@ -5288,9 +5288,9 @@ nanoid@^3.3.11:
   version "3.3.11"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.11.tgz#4f4f112cefbe303202f2199838128936266d185b"
 
-napi-build-utils@^1.0.1:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/napi-build-utils/-/napi-build-utils-1.0.2.tgz#b1fddc0b2c46e380a0b7a76f984dd47c41a13806"
+napi-build-utils@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/napi-build-utils/-/napi-build-utils-2.0.0.tgz#13c22c0187fcfccce1461844136372a47ddc027e"
 
 natural-compare@^1.4.0:
   version "1.4.0"
@@ -5938,16 +5938,16 @@ potpack@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/potpack/-/potpack-2.0.0.tgz#61f4dd2dc4b3d5e996e3698c0ec9426d0e169104"
 
-prebuild-install@^7.1.1:
-  version "7.1.2"
-  resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-7.1.2.tgz#a5fd9986f5a6251fbc47e1e5c65de71e68c0a056"
+prebuild-install@^7.1.3:
+  version "7.1.3"
+  resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-7.1.3.tgz#d630abad2b147443f20a212917beae68b8092eec"
   dependencies:
     detect-libc "^2.0.0"
     expand-template "^2.0.3"
     github-from-package "0.0.0"
     minimist "^1.2.3"
     mkdirp-classic "^0.5.3"
-    napi-build-utils "^1.0.1"
+    napi-build-utils "^2.0.0"
     node-abi "^3.3.0"
     pump "^3.0.0"
     rc "^1.2.7"
