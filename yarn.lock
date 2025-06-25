@@ -3167,9 +3167,9 @@ devtools-protocol@0.0.1452169:
   version "0.0.1452169"
   resolved "https://registry.yarnpkg.com/devtools-protocol/-/devtools-protocol-0.0.1452169.tgz#25c56a1e9ed0af99b03a00d605a22eae367d85db"
 
-devtools-protocol@^0.0.1477697:
-  version "0.0.1477697"
-  resolved "https://registry.yarnpkg.com/devtools-protocol/-/devtools-protocol-0.0.1477697.tgz#706b561a93d3cd3f9f2adb1482b98d6f62b127b8"
+devtools-protocol@^0.0.1478340:
+  version "0.0.1478340"
+  resolved "https://registry.yarnpkg.com/devtools-protocol/-/devtools-protocol-0.0.1478340.tgz#95c71711751d9444c96c9c235ee5e95d8489aba1"
 
 diff@^4.0.1:
   version "4.0.2"
