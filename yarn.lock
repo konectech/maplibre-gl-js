@@ -1074,9 +1074,9 @@
     "@rollup/pluginutils" "^5.1.0"
     resolve "^1.22.1"
 
-"@rollup/pluginutils@5.1.4", "@rollup/pluginutils@^5.0.1", "@rollup/pluginutils@^5.1.0":
-  version "5.1.4"
-  resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-5.1.4.tgz#bb94f1f9eaaac944da237767cdfee6c5b2262d4a"
+"@rollup/pluginutils@5.2.0", "@rollup/pluginutils@^5.0.1", "@rollup/pluginutils@^5.1.0":
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-5.2.0.tgz#eac25ca5b0bdda4ba735ddaca5fbf26bd435f602"
   dependencies:
     "@types/estree" "^1.0.0"
     estree-walker "^2.0.2"
@@ -6370,11 +6370,11 @@ robust-predicates@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/robust-predicates/-/robust-predicates-3.0.2.tgz#d5b28528c4824d20fc48df1928d41d9efa1ad771"
 
-rollup-plugin-sourcemaps2@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-sourcemaps2/-/rollup-plugin-sourcemaps2-0.5.2.tgz#60ac91bcaf93c2ce682ee5fac3402f31acf9f85a"
+rollup-plugin-sourcemaps2@^0.5.3:
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-sourcemaps2/-/rollup-plugin-sourcemaps2-0.5.3.tgz#c1975342ad80dfb090dc551b61f2d13c50c28906"
   dependencies:
-    "@rollup/pluginutils" "5.1.4"
+    "@rollup/pluginutils" "5.2.0"
 
 rollup@^4.40.0, rollup@^4.45.1:
   version "4.45.1"
