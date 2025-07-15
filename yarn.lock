@@ -1445,9 +1445,11 @@
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@types/deep-eql/-/deep-eql-4.0.2.tgz#334311971d3a07121e7eb91b684a605e7eea9cbd"
 
-"@types/diff@^7.0.2":
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/@types/diff/-/diff-7.0.2.tgz#d638edebf3c97aa4962b6f1164a7921ab3de9f83"
+"@types/diff@^8.0.0":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@types/diff/-/diff-8.0.0.tgz#8fc38b6488d2b228bf0b26c3d86a6822dc0961c5"
+  dependencies:
+    diff "*"
 
 "@types/earcut@^3.0.0":
   version "3.0.0"
@@ -3246,13 +3248,13 @@ devtools-protocol@^0.0.1485358:
   version "0.0.1485358"
   resolved "https://registry.yarnpkg.com/devtools-protocol/-/devtools-protocol-0.0.1485358.tgz#2b1563724d63f9c044979b8989c45739d108dd6a"
 
+diff@*, diff@^8.0.2:
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/diff/-/diff-8.0.2.tgz#712156a6dd288e66ebb986864e190c2fc9eddfae"
+
 diff@^4.0.1:
   version "4.0.2"
   resolved "https://registry.npmjs.org/diff/-/diff-4.0.2.tgz"
-
-diff@^8.0.2:
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/diff/-/diff-8.0.2.tgz#712156a6dd288e66ebb986864e190c2fc9eddfae"
 
 dir-glob@^3.0.1:
   version "3.0.1"
