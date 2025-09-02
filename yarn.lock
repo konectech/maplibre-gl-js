@@ -790,9 +790,9 @@
   version "30.0.1"
   resolved "https://registry.yarnpkg.com/@jest/diff-sequences/-/diff-sequences-30.0.1.tgz#0ededeae4d071f5c8ffe3678d15f3a1be09156be"
 
-"@jest/expect-utils@30.1.1":
-  version "30.1.1"
-  resolved "https://registry.yarnpkg.com/@jest/expect-utils/-/expect-utils-30.1.1.tgz#f57553f708b445a8d20c5b365bc9c84f87cba2ac"
+"@jest/expect-utils@30.1.2":
+  version "30.1.2"
+  resolved "https://registry.yarnpkg.com/@jest/expect-utils/-/expect-utils-30.1.2.tgz#88ea18040f707c9fadb6fd9e77568cae5266cee8"
   dependencies:
     "@jest/get-type" "30.1.0"
 
@@ -3855,13 +3855,13 @@ expect-type@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/expect-type/-/expect-type-1.2.1.tgz#af76d8b357cf5fa76c41c09dafb79c549e75f71f"
 
-expect@^30.1.1:
-  version "30.1.1"
-  resolved "https://registry.yarnpkg.com/expect/-/expect-30.1.1.tgz#165bbdf514880bc9d4377b5b73716a38ab97b2ad"
+expect@^30.1.2:
+  version "30.1.2"
+  resolved "https://registry.yarnpkg.com/expect/-/expect-30.1.2.tgz#094909c2443f76b9e208fafac4a315aaaf924580"
   dependencies:
-    "@jest/expect-utils" "30.1.1"
+    "@jest/expect-utils" "30.1.2"
     "@jest/get-type" "30.1.0"
-    jest-matcher-utils "30.1.1"
+    jest-matcher-utils "30.1.2"
     jest-message-util "30.1.0"
     jest-mock "30.0.5"
     jest-util "30.0.5"
@@ -4907,22 +4907,22 @@ jake@^10.6.1:
     filelist "^1.0.1"
     minimatch "^3.0.4"
 
-jest-diff@30.1.1:
-  version "30.1.1"
-  resolved "https://registry.yarnpkg.com/jest-diff/-/jest-diff-30.1.1.tgz#cfe8327c059178affac17d4c003e7096ad19583c"
+jest-diff@30.1.2:
+  version "30.1.2"
+  resolved "https://registry.yarnpkg.com/jest-diff/-/jest-diff-30.1.2.tgz#8ff4217e5b63fef49a5b37462999d8f5299a4eb4"
   dependencies:
     "@jest/diff-sequences" "30.0.1"
     "@jest/get-type" "30.1.0"
     chalk "^4.1.2"
     pretty-format "30.0.5"
 
-jest-matcher-utils@30.1.1:
-  version "30.1.1"
-  resolved "https://registry.yarnpkg.com/jest-matcher-utils/-/jest-matcher-utils-30.1.1.tgz#e45419d966cd2e5e7d7ade6da747035c6a3b8afc"
+jest-matcher-utils@30.1.2:
+  version "30.1.2"
+  resolved "https://registry.yarnpkg.com/jest-matcher-utils/-/jest-matcher-utils-30.1.2.tgz#3f1b63949f740025aff740c6c6a1b653ae370fbb"
   dependencies:
     "@jest/get-type" "30.1.0"
     chalk "^4.1.2"
-    jest-diff "30.1.1"
+    jest-diff "30.1.2"
     pretty-format "30.0.5"
 
 jest-message-util@30.1.0:
