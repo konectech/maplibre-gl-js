@@ -7360,9 +7360,9 @@ typedoc-plugin-missing-exports@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/typedoc-plugin-missing-exports/-/typedoc-plugin-missing-exports-4.1.0.tgz#e4c0697c7b44921366169fce219f858b2ebf79e6"
 
-typedoc@^0.28.13:
-  version "0.28.13"
-  resolved "https://registry.yarnpkg.com/typedoc/-/typedoc-0.28.13.tgz#8f348898c33242be190e5d395d43758cf14c650c"
+typedoc@^0.28.14:
+  version "0.28.14"
+  resolved "https://registry.yarnpkg.com/typedoc/-/typedoc-0.28.14.tgz#f48d650efc983b5cb3034b3b0e986b1702074326"
   dependencies:
     "@gerrit0/mini-shiki" "^3.12.0"
     lunr "^2.3.9"
