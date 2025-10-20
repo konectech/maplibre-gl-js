@@ -1569,11 +1569,11 @@
   version "1.4.5"
   resolved "https://registry.yarnpkg.com/@types/nise/-/nise-1.4.5.tgz#ae54fe7e2f92d78033a2e18e563631b2654e0896"
 
-"@types/node@*", "@types/node@^24.8.1":
-  version "24.8.1"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-24.8.1.tgz#74c8ae00b045a0a351f2837ec00f25dfed0053be"
+"@types/node@*", "@types/node@^24.9.0":
+  version "24.9.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-24.9.0.tgz#4fb62beb8b322fe2955ac94f80ff5a58c941ebf4"
   dependencies:
-    undici-types "~7.14.0"
+    undici-types "~7.16.0"
 
 "@types/offscreencanvas@^2019.7.3":
   version "2019.7.3"
@@ -7387,9 +7387,9 @@ unbox-primitive@^1.1.0:
     has-symbols "^1.1.0"
     which-boxed-primitive "^1.1.1"
 
-undici-types@~7.14.0:
-  version "7.14.0"
-  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-7.14.0.tgz#4c037b32ca4d7d62fae042174604341588bc0840"
+undici-types@~7.16.0:
+  version "7.16.0"
+  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-7.16.0.tgz#ffccdff36aea4884cbfce9a750a0580224f58a46"
 
 universalify@^2.0.0:
   version "2.0.1"
