@@ -3190,9 +3190,9 @@ detect-libc@^2.0.0, detect-libc@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/detect-libc/-/detect-libc-2.1.0.tgz#3ca811f60a7b504b0480e5008adacc660b0b8c4f"
 
-devtools-protocol@0.0.1508733:
-  version "0.0.1508733"
-  resolved "https://registry.yarnpkg.com/devtools-protocol/-/devtools-protocol-0.0.1508733.tgz#047deb3531470efda2c7bf43c10b3ae9e4b3d51b"
+devtools-protocol@0.0.1521046:
+  version "0.0.1521046"
+  resolved "https://registry.yarnpkg.com/devtools-protocol/-/devtools-protocol-0.0.1521046.tgz#918e6175ea83100fefcb2b78779f15a77aa8a41b"
 
 devtools-protocol@^0.0.1534754:
   version "0.0.1534754"
@@ -6130,27 +6130,27 @@ punycode@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.3.1.tgz#027422e2faec0b25e1549c3e1bd8309b9133b6e5"
 
-puppeteer-core@24.26.1:
-  version "24.26.1"
-  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-24.26.1.tgz#a2914fd7f4e72b661556d9c2a5e733c8a83383a6"
+puppeteer-core@24.27.0:
+  version "24.27.0"
+  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-24.27.0.tgz#dd81d615fc8e4bafad500442e798323f920c89b8"
   dependencies:
     "@puppeteer/browsers" "2.10.12"
     chromium-bidi "10.5.1"
     debug "^4.4.3"
-    devtools-protocol "0.0.1508733"
+    devtools-protocol "0.0.1521046"
     typed-query-selector "^2.12.0"
     webdriver-bidi-protocol "0.3.8"
     ws "^8.18.3"
 
-puppeteer@^24.26.1:
-  version "24.26.1"
-  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-24.26.1.tgz#804801469d07b3408700d7859082a6feffcd0832"
+puppeteer@^24.27.0:
+  version "24.27.0"
+  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-24.27.0.tgz#4867c3a3f028de8491114d253808f20757436830"
   dependencies:
     "@puppeteer/browsers" "2.10.12"
     chromium-bidi "10.5.1"
     cosmiconfig "^9.0.0"
-    devtools-protocol "0.0.1508733"
-    puppeteer-core "24.26.1"
+    devtools-protocol "0.0.1521046"
+    puppeteer-core "24.27.0"
     typed-query-selector "^2.12.0"
 
 queue-microtask@^1.2.2:
