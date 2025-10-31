@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@acemir/cssom@^0.9.19":
+  version "0.9.19"
+  resolved "https://registry.yarnpkg.com/@acemir/cssom/-/cssom-0.9.19.tgz#cf1931a6a71713f541118d538c5a514782bf6f96"
+
 "@ampproject/remapping@^2.3.0":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@ampproject/remapping/-/remapping-2.3.0.tgz#ed441b6fa600072520ce18b43d2c8cc8caecc7f4"
@@ -19,9 +23,9 @@
     "@csstools/css-tokenizer" "^3.0.4"
     lru-cache "^11.1.0"
 
-"@asamuzakjp/dom-selector@^6.7.2":
-  version "6.7.2"
-  resolved "https://registry.yarnpkg.com/@asamuzakjp/dom-selector/-/dom-selector-6.7.2.tgz#bce7e730e969610ce8574b98ff3dd69db6ac9e6a"
+"@asamuzakjp/dom-selector@^6.7.3":
+  version "6.7.4"
+  resolved "https://registry.yarnpkg.com/@asamuzakjp/dom-selector/-/dom-selector-6.7.4.tgz#1b7cafe7793e399f9291de2689fdd2efc01838dd"
   dependencies:
     "@asamuzakjp/nwsapi" "^2.3.9"
     bidi-js "^1.0.3"
@@ -2821,9 +2825,9 @@ csso@^5.0.5:
   dependencies:
     css-tree "~2.2.0"
 
-cssstyle@^5.3.1:
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/cssstyle/-/cssstyle-5.3.1.tgz#f55a9cc73d12705da8a341261d5e85003fe3a441"
+cssstyle@^5.3.2:
+  version "5.3.2"
+  resolved "https://registry.yarnpkg.com/cssstyle/-/cssstyle-5.3.2.tgz#5ea3308bf2bfb45e2c17aae03df57401b7bd2f3d"
   dependencies:
     "@asamuzakjp/css-color" "^4.0.3"
     "@csstools/css-syntax-patches-for-csstree" "^1.0.14"
@@ -4989,12 +4993,13 @@ jsbn@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-1.1.0.tgz#b01307cb29b618a1ed26ec79e911f803c4da0040"
 
-jsdom@^27.0.1:
-  version "27.0.1"
-  resolved "https://registry.yarnpkg.com/jsdom/-/jsdom-27.0.1.tgz#72f3ff263ccc128da40d8526943a7df253eeea93"
+jsdom@^27.1.0:
+  version "27.1.0"
+  resolved "https://registry.yarnpkg.com/jsdom/-/jsdom-27.1.0.tgz#f7c84fcbb4e791b4ff3642fcd45c1856f01e310d"
   dependencies:
-    "@asamuzakjp/dom-selector" "^6.7.2"
-    cssstyle "^5.3.1"
+    "@acemir/cssom" "^0.9.19"
+    "@asamuzakjp/dom-selector" "^6.7.3"
+    cssstyle "^5.3.2"
     data-urls "^6.0.0"
     decimal.js "^10.6.0"
     html-encoding-sniffer "^4.0.0"
@@ -5002,7 +5007,6 @@ jsdom@^27.0.1:
     https-proxy-agent "^7.0.6"
     is-potential-custom-element-name "^1.0.1"
     parse5 "^8.0.0"
-    rrweb-cssom "^0.8.0"
     saxes "^6.0.0"
     symbol-tree "^3.2.4"
     tough-cookie "^6.0.0"
@@ -6373,10 +6377,6 @@ rollup@^4.40.0, rollup@^4.52.5:
     "@rollup/rollup-win32-x64-gnu" "4.52.5"
     "@rollup/rollup-win32-x64-msvc" "4.52.5"
     fsevents "~2.3.2"
-
-rrweb-cssom@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/rrweb-cssom/-/rrweb-cssom-0.8.0.tgz#3021d1b4352fbf3b614aaeed0bc0d5739abe0bc2"
 
 run-parallel@^1.1.9:
   version "1.2.0"
