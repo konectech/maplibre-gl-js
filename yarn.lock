@@ -6153,9 +6153,9 @@ punycode@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.3.1.tgz#027422e2faec0b25e1549c3e1bd8309b9133b6e5"
 
-puppeteer-core@24.29.0:
-  version "24.29.0"
-  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-24.29.0.tgz#d5d7e6736f34f5185c8f3279bce3d26585cbd41c"
+puppeteer-core@24.29.1:
+  version "24.29.1"
+  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-24.29.1.tgz#a2d736e3934ce2551a0677aaada1435210782c0e"
   dependencies:
     "@puppeteer/browsers" "2.10.13"
     chromium-bidi "10.5.1"
@@ -6165,15 +6165,15 @@ puppeteer-core@24.29.0:
     webdriver-bidi-protocol "0.3.8"
     ws "^8.18.3"
 
-puppeteer@^24.29.0:
-  version "24.29.0"
-  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-24.29.0.tgz#3f6a1bdb47abd9d5c6046f493b5dba10fdf4748a"
+puppeteer@^24.29.1:
+  version "24.29.1"
+  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-24.29.1.tgz#93ea4bb129be447876e0440fc0eec7182c468100"
   dependencies:
     "@puppeteer/browsers" "2.10.13"
     chromium-bidi "10.5.1"
     cosmiconfig "^9.0.0"
     devtools-protocol "0.0.1521046"
-    puppeteer-core "24.29.0"
+    puppeteer-core "24.29.1"
     typed-query-selector "^2.12.0"
 
 queue-microtask@^1.2.2:
