@@ -1688,15 +1688,15 @@
   dependencies:
     "@types/node" "*"
 
-"@typescript-eslint/eslint-plugin@^8.46.4":
-  version "8.46.4"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-8.46.4.tgz#005dc4eebcb27462f20de3afe888065f65cec100"
+"@typescript-eslint/eslint-plugin@^8.47.0":
+  version "8.47.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-8.47.0.tgz#c53edeec13a79483f4ca79c298d5231b02e9dc17"
   dependencies:
     "@eslint-community/regexpp" "^4.10.0"
-    "@typescript-eslint/scope-manager" "8.46.4"
-    "@typescript-eslint/type-utils" "8.46.4"
-    "@typescript-eslint/utils" "8.46.4"
-    "@typescript-eslint/visitor-keys" "8.46.4"
+    "@typescript-eslint/scope-manager" "8.47.0"
+    "@typescript-eslint/type-utils" "8.47.0"
+    "@typescript-eslint/utils" "8.47.0"
+    "@typescript-eslint/visitor-keys" "8.47.0"
     graphemer "^1.4.0"
     ignore "^7.0.0"
     natural-compare "^1.4.0"
@@ -1757,13 +1757,13 @@
   version "8.47.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/tsconfig-utils/-/tsconfig-utils-8.47.0.tgz#4f178b62813538759e0989dd081c5474fad39b84"
 
-"@typescript-eslint/type-utils@8.46.4":
-  version "8.46.4"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/type-utils/-/type-utils-8.46.4.tgz#ae71b428a3c138b5084affe47893c129949171e0"
+"@typescript-eslint/type-utils@8.47.0":
+  version "8.47.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/type-utils/-/type-utils-8.47.0.tgz#b9b0141d99bd5bece3811d7eee68a002597ffa55"
   dependencies:
-    "@typescript-eslint/types" "8.46.4"
-    "@typescript-eslint/typescript-estree" "8.46.4"
-    "@typescript-eslint/utils" "8.46.4"
+    "@typescript-eslint/types" "8.47.0"
+    "@typescript-eslint/typescript-estree" "8.47.0"
+    "@typescript-eslint/utils" "8.47.0"
     debug "^4.3.4"
     ts-api-utils "^2.1.0"
 
@@ -1822,14 +1822,14 @@
     semver "^7.6.0"
     ts-api-utils "^2.1.0"
 
-"@typescript-eslint/utils@8.46.4", "@typescript-eslint/utils@^8.32.1", "@typescript-eslint/utils@~8.46.0":
-  version "8.46.4"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/utils/-/utils-8.46.4.tgz#ea7878ddd625948cad4424dc2752b1be236556f5"
+"@typescript-eslint/utils@8.47.0", "@typescript-eslint/utils@^8.32.1":
+  version "8.47.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/utils/-/utils-8.47.0.tgz#d6c30690431dbfdab98fc027202af12e77c91419"
   dependencies:
     "@eslint-community/eslint-utils" "^4.7.0"
-    "@typescript-eslint/scope-manager" "8.46.4"
-    "@typescript-eslint/types" "8.46.4"
-    "@typescript-eslint/typescript-estree" "8.46.4"
+    "@typescript-eslint/scope-manager" "8.47.0"
+    "@typescript-eslint/types" "8.47.0"
+    "@typescript-eslint/typescript-estree" "8.47.0"
 
 "@typescript-eslint/utils@^7.7.1":
   version "7.18.0"
@@ -1839,6 +1839,15 @@
     "@typescript-eslint/scope-manager" "7.18.0"
     "@typescript-eslint/types" "7.18.0"
     "@typescript-eslint/typescript-estree" "7.18.0"
+
+"@typescript-eslint/utils@~8.46.0":
+  version "8.46.4"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/utils/-/utils-8.46.4.tgz#ea7878ddd625948cad4424dc2752b1be236556f5"
+  dependencies:
+    "@eslint-community/eslint-utils" "^4.7.0"
+    "@typescript-eslint/scope-manager" "8.46.4"
+    "@typescript-eslint/types" "8.46.4"
+    "@typescript-eslint/typescript-estree" "8.46.4"
 
 "@typescript-eslint/visitor-keys@7.18.0":
   version "7.18.0"
