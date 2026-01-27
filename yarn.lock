@@ -4413,9 +4413,9 @@ globals@^14.0.0:
   version "14.0.0"
   resolved "https://registry.yarnpkg.com/globals/-/globals-14.0.0.tgz#898d7413c29babcf6bafe56fcadded858ada724e"
 
-globals@^17.0.0:
-  version "17.0.0"
-  resolved "https://registry.yarnpkg.com/globals/-/globals-17.0.0.tgz#a4196d9cfeb4d627ba165b4647b1f5853bf90a30"
+globals@^17.2.0:
+  version "17.2.0"
+  resolved "https://registry.yarnpkg.com/globals/-/globals-17.2.0.tgz#41d29408d6f5408457d2ef965d29215e3026779f"
 
 globalthis@^1.0.3, globalthis@^1.0.4:
   version "1.0.4"
