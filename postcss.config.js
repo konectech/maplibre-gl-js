@@ -13,11 +13,10 @@ const config = {
                         plugins: [
                             {
                                 name: 'preset-default',
-                                params: {
-                                    overrides: {
-                                        removeViewBox: false,
-                                    },
-                                },
+                            },
+                            {
+                                name: 'removeViewBox',
+                                active: false
                             },
                         ],
                     },

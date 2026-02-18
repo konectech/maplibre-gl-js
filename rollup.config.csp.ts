@@ -21,7 +21,7 @@ const config = (input: InputOption, file: string, format: ModuleFormat): RollupO
         banner
     },
     treeshake: production,
-    plugins: plugins(production)
+    plugins: plugins(production, 'dist')
 });
 
 const configs = [

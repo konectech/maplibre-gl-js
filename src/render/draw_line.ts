@@ -30,7 +30,8 @@ export function drawLine(painter: Painter, sourceCache: SourceCache, layer: Line
     const depthMode = painter.getDepthModeForSublayer(0, DepthMode.ReadOnly);
     const colorMode = painter.colorModeForRenderPass();
     
-    const dasharray = layer.paint.get('line-dasharray');
+    const dasharrayProperty = layer.paint.get('line-dasharray');
+    const dasharray = dasharrayProperty.constantOr(null);
     const patternProperty = layer.paint.get('line-pattern');
     const image = patternProperty.constantOr(1 as any);
 

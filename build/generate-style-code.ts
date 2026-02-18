@@ -21,11 +21,15 @@ function nativeType(property) {
             return 'boolean';
         case 'number':
             return 'number';
+        case 'numberArray':
+            return 'number';
         case 'string':
             return 'string';
         case 'enum':
             return Object.keys(property.values).map(v => JSON.stringify(v)).join(' | ');
         case 'color':
+            return 'Color';
+        case 'colorArray':
             return 'Color';
         case 'padding':
             return 'Padding';

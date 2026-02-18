@@ -16,7 +16,7 @@ export const nodeResolve = resolve({
     preferBuiltins: false
 });
 
-export const plugins = (production: boolean): Plugin[] => [
+export const plugins = (production: boolean, outDir?: string): Plugin[] => [
     json(),
     // https://github.com/zaach/jison/issues/351
     replace({
@@ -39,7 +39,16 @@ export const plugins = (production: boolean): Plugin[] => [
         sourceMap: true
     }),
     nodeResolve,
-    typescript(),
+    typescript({
+        exclude: ['**/*.test.ts', 'test/**/*', 'node_modules/**'],
+        noForceEmit: true,
+        compilerOptions: {
+            checkJs: false,
+            declaration: false,
+            noEmit: false,
+            ...(outDir ? { outDir } : {})
+        }
+    }),
     commonjs({
         // global keyword handling causes Webpack compatibility issues, so we disabled it:
         // https://github.com/mapbox/mapbox-gl-js/pull/6956

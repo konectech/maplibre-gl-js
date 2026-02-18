@@ -34,7 +34,7 @@ const config: RollupOptions[] = [{
         throw message;
     },
     treeshake: production,
-    plugins: plugins(production)
+    plugins: plugins(production, 'staging/maplibregl')
 }, {
     // Next, bundle together the three "chunks" produced in the previous pass
     // into a single, final bundle. See rollup/bundle_prelude.js and
