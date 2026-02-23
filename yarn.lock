@@ -1622,13 +1622,14 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jsdom@^27.0.0":
-  version "27.0.0"
-  resolved "https://registry.yarnpkg.com/@types/jsdom/-/jsdom-27.0.0.tgz#b052f414edd10a316a006cde8991a4266fe22038"
+"@types/jsdom@^28.0.0":
+  version "28.0.0"
+  resolved "https://registry.yarnpkg.com/@types/jsdom/-/jsdom-28.0.0.tgz#387bcb5fe60c753ae0c58584b659a598319938f2"
   dependencies:
     "@types/node" "*"
     "@types/tough-cookie" "*"
     parse5 "^7.0.0"
+    undici-types "^7.21.0"
 
 "@types/json-schema@*", "@types/json-schema@^7.0.15":
   version "7.0.15"
@@ -7528,6 +7529,10 @@ unbox-primitive@^1.1.0:
     has-bigints "^1.0.2"
     has-symbols "^1.1.0"
     which-boxed-primitive "^1.1.1"
+
+undici-types@^7.21.0:
+  version "7.22.0"
+  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-7.22.0.tgz#f1f394e65ae60c18b4d4a7681fec11361d2e5ae5"
 
 undici-types@~7.18.0:
   version "7.18.2"
