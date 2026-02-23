@@ -1035,9 +1035,9 @@
   version "3.1.0"
   resolved "https://registry.npmjs.org/@mapbox/whoots-js/-/whoots-js-3.1.0.tgz"
 
-"@maplibre/maplibre-gl-style-spec@^24.4.1":
-  version "24.4.1"
-  resolved "https://registry.yarnpkg.com/@maplibre/maplibre-gl-style-spec/-/maplibre-gl-style-spec-24.4.1.tgz#600a1dbb2912831564cc6ba6e96c22cf34ffdc0c"
+"@maplibre/maplibre-gl-style-spec@^24.5.0":
+  version "24.5.0"
+  resolved "https://registry.yarnpkg.com/@maplibre/maplibre-gl-style-spec/-/maplibre-gl-style-spec-24.5.0.tgz#910145a0feb12fbfe0072816b87113446748e31c"
   dependencies:
     "@mapbox/jsonlint-lines-primitives" "~2.0.2"
     "@mapbox/unitbezier" "^0.0.1"
