@@ -3819,9 +3819,9 @@ eslint-plugin-react@^7.37.5:
     string.prototype.matchall "^4.0.12"
     string.prototype.repeat "^1.0.0"
 
-eslint-plugin-tsdoc@0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-tsdoc/-/eslint-plugin-tsdoc-0.5.1.tgz#d26e7140d0226f4f742ea571aee8031937494480"
+eslint-plugin-tsdoc@0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-tsdoc/-/eslint-plugin-tsdoc-0.5.2.tgz#5143210e77fffdf0df095f4090d7dd3f6494a4a2"
   dependencies:
     "@microsoft/tsdoc" "0.16.0"
     "@microsoft/tsdoc-config" "0.18.1"
