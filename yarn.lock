@@ -1110,9 +1110,9 @@
     tar-fs "^3.1.1"
     yargs "^17.7.2"
 
-"@rollup/plugin-commonjs@^29.0.0":
-  version "29.0.0"
-  resolved "https://registry.yarnpkg.com/@rollup/plugin-commonjs/-/plugin-commonjs-29.0.0.tgz#42a6cc0eeb8ae7aabfc6f9bdc28fe22d65abd15a"
+"@rollup/plugin-commonjs@^29.0.1":
+  version "29.0.1"
+  resolved "https://registry.yarnpkg.com/@rollup/plugin-commonjs/-/plugin-commonjs-29.0.1.tgz#1e1787f8a736c1df8d96976401d5b0b79e704b6a"
   dependencies:
     "@rollup/pluginutils" "^5.0.1"
     commondir "^1.0.1"
