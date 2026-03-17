@@ -1643,9 +1643,9 @@
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.5.tgz#ec10755e871497bcd83efe927e43ec46e8c0747e"
 
-"@types/murmurhash-js@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@types/murmurhash-js/-/murmurhash-js-1.0.6.tgz#1e7131c6ae041d0df272e5c5ff501ecb860dba3b"
+"@types/murmurhash-js@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@types/murmurhash-js/-/murmurhash-js-1.0.7.tgz#d49f2ded3f1a28b38b2f6e83cb1da35a233551fa"
 
 "@types/nise@^1.4.5":
   version "1.4.5"
