@@ -975,9 +975,9 @@
   version "2.0.2"
   resolved "https://registry.npmjs.org/@mapbox/jsonlint-lines-primitives/-/jsonlint-lines-primitives-2.0.2.tgz"
 
-"@mapbox/mapbox-gl-rtl-text@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@mapbox/mapbox-gl-rtl-text/-/mapbox-gl-rtl-text-0.3.0.tgz#dbf73b11e1dbb0cef2aa869168babab572ae559c"
+"@mapbox/mapbox-gl-rtl-text@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@mapbox/mapbox-gl-rtl-text/-/mapbox-gl-rtl-text-0.4.0.tgz#eb02e379aac1bffb91c83489658e6077b683bf47"
 
 "@mapbox/mvt-fixtures@^3.10.0":
   version "3.10.0"
