@@ -2527,9 +2527,9 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001759, caniuse-lite@^1.0.30001774:
   version "1.0.30001774"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001774.tgz#0e576b6f374063abcd499d202b9ba1301be29b70"
 
-canvas@^3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/canvas/-/canvas-3.2.1.tgz#8f0390569f36b94bffba9c0e7aed6948875aec7b"
+canvas@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/canvas/-/canvas-3.2.2.tgz#56d6f2177b7f729a1f83d651e0ae384f19786b30"
   dependencies:
     node-addon-api "^7.0.0"
     prebuild-install "^7.1.3"
