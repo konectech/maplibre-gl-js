@@ -5493,9 +5493,9 @@ nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.npmjs.org/nice-try/-/nice-try-1.0.5.tgz"
 
-nise@^6.1.4:
-  version "6.1.4"
-  resolved "https://registry.yarnpkg.com/nise/-/nise-6.1.4.tgz#a0035d5766af0c08fea4e02fd858256cef34fec4"
+nise@^6.1.5:
+  version "6.1.5"
+  resolved "https://registry.yarnpkg.com/nise/-/nise-6.1.5.tgz#a2f4cd07d8d38ebc5ae5500168eea0f08a2fa4b9"
   dependencies:
     "@sinonjs/commons" "^3.0.1"
     "@sinonjs/fake-timers" "^15.1.1"
