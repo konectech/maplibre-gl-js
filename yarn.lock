@@ -108,9 +108,9 @@
     hashery "^1.2.0"
     keyv "^5.5.4"
 
-"@colordx/core@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@colordx/core/-/core-5.0.0.tgz#5324af97df4c63fcfaaae247003efc413445d3a2"
+"@colordx/core@^5.0.3":
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/@colordx/core/-/core-5.0.3.tgz#d5021feffd7fbfc103f1347d2cbebb110de0120e"
 
 "@cspell/cspell-bundled-dicts@10.0.0":
   version "10.0.0"
@@ -2411,7 +2411,7 @@ braces@~3.0.2:
   dependencies:
     fill-range "^7.0.1"
 
-browserslist@^4.0.0, browserslist@^4.24.5, browserslist@^4.28.1, browserslist@^4.28.2:
+browserslist@^4.0.0, browserslist@^4.24.5, browserslist@^4.28.2:
   version "4.28.2"
   resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.28.2.tgz#f50b65362ef48974ca9f50b3680566d786b811d2"
   dependencies:
@@ -2876,25 +2876,25 @@ cssfontparser@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/cssfontparser/-/cssfontparser-1.2.1.tgz#f4022fc8f9700c68029d542084afbaf425a3f3e3"
 
-cssnano-preset-default@^7.0.12:
-  version "7.0.12"
-  resolved "https://registry.yarnpkg.com/cssnano-preset-default/-/cssnano-preset-default-7.0.12.tgz#21e29fed4a8697952485995ffeeec20ff58945a4"
+cssnano-preset-default@^7.0.13:
+  version "7.0.13"
+  resolved "https://registry.yarnpkg.com/cssnano-preset-default/-/cssnano-preset-default-7.0.13.tgz#b4bf247078a7cbbcf39d3d52d18b050784fdcf3a"
   dependencies:
-    browserslist "^4.28.1"
+    browserslist "^4.28.2"
     css-declaration-sorter "^7.2.0"
     cssnano-utils "^5.0.1"
     postcss-calc "^10.1.1"
-    postcss-colormin "^7.0.7"
-    postcss-convert-values "^7.0.9"
+    postcss-colormin "^7.0.8"
+    postcss-convert-values "^7.0.10"
     postcss-discard-comments "^7.0.6"
     postcss-discard-duplicates "^7.0.2"
     postcss-discard-empty "^7.0.1"
     postcss-discard-overridden "^7.0.1"
     postcss-merge-longhand "^7.0.5"
-    postcss-merge-rules "^7.0.8"
+    postcss-merge-rules "^7.0.9"
     postcss-minify-font-values "^7.0.1"
-    postcss-minify-gradients "^7.0.2"
-    postcss-minify-params "^7.0.6"
+    postcss-minify-gradients "^7.0.3"
+    postcss-minify-params "^7.0.7"
     postcss-minify-selectors "^7.0.6"
     postcss-normalize-charset "^7.0.1"
     postcss-normalize-display-values "^7.0.1"
@@ -2902,11 +2902,11 @@ cssnano-preset-default@^7.0.12:
     postcss-normalize-repeat-style "^7.0.1"
     postcss-normalize-string "^7.0.1"
     postcss-normalize-timing-functions "^7.0.1"
-    postcss-normalize-unicode "^7.0.6"
+    postcss-normalize-unicode "^7.0.7"
     postcss-normalize-url "^7.0.1"
     postcss-normalize-whitespace "^7.0.1"
     postcss-ordered-values "^7.0.2"
-    postcss-reduce-initial "^7.0.6"
+    postcss-reduce-initial "^7.0.7"
     postcss-reduce-transforms "^7.0.1"
     postcss-svgo "^7.1.1"
     postcss-unique-selectors "^7.0.5"
@@ -2915,11 +2915,11 @@ cssnano-utils@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/cssnano-utils/-/cssnano-utils-5.0.1.tgz#f529e9aa0d7930512ca45b9e2ddb8d6b9092eb30"
 
-cssnano@^7.1.4:
-  version "7.1.4"
-  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-7.1.4.tgz#0aa5bb3b481df024ecafd41c4388c06240bb31ec"
+cssnano@^7.1.5:
+  version "7.1.5"
+  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-7.1.5.tgz#8b2d05e8d21574f193d706aeef7298b9231b9b09"
   dependencies:
-    cssnano-preset-default "^7.0.12"
+    cssnano-preset-default "^7.0.13"
     lilconfig "^3.1.3"
 
 csso@^5.0.5:
@@ -5911,20 +5911,20 @@ postcss-cli@^11.0.1:
     tinyglobby "^0.2.12"
     yargs "^17.0.0"
 
-postcss-colormin@^7.0.7:
-  version "7.0.7"
-  resolved "https://registry.yarnpkg.com/postcss-colormin/-/postcss-colormin-7.0.7.tgz#63b42eb2a9cfc092b96b1b758db66dc35a2a3f19"
+postcss-colormin@^7.0.8:
+  version "7.0.8"
+  resolved "https://registry.yarnpkg.com/postcss-colormin/-/postcss-colormin-7.0.8.tgz#457eb63f4438cb5799b01975c5a1604155eb4d7e"
   dependencies:
-    "@colordx/core" "^5.0.0"
-    browserslist "^4.28.1"
+    "@colordx/core" "^5.0.3"
+    browserslist "^4.28.2"
     caniuse-api "^3.0.0"
     postcss-value-parser "^4.2.0"
 
-postcss-convert-values@^7.0.9:
-  version "7.0.9"
-  resolved "https://registry.yarnpkg.com/postcss-convert-values/-/postcss-convert-values-7.0.9.tgz#6ada5c2c480f1ddbd4c886339025a916ecc8ff01"
+postcss-convert-values@^7.0.10:
+  version "7.0.10"
+  resolved "https://registry.yarnpkg.com/postcss-convert-values/-/postcss-convert-values-7.0.10.tgz#cbf8bedef3acae5373ed9c98c4f289b72926adb3"
   dependencies:
-    browserslist "^4.28.1"
+    browserslist "^4.28.2"
     postcss-value-parser "^4.2.0"
 
 postcss-discard-comments@^7.0.6:
@@ -5968,11 +5968,11 @@ postcss-merge-longhand@^7.0.5:
     postcss-value-parser "^4.2.0"
     stylehacks "^7.0.5"
 
-postcss-merge-rules@^7.0.8:
-  version "7.0.8"
-  resolved "https://registry.yarnpkg.com/postcss-merge-rules/-/postcss-merge-rules-7.0.8.tgz#d63ce875b9f7880ca4aa89d9ae3eaa3657215f82"
+postcss-merge-rules@^7.0.9:
+  version "7.0.9"
+  resolved "https://registry.yarnpkg.com/postcss-merge-rules/-/postcss-merge-rules-7.0.9.tgz#e281067714de26fa7d0ab50b706bd29b24fc7442"
   dependencies:
-    browserslist "^4.28.1"
+    browserslist "^4.28.2"
     caniuse-api "^3.0.0"
     cssnano-utils "^5.0.1"
     postcss-selector-parser "^7.1.1"
@@ -5983,19 +5983,19 @@ postcss-minify-font-values@^7.0.1:
   dependencies:
     postcss-value-parser "^4.2.0"
 
-postcss-minify-gradients@^7.0.2:
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/postcss-minify-gradients/-/postcss-minify-gradients-7.0.2.tgz#7937c8dcbd847f6cfd5b16938500587af8882fea"
+postcss-minify-gradients@^7.0.3:
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/postcss-minify-gradients/-/postcss-minify-gradients-7.0.3.tgz#5a866f18b3ae3f4bdbab78fc0776d38c87537bb4"
   dependencies:
-    "@colordx/core" "^5.0.0"
+    "@colordx/core" "^5.0.3"
     cssnano-utils "^5.0.1"
     postcss-value-parser "^4.2.0"
 
-postcss-minify-params@^7.0.6:
-  version "7.0.6"
-  resolved "https://registry.yarnpkg.com/postcss-minify-params/-/postcss-minify-params-7.0.6.tgz#ca0df1bd4eaa70ee7a4ee17f393d275988f44657"
+postcss-minify-params@^7.0.7:
+  version "7.0.7"
+  resolved "https://registry.yarnpkg.com/postcss-minify-params/-/postcss-minify-params-7.0.7.tgz#afc93ae5958ddbcb3fa22e2178263b22e55d341e"
   dependencies:
-    browserslist "^4.28.1"
+    browserslist "^4.28.2"
     cssnano-utils "^5.0.1"
     postcss-value-parser "^4.2.0"
 
@@ -6040,11 +6040,11 @@ postcss-normalize-timing-functions@^7.0.1:
   dependencies:
     postcss-value-parser "^4.2.0"
 
-postcss-normalize-unicode@^7.0.6:
-  version "7.0.6"
-  resolved "https://registry.yarnpkg.com/postcss-normalize-unicode/-/postcss-normalize-unicode-7.0.6.tgz#6935d6baf7f7374a34c216a7fe13229acd1073f2"
+postcss-normalize-unicode@^7.0.7:
+  version "7.0.7"
+  resolved "https://registry.yarnpkg.com/postcss-normalize-unicode/-/postcss-normalize-unicode-7.0.7.tgz#c94d2cd291bbe37dd25b8fe1a683a507c0709d41"
   dependencies:
-    browserslist "^4.28.1"
+    browserslist "^4.28.2"
     postcss-value-parser "^4.2.0"
 
 postcss-normalize-url@^7.0.1:
@@ -6066,11 +6066,11 @@ postcss-ordered-values@^7.0.2:
     cssnano-utils "^5.0.1"
     postcss-value-parser "^4.2.0"
 
-postcss-reduce-initial@^7.0.6:
-  version "7.0.6"
-  resolved "https://registry.yarnpkg.com/postcss-reduce-initial/-/postcss-reduce-initial-7.0.6.tgz#fa3af45e60cd04d9a3d29315eb97c82b7b447ead"
+postcss-reduce-initial@^7.0.7:
+  version "7.0.7"
+  resolved "https://registry.yarnpkg.com/postcss-reduce-initial/-/postcss-reduce-initial-7.0.7.tgz#a4c9f976ed1279e6bc59560fe45b3e3df9c434d4"
   dependencies:
-    browserslist "^4.28.1"
+    browserslist "^4.28.2"
     caniuse-api "^3.0.0"
 
 postcss-reduce-transforms@^7.0.1:
