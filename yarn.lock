@@ -5886,9 +5886,9 @@ pify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/pify/-/pify-3.0.0.tgz"
 
-pixelmatch@^7.1.1:
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/pixelmatch/-/pixelmatch-7.1.1.tgz#5d63c2aba5a012d1fb5cb6a48653cf8fbd23fcd9"
+pixelmatch@^7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/pixelmatch/-/pixelmatch-7.2.0.tgz#59f4e6faca733f763756d175e2579ed71369fd72"
   dependencies:
     pngjs "^7.0.0"
 
