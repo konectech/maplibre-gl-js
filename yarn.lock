@@ -2877,9 +2877,9 @@ cssfontparser@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/cssfontparser/-/cssfontparser-1.2.1.tgz#f4022fc8f9700c68029d542084afbaf425a3f3e3"
 
-cssnano-preset-default@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/cssnano-preset-default/-/cssnano-preset-default-8.0.0.tgz#395b02d1aef713f25d47ac195023cadeeea231af"
+cssnano-preset-default@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/cssnano-preset-default/-/cssnano-preset-default-8.0.1.tgz#7f8fca224b0e7e8dce6d4fa6d362e02a2c7d4ecf"
   dependencies:
     browserslist "^4.28.2"
     cssnano-utils "^6.0.0"
@@ -2895,7 +2895,7 @@ cssnano-preset-default@^8.0.0:
     postcss-minify-font-values "^8.0.0"
     postcss-minify-gradients "^8.0.0"
     postcss-minify-params "^8.0.0"
-    postcss-minify-selectors "^8.0.0"
+    postcss-minify-selectors "^8.0.1"
     postcss-normalize-charset "^8.0.0"
     postcss-normalize-display-values "^8.0.0"
     postcss-normalize-positions "^8.0.0"
@@ -2915,11 +2915,11 @@ cssnano-utils@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/cssnano-utils/-/cssnano-utils-6.0.0.tgz#0575409ebe63cd0b483e17e6aeaafd540e865161"
 
-cssnano@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-8.0.0.tgz#c553f4ba6d659bbd472de940067faf9c839fe7d3"
+cssnano@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-8.0.1.tgz#0f86d0ed9210bc9de824751eb2ab6b0c909b03d7"
   dependencies:
-    cssnano-preset-default "^8.0.0"
+    cssnano-preset-default "^8.0.1"
     lilconfig "^3.1.3"
 
 csso@^5.0.5:
@@ -6010,9 +6010,9 @@ postcss-minify-params@^8.0.0:
     cssnano-utils "^6.0.0"
     postcss-value-parser "^4.2.0"
 
-postcss-minify-selectors@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/postcss-minify-selectors/-/postcss-minify-selectors-8.0.0.tgz#364ed53163abae87771138a193e96819affccc07"
+postcss-minify-selectors@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/postcss-minify-selectors/-/postcss-minify-selectors-8.0.1.tgz#7a64f8b5e2fc8a69968828d96e46b4d1e8cdf417"
   dependencies:
     browserslist "^4.28.1"
     caniuse-api "^3.0.0"
