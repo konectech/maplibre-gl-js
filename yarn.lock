@@ -1617,13 +1617,13 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jsdom@^28.0.1":
-  version "28.0.1"
-  resolved "https://registry.yarnpkg.com/@types/jsdom/-/jsdom-28.0.1.tgz#2c014d8c0eca6135233519bff8c49f7aadfeda63"
+"@types/jsdom@^28.0.2":
+  version "28.0.2"
+  resolved "https://registry.yarnpkg.com/@types/jsdom/-/jsdom-28.0.2.tgz#d1fdb16809f5e6407bade2fbd01238f08240c441"
   dependencies:
     "@types/node" "*"
     "@types/tough-cookie" "*"
-    parse5 "^7.0.0"
+    parse5 "^8.0.0"
     undici-types "^7.21.0"
 
 "@types/json-schema@*", "@types/json-schema@^7.0.15":
@@ -5796,13 +5796,7 @@ parse-json@^5.2.0:
     json-parse-even-better-errors "^2.3.0"
     lines-and-columns "^1.1.6"
 
-parse5@^7.0.0:
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/parse5/-/parse5-7.3.0.tgz#d7e224fa72399c7a175099f45fc2ad024b05ec05"
-  dependencies:
-    entities "^6.0.0"
-
-parse5@^8.0.1:
+parse5@^8.0.0, parse5@^8.0.1:
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/parse5/-/parse5-8.0.1.tgz#f43bcd2cd683efe084075333e9ce0da7d06da31e"
   dependencies:
