@@ -1617,9 +1617,9 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jsdom@^28.0.2":
-  version "28.0.2"
-  resolved "https://registry.yarnpkg.com/@types/jsdom/-/jsdom-28.0.2.tgz#d1fdb16809f5e6407bade2fbd01238f08240c441"
+"@types/jsdom@^28.0.3":
+  version "28.0.3"
+  resolved "https://registry.yarnpkg.com/@types/jsdom/-/jsdom-28.0.3.tgz#a5a900ae4d5bb1d874dee24a89afc06b34d3c1a0"
   dependencies:
     "@types/node" "*"
     "@types/tough-cookie" "*"
