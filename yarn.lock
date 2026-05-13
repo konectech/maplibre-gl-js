@@ -6485,9 +6485,9 @@ robust-predicates@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/robust-predicates/-/robust-predicates-3.0.2.tgz#d5b28528c4824d20fc48df1928d41d9efa1ad771"
 
-rollup-plugin-sourcemaps2@^0.5.6:
-  version "0.5.6"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-sourcemaps2/-/rollup-plugin-sourcemaps2-0.5.6.tgz#bc68a8f3307fe56a5b3c93633042a9eb38120c71"
+rollup-plugin-sourcemaps2@^0.5.7:
+  version "0.5.7"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-sourcemaps2/-/rollup-plugin-sourcemaps2-0.5.7.tgz#caa0fc33d885f6c20a4aa9f791294884fe387d52"
   dependencies:
     "@rollup/pluginutils" "5.3.0"
 
