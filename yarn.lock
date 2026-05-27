@@ -5723,9 +5723,15 @@ pbf@^3.0.5, pbf@^3.2.1:
     ieee754 "^1.1.12"
     resolve-protobuf-schema "^2.1.0"
 
-pbf@^4.0.1, pbf@^4.0.2:
+pbf@^4.0.1:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/pbf/-/pbf-4.0.2.tgz#70f71a5c4df774438c1db482630146decb03e2d9"
+  dependencies:
+    resolve-protobuf-schema "^2.1.0"
+
+pbf@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/pbf/-/pbf-5.0.0.tgz#8f05c6b8242296b2a3a627a270c1ea73125031b6"
   dependencies:
     resolve-protobuf-schema "^2.1.0"
 
