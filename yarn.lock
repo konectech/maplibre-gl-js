@@ -5293,9 +5293,9 @@ modern-tar@^0.7.6:
   version "0.7.6"
   resolved "https://registry.yarnpkg.com/modern-tar/-/modern-tar-0.7.6.tgz#a01edcd55b976a2b191d857456e8abb7208a8199"
 
-monocart-coverage-reports@^2.12.11:
-  version "2.12.11"
-  resolved "https://registry.yarnpkg.com/monocart-coverage-reports/-/monocart-coverage-reports-2.12.11.tgz#fd506ecd8c62f264068707af37ea109b918ce014"
+monocart-coverage-reports@^2.12.12:
+  version "2.12.12"
+  resolved "https://registry.yarnpkg.com/monocart-coverage-reports/-/monocart-coverage-reports-2.12.12.tgz#ec96f23956f4bb1461241bdc9f1df0fc542a9f37"
   dependencies:
     acorn "^8.16.0"
     acorn-loose "^8.5.2"
