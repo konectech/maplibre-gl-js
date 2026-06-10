@@ -6362,9 +6362,9 @@ semver@^6.0.0, semver@^6.3.1:
   version "6.3.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.1.tgz#556d2ef8689146e46dcea4bfdd095f3434dffcb4"
 
-semver@^7.3.5, semver@^7.5.3, semver@^7.6.0, semver@^7.7.3, semver@^7.8.1, semver@^7.8.3:
-  version "7.8.3"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-7.8.3.tgz#c350de61c2a1ddbc96d7fae3e5b6fcf92d477fbe"
+semver@^7.3.5, semver@^7.5.3, semver@^7.6.0, semver@^7.7.3, semver@^7.8.1, semver@^7.8.4:
+  version "7.8.4"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.8.4.tgz#c73eceebae0616934be8dff28a7fd70757c8e696"
 
 serialize-javascript@^7.0.3:
   version "7.0.4"
