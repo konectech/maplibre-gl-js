@@ -1168,6 +1168,11 @@
   resolved "https://registry.npmjs.org/@mapbox/unitbezier/-/unitbezier-0.0.1.tgz"
   integrity sha512-nMkuDXFv60aBr9soUG5q+GvZYL+2KZHVvsqFCzqnkGEf46U2fvmytHaEVc1/YZbiLn8X+eR3QzX1+dwDO1lxlw==
 
+"@mapbox/unitbezier@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@mapbox/unitbezier/-/unitbezier-1.0.0.tgz#54319aff6c467bb1b909e04895c08cdb966bfbff"
+  integrity sha512-fqd515fjBmANKGGsQ286E2Wvj/XvDFpGzwJxq4CI6jMQue6Oy04uCKp+JWKF00xRTmk6cEu1jPJ9p3xqH8YWqQ==
+
 "@mapbox/vector-tile@^1.3.0":
   version "1.3.1"
   resolved "https://registry.npmjs.org/@mapbox/vector-tile/-/vector-tile-1.3.1.tgz"
@@ -1196,17 +1201,16 @@
   dependencies:
     kdbush "^4.0.2"
 
-"@maplibre/maplibre-gl-style-spec@^24.8.1":
-  version "24.8.1"
-  resolved "https://registry.npmjs.org/@maplibre/maplibre-gl-style-spec/-/maplibre-gl-style-spec-24.8.1.tgz"
-  integrity sha512-zxa92qF96ZNojLxeAjnaRpjVCy+swoUNJvDhtpC90k7u5F0TMr4GmvNqMKvYrMoPB8d7gRSXbMG1hBbmgESIsw==
+"@maplibre/maplibre-gl-style-spec@^25.0.0":
+  version "25.0.0"
+  resolved "https://registry.yarnpkg.com/@maplibre/maplibre-gl-style-spec/-/maplibre-gl-style-spec-25.0.0.tgz#385ba620862d85ed2c809cb1754e54f4172d8b21"
+  integrity sha512-dgubbApKQmLR3TSNRlynStMjASTSxdiK+KH6xRA8WwIoMK2jQrBpNE5siIUGJ+oNXR7OHMy6XSQqgxvwcGAPEw==
   dependencies:
     "@mapbox/jsonlint-lines-primitives" "~2.0.2"
-    "@mapbox/unitbezier" "^0.0.1"
+    "@mapbox/unitbezier" "^1.0.0"
     json-stringify-pretty-compact "^4.0.0"
     minimist "^1.2.8"
     quickselect "^3.0.0"
-    rw "^1.3.3"
     tinyqueue "^3.0.0"
 
 "@maplibre/mlt@^1.1.11":
