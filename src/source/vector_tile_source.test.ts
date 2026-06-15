@@ -9,6 +9,7 @@ import {RequestManager} from '../util/request_manager';
 import fixturesSource from '../../test/unit/assets/source.json' with {type: 'json'};
 import {getMockDispatcher, getWrapDispatcher, sleep, waitForMetadataEvent} from '../util/test/util';
 import {type Map} from '../ui/map';
+import {type LngLatBounds} from '../geo/lng_lat_bounds';
 import {type WorkerTileParameters} from './worker_source';
 import {SubdivisionGranularitySetting} from '../render/subdivision_granularity_settings';
 import {type ActorMessage, MessageType} from '../util/actor_messages';
@@ -406,5 +407,36 @@ describe('VectorTileSource', () => {
         await sleep(0);
         await source.once('data');
         expect(clearTiles.mock.calls).toHaveLength(1);
+    });
+
+    test('invalidateBounds delegates to the source cache as a LngLatBounds', () => {
+        const source = createSource({tiles: ['http://example.com/{z}/{x}/{y}.pbf']});
+        const reloadBounds = vi.fn();
+        source.map.style.sourceCaches['id'].reloadBounds = reloadBounds;
+
+        const result = source.invalidateBounds([-0.2, 51.4, -0.1, 51.6]);
+
+        expect(result).toBe(source);
+        expect(reloadBounds).toHaveBeenCalledTimes(1);
+        const bounds = reloadBounds.mock.calls[0][0] as LngLatBounds;
+        expect(bounds.getWest()).toBeCloseTo(-0.2);
+        expect(bounds.getSouth()).toBeCloseTo(51.4);
+        expect(bounds.getEast()).toBeCloseTo(-0.1);
+        expect(bounds.getNorth()).toBeCloseTo(51.6);
+    });
+
+    test('invalidatePoint invalidates a zero-size bounds at the point', () => {
+        const source = createSource({tiles: ['http://example.com/{z}/{x}/{y}.pbf']});
+        const reloadBounds = vi.fn();
+        source.map.style.sourceCaches['id'].reloadBounds = reloadBounds;
+
+        source.invalidatePoint([-0.12, 51.5]);
+
+        expect(reloadBounds).toHaveBeenCalledTimes(1);
+        const bounds = reloadBounds.mock.calls[0][0] as LngLatBounds;
+        expect(bounds.getWest()).toBeCloseTo(-0.12);
+        expect(bounds.getEast()).toBeCloseTo(-0.12);
+        expect(bounds.getNorth()).toBeCloseTo(51.5);
+        expect(bounds.getSouth()).toBeCloseTo(51.5);
     });
 });

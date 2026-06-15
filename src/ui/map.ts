@@ -24,6 +24,7 @@ import {throttle} from '../util/throttle';
 import {webpSupported} from '../util/webp_supported';
 import {PerformanceMarkers, PerformanceUtils} from '../util/performance';
 import {type Source} from '../source/source';
+import type {VectorTileSource} from '../source/vector_tile_source';
 import {type StyleLayer} from '../style/style_layer';
 import {Terrain} from '../render/terrain';
 import {RenderToTexture} from '../render/render_to_texture';
@@ -2169,6 +2170,55 @@ export class Map extends Camera {
      */
     getSource<TSource extends Source>(id: string): TSource | undefined {
         return this.style.getSource(id) as TSource;
+    }
+
+    /**
+     * Invalidates only the tiles of a vector source that intersect the given geographic bounds,
+     * re-fetching their data from the server. Unlike reloading the whole source (e.g. via
+     * `source.setTiles()` or the `source.load()` trick), tiles outside the bounds keep their
+     * current data and are not re-requested.
+     *
+     * This is a convenience wrapper around {@link VectorTileSource#invalidateBounds}.
+     *
+     * @param id - The ID of the vector source to invalidate.
+     * @param bounds - The geographic area to invalidate, as a {@link LngLatBounds} or `[west, south, east, north]`.
+     * @returns The {@link Map} object, for chaining.
+     * @example
+     * ```ts
+     * map.invalidateSourceBounds('gbmkonect', [-0.2, 51.4, -0.1, 51.6]);
+     * ```
+     */
+    invalidateSourceBounds(id: string, bounds: LngLatBoundsLike): Map {
+        const source = this.getSource(id) as VectorTileSource | undefined;
+        if (source && typeof source.invalidateBounds === 'function') {
+            source.invalidateBounds(bounds);
+        } else {
+            this.fire(new ErrorEvent(new Error(`There is no vector source with ID "${id}", or it does not support invalidation.`)));
+        }
+        return this;
+    }
+
+    /**
+     * Invalidates the tile(s) of a vector source covering a single geographic point, re-fetching
+     * their data from the server. A convenience wrapper around {@link VectorTileSource#invalidatePoint}
+     * for the common case of a single feature changing at a known location.
+     *
+     * @param id - The ID of the vector source to invalidate.
+     * @param lnglat - The geographic location of the changed feature.
+     * @returns The {@link Map} object, for chaining.
+     * @example
+     * ```ts
+     * map.invalidateSourcePoint('gbmkonect', [-0.12, 51.5]);
+     * ```
+     */
+    invalidateSourcePoint(id: string, lnglat: LngLatLike): Map {
+        const source = this.getSource(id) as VectorTileSource | undefined;
+        if (source && typeof source.invalidatePoint === 'function') {
+            source.invalidatePoint(lnglat);
+        } else {
+            this.fire(new ErrorEvent(new Error(`There is no vector source with ID "${id}", or it does not support invalidation.`)));
+        }
+        return this;
     }
 
     /**

@@ -5,6 +5,7 @@ import {type Source, addSourceType} from './source';
 import {Tile} from './tile';
 import {OverscaledTileID} from './tile_id';
 import {LngLat} from '../geo/lng_lat';
+import {LngLatBounds} from '../geo/lng_lat_bounds';
 import Point from '@mapbox/point-geometry';
 import {Event, ErrorEvent, Evented} from '../util/evented';
 import {extend} from '../util/util';
@@ -1972,6 +1973,79 @@ describe('SourceCache#reload', () => {
 
     });
 
+});
+
+describe('SourceCache#reloadBounds', () => {
+    // At z=1 the world is a 2x2 grid of tiles. These bounds sit entirely within the
+    // north-west quadrant (lng [-180, 0], lat [0, ~85]), so only tile x=0, y=0 should match.
+    const nwBounds = new LngLatBounds([-170, 10], [-10, 80]);
+    const nwTile = new OverscaledTileID(1, 0, 1, 0, 0);
+    const neTile = new OverscaledTileID(1, 0, 1, 1, 0);
+    const seTile = new OverscaledTileID(1, 0, 1, 1, 1);
+
+    function createLoadedSourceCache() {
+        const sourceCache = createSourceCache();
+        sourceCache._source.loadTile = async (tile) => { tile.state = 'loaded'; };
+        return sourceCache;
+    }
+
+    test('reloads only intersecting loaded tiles, with state "expired"', () => {
+        const sourceCache = createLoadedSourceCache();
+        for (const id of [nwTile, neTile, seTile]) sourceCache._addTile(id);
+
+        const reloadTileSpy = vi.spyOn(sourceCache, '_reloadTile');
+        sourceCache.reloadBounds(nwBounds);
+
+        expect(reloadTileSpy).toHaveBeenCalledTimes(1);
+        expect(reloadTileSpy).toHaveBeenCalledWith(nwTile.key, 'expired');
+    });
+
+    test('matches tiles in every world copy (wrapped tiles)', () => {
+        const sourceCache = createLoadedSourceCache();
+        const wrappedNwTile = new OverscaledTileID(1, 1, 1, 0, 0);
+        sourceCache._addTile(nwTile);
+        sourceCache._addTile(wrappedNwTile);
+
+        const reloadTileSpy = vi.spyOn(sourceCache, '_reloadTile');
+        sourceCache.reloadBounds(nwBounds);
+
+        expect(reloadTileSpy).toHaveBeenCalledTimes(2);
+        expect(reloadTileSpy).toHaveBeenCalledWith(nwTile.key, 'expired');
+        expect(reloadTileSpy).toHaveBeenCalledWith(wrappedNwTile.key, 'expired');
+    });
+
+    test('evicts matching tiles from the off-screen cache', () => {
+        const sourceCache = createLoadedSourceCache();
+        const tr = new MercatorTransform();
+        tr.resize(512, 512);
+        sourceCache.updateCacheSize(tr);
+
+        // Load then remove so the tiles land in the LRU cache rather than _tiles.
+        for (const id of [nwTile, neTile]) {
+            sourceCache._addTile(id);
+            sourceCache._removeTile(id.key);
+        }
+        expect(sourceCache._cache.has(nwTile)).toBe(true);
+        expect(sourceCache._cache.has(neTile)).toBe(true);
+
+        sourceCache.reloadBounds(nwBounds);
+
+        expect(sourceCache._cache.has(nwTile)).toBe(false);
+        expect(sourceCache._cache.has(neTile)).toBe(true);
+    });
+
+    test('reloads everything on resume when paused', () => {
+        const sourceCache = createLoadedSourceCache();
+        sourceCache._addTile(nwTile);
+        sourceCache.pause();
+
+        const reloadTileSpy = vi.spyOn(sourceCache, '_reloadTile');
+        sourceCache.reloadBounds(nwBounds);
+
+        expect(reloadTileSpy).not.toHaveBeenCalled();
+        sourceCache.resume();
+        expect(reloadTileSpy).toHaveBeenCalledWith(nwTile.key, 'reloading');
+    });
 });
 
 describe('SourceCache reloads expiring tiles', () => {

@@ -4,6 +4,8 @@ import {extend, pick} from '../util/util';
 import {loadTileJson} from './load_tilejson';
 import {TileBounds} from './tile_bounds';
 import {ResourceType} from '../util/request_manager';
+import {LngLat, type LngLatLike} from '../geo/lng_lat';
+import {LngLatBounds, type LngLatBoundsLike} from '../geo/lng_lat_bounds';
 
 import type {Source} from './source';
 import type {OverscaledTileID} from './tile_id';
@@ -175,6 +177,47 @@ export class VectorTileSource extends Evented implements Source {
         });
 
         return this;
+    }
+
+    /**
+     * Invalidates only the tiles that intersect the given geographic bounds, re-fetching
+     * their data from the server. Unlike {@link VectorTileSource#setTiles} / `setUrl` (and the
+     * `source.load()` reload trick), this does **not** clear the whole source — tiles outside
+     * the bounds keep their current data and are not re-requested.
+     *
+     * Useful when a single feature (or a small area) changes server-side and you want to refresh
+     * just the affected tiles without flushing the entire map.
+     *
+     * @param bounds - the geographic area to invalidate, as a {@link LngLatBounds} or `[west, south, east, north]`.
+     *
+     * @example
+     * ```ts
+     * map.getSource('gbmkonect').invalidateBounds([-0.2, 51.4, -0.1, 51.6]);
+     * ```
+     */
+    invalidateBounds(bounds: LngLatBoundsLike): this {
+        const sourceCache = this.map?.style.sourceCaches[this.id];
+        if (sourceCache) {
+            sourceCache.reloadBounds(LngLatBounds.convert(bounds));
+        }
+        return this;
+    }
+
+    /**
+     * Invalidates the tile(s) covering a single geographic point, re-fetching their data from the
+     * server. A convenience wrapper around {@link VectorTileSource#invalidateBounds} for the common
+     * case of a single feature changing at a known location.
+     *
+     * @param lnglat - the geographic location of the changed feature.
+     *
+     * @example
+     * ```ts
+     * map.getSource('gbmkonect').invalidatePoint([-0.12, 51.5]);
+     * ```
+     */
+    invalidatePoint(lnglat: LngLatLike): this {
+        const point = LngLat.convert(lnglat);
+        return this.invalidateBounds(new LngLatBounds(point, point));
     }
 
     onRemove() {

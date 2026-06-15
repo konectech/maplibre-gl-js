@@ -18,6 +18,7 @@ import type {Map} from '../ui/map';
 import type {Style} from '../style/style';
 import type {Dispatcher} from '../util/dispatcher';
 import type {IReadonlyTransform, ITransform} from '../geo/transform_interface';
+import type {LngLatBounds} from '../geo/lng_lat_bounds';
 import type {TileState} from './tile';
 import type {SourceSpecification} from '@maplibre/maplibre-gl-style-spec';
 import type {MapSourceDataEvent} from '../ui/events';
@@ -279,6 +280,51 @@ export class SourceCache extends Evented {
                 this._reloadTile(i, 'reloading');
             }
         }
+    }
+
+    /**
+     * Reload only the currently-loaded tiles that intersect the given geographic
+     * bounds, re-fetching their data from the source. Tiles outside the bounds are
+     * left untouched, and any matching tiles sitting in the off-screen cache are
+     * evicted so they are re-fetched fresh when they next become visible.
+     *
+     * Unlike {@link SourceCache#reload}, this leaves the rest of the map intact.
+     *
+     * @param bounds - the geographic area to invalidate
+     */
+    reloadBounds(bounds: LngLatBounds) {
+        if (this._paused) {
+            // We can't selectively reload while paused; reload everything on resume to avoid stale data.
+            this._shouldReloadOnResume = true;
+            return;
+        }
+
+        const sw = MercatorCoordinate.fromLngLat(bounds.getSouthWest());
+        const ne = MercatorCoordinate.fromLngLat(bounds.getNorthEast());
+        const minX = Math.min(sw.x, ne.x);
+        const maxX = Math.max(sw.x, ne.x);
+        const minY = Math.min(sw.y, ne.y);
+        const maxY = Math.max(sw.y, ne.y);
+
+        // Does the bounds overlap the given tile? `getTilePoint` is monotonic, so the bounds'
+        // corners map to the tile-space bounding box; intersect it with the [0, EXTENT] tile square.
+        // Adding `tileID.wrap` (which `getTilePoint` subtracts again) matches every world copy.
+        const intersects = (tileID: OverscaledTileID): boolean => {
+            const topLeft = tileID.getTilePoint(new MercatorCoordinate(minX + tileID.wrap, minY));
+            const bottomRight = tileID.getTilePoint(new MercatorCoordinate(maxX + tileID.wrap, maxY));
+            return topLeft.x < EXTENT && topLeft.y < EXTENT && bottomRight.x >= 0 && bottomRight.y >= 0;
+        };
+
+        // Re-fetch matching loaded tiles. The 'expired' state forces a full network reload; a
+        // 'reloading' tile would only be re-parsed from data already in the worker (see #3309).
+        for (const id in this._tiles) {
+            if (intersects(this._tiles[id].tileID)) {
+                this._reloadTile(id, 'expired');
+            }
+        }
+
+        // Evict matching tiles from the off-screen cache so they are re-fetched when next needed.
+        this._cache.filter(tile => !intersects(tile.tileID));
     }
 
     async _reloadTile(id: string, state: TileState) {
