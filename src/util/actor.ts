@@ -1,11 +1,12 @@
-import {type Subscription, isWorker, subscribe} from './util';
+import {type Subscription, ensureError, isWorker, subscribe} from './util';
 import {serialize, deserialize, type Serialized} from './web_worker_transfer';
 import {ThrottledInvoker} from './throttled_invoker';
 
 import {
     type MessageType,
     type ActorMessage,
-    type RequestResponseMessageMap} from './actor_messages';
+    type RequestResponseMessageMap,
+} from './actor_messages';
 
 /**
  * An interface to be sent to the actor in order for it to allow communication between the worker and the main thread
@@ -45,6 +46,8 @@ export interface IActor {
 
 export type MessageHandler<T extends MessageType> = (mapId: string | number, params: RequestResponseMessageMap[T][0], abortController?: AbortController) => Promise<RequestResponseMessageMap[T][1]>;
 
+const addEventDefaultOptions: AddEventListenerOptions = {once: true};
+
 /**
  * An implementation of the [Actor design pattern](https://en.wikipedia.org/wiki/Actor_model)
  * that maintains the relationship between asynchronous tasks and the objects
@@ -57,11 +60,11 @@ export class Actor implements IActor {
     resolveRejects: { [x: string]: ResolveReject};
     name: string;
     tasks: { [x: string]: MessageData };
-    taskQueue: Array<string>;
+    taskQueue: string[];
     abortControllers: { [x: number | string]: AbortController };
     invoker: ThrottledInvoker;
     globalScope: ActorTarget;
-    messageHandlers: { [x in MessageType]?: MessageHandler<MessageType>};
+    messageHandlers: { [K in MessageType]?: MessageHandler<K>};
     subscription: Subscription;
 
     /**
@@ -82,7 +85,11 @@ export class Actor implements IActor {
     }
 
     registerMessageHandler<T extends MessageType>(type: T, handler: MessageHandler<T>) {
-        this.messageHandlers[type] = handler;
+        (this.messageHandlers as Record<T, MessageHandler<T>>)[type] = handler;
+    }
+
+    unregisterMessageHandler<T extends MessageType>(type: T) {
+        delete this.messageHandlers[type];
     }
 
     /**
@@ -99,25 +106,33 @@ export class Actor implements IActor {
             // message from multiple other actors which could run in different execution context. A
             // linearly increasing ID could produce collisions.
             const id = Math.round((Math.random() * 1e18)).toString(36).substring(0, 10);
+
+            const subscription =  abortController ? subscribe(abortController.signal, 'abort', () => {
+                subscription?.unsubscribe();
+                delete this.resolveRejects[id];
+                const cancelMessage: MessageData = {
+                    id,
+                    type: '<cancel>',
+                    origin: location.origin,
+                    targetMapId: message.targetMapId,
+                    sourceMapId: this.mapId
+                };
+                this.target.postMessage(cancelMessage);
+                // In case of abort the current behavior is to keep the promise pending.
+            }, addEventDefaultOptions) : null;
+
             this.resolveRejects[id] = {
-                resolve,
-                reject
+                resolve: (value) => {
+                    subscription?.unsubscribe();
+                    resolve(value);
+                },
+                reject: (reason) => {
+                    subscription?.unsubscribe();
+                    reject(reason);
+                }
             };
-            if (abortController) {
-                abortController.signal.addEventListener('abort', () => {
-                    delete this.resolveRejects[id];
-                    const cancelMessage: MessageData = {
-                        id,
-                        type: '<cancel>',
-                        origin: location.origin,
-                        targetMapId: message.targetMapId,
-                        sourceMapId: this.mapId
-                    };
-                    this.target.postMessage(cancelMessage);
-                    // In case of abort the current behavior is to keep the promise pending.
-                }, {once: true});
-            }
-            const buffers: Array<Transferable> = [];
+
+            const buffers: Transferable[] = [];
             const messageToPost: MessageData = {
                 ...message,
                 id,
@@ -132,7 +147,15 @@ export class Actor implements IActor {
     receive(message: {data: MessageData}) {
         const data = message.data;
         const id = data.id;
-        if (data.origin !== 'file://' && location.origin !== 'file://' && data.origin !== 'resource://android' && location.origin !== 'resource://android' && data.origin !== location.origin) {
+
+        const SPECIAL_ORIGINS = ['file://', 'resource://android', 'null'];
+        const origins = [data.origin, location.origin];
+
+        const isSameOrigin = data.origin === location.origin;
+        const hasSpecialOrigin = origins.some((origin) => SPECIAL_ORIGINS.includes(origin));
+
+        // Ignore cross-origin messages except for special origins.
+        if (!isSameOrigin && !hasSpecialOrigin) {
             return;
         }
         if (data.targetMapId && this.mapId !== data.targetMapId) {
@@ -199,7 +222,7 @@ export class Actor implements IActor {
                 return;
             }
             if (task.error) {
-                resolveReject.reject(deserialize(task.error) as Error);
+                resolveReject.reject(ensureError(deserialize(task.error)));
             } else {
                 resolveReject.resolve(deserialize(task.data));
             }
@@ -216,12 +239,12 @@ export class Actor implements IActor {
             const data = await this.messageHandlers[task.type](task.sourceMapId, params, abortController);
             this.completeTask(id, null, data);
         } catch (err) {
-            this.completeTask(id, err);
+            this.completeTask(id, ensureError(err));
         }
     }
 
     completeTask(id: string, err: Error, data?: RequestResponseMessageMap[MessageType][1]) {
-        const buffers: Array<Transferable> = [];
+        const buffers: Transferable[] = [];
         delete this.abortControllers[id];
         const responseMessage: MessageData = {
             id,
