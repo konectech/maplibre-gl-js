@@ -1,20 +1,23 @@
-import {CanonicalTileID} from './tile_id';
+import {CanonicalTileID} from '../tile/tile_id';
 import {Event, ErrorEvent, Evented} from '../util/evented';
 import {ImageRequest} from '../util/image_request';
 import {ResourceType} from '../util/request_manager';
-import {Texture} from '../render/texture';
+import {Texture} from '../webgl/texture';
 import {MercatorCoordinate} from '../geo/mercator_coordinate';
 
 import type {Source} from './source';
 import type {CanvasSourceSpecification} from './canvas_source';
 import type {Map} from '../ui/map';
 import type {Dispatcher} from '../util/dispatcher';
-import type {Tile} from './tile';
+import type {Tile} from '../tile/tile';
 import type {
     ImageSourceSpecification,
     VideoSourceSpecification
 } from '@maplibre/maplibre-gl-style-spec';
 import type Point from '@mapbox/point-geometry';
+import {ensureError, MAX_TILE_ZOOM} from '../util/util';
+import {Bounds} from '../geo/bounds';
+import {isAbortError} from '../util/abort_error';
 
 /**
  * Four geographical coordinates,
@@ -25,7 +28,7 @@ import type Point from '@mapbox/point-geometry';
 export type Coordinates = [[number, number], [number, number], [number, number], [number, number]];
 
 /**
- * The options object for the {@link ImageSource#updateImage} method
+ * The options object for the {@link ImageSource.updateImage} method
  */
 export type UpdateImageOptions = {
     /**
@@ -36,6 +39,20 @@ export type UpdateImageOptions = {
      * The image coordinates
      */
     coordinates?: Coordinates;
+};
+
+export type CanonicalTileRange = {
+    minTileY: number;
+    maxTileY: number;
+
+    /**
+     * Image can exceed the boundary of a single "world" (tile 0/0/0),
+     * so we need to know the tile range for wrapping.
+     */
+    minTileXWrapped: number;
+    maxTileXWrapped: number;
+    minWrap: number;
+    maxWrap: number;
 };
 
 /**
@@ -88,6 +105,11 @@ export class ImageSource extends Evented implements Source {
     maxzoom: number;
     tileSize: number;
     url: string;
+    /**
+     * This object is used to store the range of terrain tiles that overlap with this tile.
+     * It is relevant for image tiles, as the image exceeds single tile boundaries.
+     */
+    terrainTileRanges: {[zoom: string]: CanonicalTileRange};
 
     coordinates: Coordinates;
     tiles: {[_: string]: Tile};
@@ -97,7 +119,7 @@ export class ImageSource extends Evented implements Source {
     texture: Texture | null;
     image: HTMLImageElement | ImageBitmap;
     tileID: CanonicalTileID;
-    tileCoords: Array<Point>;
+    tileCoords: Point[];
     flippedWindingOrder: boolean = false;
     _loaded: boolean;
     _request: AbortController;
@@ -129,11 +151,11 @@ export class ImageSource extends Evented implements Source {
 
         this._request = new AbortController();
         try {
-            const image = await ImageRequest.getImage(this.map._requestManager.transformRequest(this.url, ResourceType.Image), this._request);
+            const image = await ImageRequest.getImage(await this.map._requestManager.transformRequest(this.url, ResourceType.Image), this._request);
             this._request = null;
             this._loaded = true;
 
-            if (image && image.data) {
+            if (image?.data) {
                 this.image = image.data;
                 if (newCoordinates) {
                     this.coordinates = newCoordinates;
@@ -143,7 +165,9 @@ export class ImageSource extends Evented implements Source {
         } catch (err) {
             this._request = null;
             this._loaded = true;
-            this.fire(new ErrorEvent(err));
+            if (!isAbortError(err)) {
+                this.fire(new ErrorEvent(ensureError(err)));
+            }
         }
     }
 
@@ -168,7 +192,7 @@ export class ImageSource extends Evented implements Source {
         }
 
         this.options.url = options.url;
-        this.load(options.coordinates).finally(() => { this.texture = null; });
+        this.load(options.coordinates).finally(() => this.texture = null);
         return this;
     }
 
@@ -213,8 +237,12 @@ export class ImageSource extends Evented implements Source {
         // render data
         this.tileID = getCoordinatesCenterTileID(cornerCoords);
 
+        // Compute tiles overlapping with the image. We need to know for which
+        // terrain tiles we have to render the image.
+        this.terrainTileRanges = this._getOverlappingTileRanges(cornerCoords);
+
         // Constrain min/max zoom to our tile's zoom level in order to force
-        // SourceCache to request this tile (no matter what the map's zoom
+        // TileManager to request this tile (no matter what the map's zoom
         // level)
         this.minzoom = this.maxzoom = this.tileID.z;
 
@@ -262,7 +290,7 @@ export class ImageSource extends Evented implements Source {
         // `errored` to indicate that we have no data for it.
         // If the world wraps, we may have multiple "wrapped" copies of the
         // single tile.
-        if (this.tileID && this.tileID.equals(tile.tileID.canonical)) {
+        if (this.tileID?.equals(tile.tileID.canonical)) {
             this.tiles[String(tile.tileID.wrap)] = tile;
             tile.buckets = {};
         } else {
@@ -281,6 +309,44 @@ export class ImageSource extends Evented implements Source {
     hasTransition() {
         return false;
     }
+
+    /**
+     * Given a list of coordinates, determine overlapping tile ranges for all zoom levels.
+     *
+     * @returns Overlapping tile ranges for all zoom levels.
+     * @internal
+     */
+    private _getOverlappingTileRanges(
+        coords: MercatorCoordinate[]
+    ): {[zoom: string]: CanonicalTileRange} {
+        const {minX, minY, maxX, maxY} = Bounds.fromPoints(coords);
+
+        const ranges: {[zoom: string]: CanonicalTileRange} = {};
+
+        for (let z = 0; z <= MAX_TILE_ZOOM; z++) {
+            const tilesAtZoom = Math.pow(2, z);
+            const minTileX = Math.floor(minX * tilesAtZoom);
+            const minTileY = Math.floor(minY * tilesAtZoom);
+            const maxTileX = Math.floor(maxX * tilesAtZoom);
+            const maxTileY = Math.floor(maxY * tilesAtZoom);
+
+            const minTileXWrapped = ((minTileX % tilesAtZoom) + tilesAtZoom) % tilesAtZoom;
+            const maxTileXWrapped = maxTileX % tilesAtZoom;
+            const minWrap = Math.floor(minTileX / tilesAtZoom);
+            const maxWrap = Math.floor(maxTileX / tilesAtZoom);
+
+            ranges[z] = {
+                minWrap,
+                maxWrap,
+                minTileXWrapped,
+                maxTileXWrapped,
+                minTileY,
+                maxTileY
+            };
+        }
+
+        return ranges;
+    }
 }
 
 /**
@@ -289,32 +355,22 @@ export class ImageSource extends Evented implements Source {
  * @returns centerpoint
  * @internal
  */
-export function getCoordinatesCenterTileID(coords: Array<MercatorCoordinate>) {
-    let minX = Infinity;
-    let minY = Infinity;
-    let maxX = -Infinity;
-    let maxY = -Infinity;
+export function getCoordinatesCenterTileID(coords: MercatorCoordinate[]) {
+    const bounds = Bounds.fromPoints(coords);
 
-    for (const coord of coords) {
-        minX = Math.min(minX, coord.x);
-        minY = Math.min(minY, coord.y);
-        maxX = Math.max(maxX, coord.x);
-        maxY = Math.max(maxY, coord.y);
-    }
-
-    const dx = maxX - minX;
-    const dy = maxY - minY;
+    const dx = bounds.width();
+    const dy = bounds.height();
     const dMax = Math.max(dx, dy);
     const zoom = Math.max(0, Math.floor(-Math.log(dMax) / Math.LN2));
     const tilesAtZoom = Math.pow(2, zoom);
 
     return new CanonicalTileID(
         zoom,
-        Math.floor((minX + maxX) / 2 * tilesAtZoom),
-        Math.floor((minY + maxY) / 2 * tilesAtZoom));
+        Math.floor((bounds.minX + bounds.maxX) / 2 * tilesAtZoom),
+        Math.floor((bounds.minY + bounds.maxY) / 2 * tilesAtZoom));
 }
 
-function hasWrongWindingOrder(coords: Array<Point>) {
+function hasWrongWindingOrder(coords: Point[]) {
     const e0x = coords[1].x - coords[0].x;
     const e0y = coords[1].y - coords[0].y;
     const e1x = coords[2].x - coords[0].x;

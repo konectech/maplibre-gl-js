@@ -6,15 +6,17 @@ import pixelmatch from 'pixelmatch';
 import {fileURLToPath} from 'url';
 import {globSync} from 'glob';
 import http from 'http';
-import puppeteer, {type Page, type Browser} from 'puppeteer';
 import {CoverageReport} from 'monocart-coverage-reports';
-import {localizeURLs} from '../lib/localize-urls';
-import type {Map as MaplibreMap, CanvasSource, PointLike, StyleSpecification} from '../../../dist/maplibre-gl';
 import junitReportBuilder, {type TestSuite} from 'junit-report-builder';
-import type * as maplibreglModule from '../../../dist/maplibre-gl';
+import type {Page, Browser} from 'puppeteer';
+
+import {ensureError} from '../../../src/util/util';
+import {localizeURLs} from '../lib/localize-urls';
+import {launchPuppeteer} from '../lib/puppeteer_config';
+import type {default as MapLibreGL, Map as MaplibreMap, CanvasSource, PointLike, StyleSpecification} from '../../../dist/maplibre-gl';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-let maplibregl: typeof maplibreglModule;
+let maplibregl: typeof MapLibreGL;
 
 type TestData = {
     id: string;
@@ -101,7 +103,7 @@ function checkParameter(options: RenderOptions, param: string): boolean {
 }
 
 function checkValueParameter(options: RenderOptions, defaultValue: any, param: string) {
-    const index = options.tests.findIndex((elem) => { return String(elem).startsWith(param); });
+    const index = options.tests.findIndex((elem) => String(elem).startsWith(param));
     if (index === -1)
         return defaultValue;
 
@@ -156,11 +158,6 @@ function compareRenderResults(directory: string, testData: TestData, data: Uint8
         throw new Error(`No expected*.png files found as ${dir}; did you mean to run tests with UPDATE=true?`);
     }
 
-    if (process.env.UPDATE) {
-        fs.writeFileSync(expectedPath, PNG.sync.write(actualImg));
-        return;
-    }
-
     // if we have multiple expected images, we'll compare against each one and pick the one with
     // the least amount of difference; this is useful for covering features that render differently
     // depending on platform, i.e. heatmaps use half-float textures for improved rendering where supported
@@ -172,9 +169,7 @@ function compareRenderResults(directory: string, testData: TestData, data: Uint8
         const expectedBuf = fs.readFileSync(path);
         const expectedImg = PNG.sync.read(expectedBuf);
         const diffImg = new PNG({width, height});
-        if (!testData.expected) {
-            testData.expected = expectedBuf.toString('base64'); // default expected image
-        }
+        testData.expected ||= expectedBuf.toString('base64'); // default expected image
 
         const diff = pixelmatch(
             actualImg.data, expectedImg.data, diffImg.data,
@@ -187,16 +182,21 @@ function compareRenderResults(directory: string, testData: TestData, data: Uint8
         }
     }
 
-    const diffBuf = PNG.sync.write(minDiffImg, {filterType: 4});
-
-    fs.writeFileSync(diffPath, diffBuf);
+    if (minDiffImg) {
+        const diffBuf = PNG.sync.write(minDiffImg, {filterType: 4});
+        fs.writeFileSync(diffPath, diffBuf);
+        testData.diff = diffBuf.toString('base64');
+        testData.expected = minExpectedBuf.toString('base64');
+    }
     fs.writeFileSync(actualPath, actualBuf);
 
     testData.difference = minDiff;
     testData.ok = minDiff <= testData.allowed;
 
-    testData.expected = minExpectedBuf.toString('base64');
-    testData.diff = diffBuf.toString('base64');
+    if (!testData.ok && process.env.UPDATE) {
+        console.log(`Updating ${expectedPath}`);
+        fs.writeFileSync(expectedPath, PNG.sync.write(actualImg));
+    }
 }
 
 /**
@@ -209,11 +209,11 @@ function compareRenderResults(directory: string, testData: TestData, data: Uint8
 function getTestStyles(options: RenderOptions, directory: string, port: number): StyleWithTestData[] {
     const tests = options.tests || [];
 
-    const sequence = globSync('**/style.json', {cwd: directory})
+    return globSync('**/style.json', {cwd: directory})
         .map(fixture => {
             const id = path.dirname(fixture);
             const style = JSON.parse(fs.readFileSync(path.join(directory, fixture), 'utf8')) as StyleWithTestData;
-            style.metadata = style.metadata || {} as any;
+            style.metadata ||= {} as any;
 
             style.metadata.test = {
                 id,
@@ -230,7 +230,7 @@ function getTestStyles(options: RenderOptions, directory: string, port: number):
         })
         .filter(style => {
             const test = style.metadata.test;
-            if (tests.length !== 0 && !tests.some(t => test.id.indexOf(t) !== -1)) {
+            if (tests.length !== 0 && !tests.some(t => test.id.includes(t))) {
                 return false;
             }
 
@@ -241,7 +241,6 @@ function getTestStyles(options: RenderOptions, directory: string, port: number):
             localizeURLs(style, port, path.join(__dirname, '../'));
             return true;
         });
-    return sequence;
 }
 
 /**
@@ -673,8 +672,8 @@ async function getImageFromStyle(styleForTest: StyleWithTestData, page: Page): P
                     case 'setStyle':
                         map.setStyle(operation[1], {localIdeographFontFamily: false as any});
                         break;
-                    case 'pauseSource':
-                        map.style.sourceCaches[operation[1]].pause();
+                    case 'pauseTiles':
+                        map.style.tileManagers[operation[1]].pause();
                         break;
                     default:
                         if (typeof map[operation[0]] === 'function') {
@@ -740,7 +739,10 @@ async function getImageFromStyle(styleForTest: StyleWithTestData, page: Page): P
             });
 
             let idle = false;
-            map.on('idle', () => { console.log('idle'); idle = true; });
+            map.on('idle', () => {
+                console.log('idle');
+                idle = true;
+            });
             // Configure the map to never stop the render loop
             map.repaint = typeof options.continuesRepaint === 'undefined' ? true : options.continuesRepaint;
 
@@ -885,10 +887,11 @@ function applyDebugParameter(options: RenderOptions, page: Page) {
             console.log(`${message.type().substring(0, 3).toUpperCase()} ${messages.filter(Boolean)}`);
         });
 
-        page.on('pageerror', ({message}) => console.error(message));
+        page.on('pageerror', (e) => { console.error(ensureError(e).message); });
 
-        page.on('response', response =>
-            console.log(`${response.status()} ${response.url()}`));
+        page.on('response', response => {
+            console.log(`${response.status()} ${response.url()}`);
+        });
 
         page.on('requestfailed', request => {
             if (request) {
@@ -908,7 +911,7 @@ async function runTests(page: Page, testStyles: StyleWithTestData[], directory: 
             const data = await getImageFromStyle(style, page);
             compareRenderResults(directory, style.metadata.test, data);
         } catch (ex) {
-            style.metadata.test.error = ex;
+            style.metadata.test.error = ensureError(ex);
         }
         printProgress(style.metadata.test, testStyles.length, ++index);
     }
@@ -945,7 +948,10 @@ async function closePageAndFinish(page: Page, reportCoverage: boolean) {
     const coverageReport = new CoverageReport({
         name: 'MapLibre Coverage Report',
         outputDir: './coverage/render',
-        reports: [['v8'], ['codecov']]
+        reports: [['v8'], ['json']],
+        sourcePath: (relativePath)=> {
+            return path.resolve(relativePath);
+        }
     });
     coverageReport.cleanCache();
 
@@ -982,13 +988,7 @@ async function executeRenderTests() {
         options.openBrowser = checkParameter(options, '--open-browser');
     }
 
-    const browser = await puppeteer.launch({
-        headless: !options.openBrowser,
-        args: [
-            '--enable-webgl',
-            '--no-sandbox',
-            '--disable-web-security'
-        ]});
+    const browser = await launchPuppeteer(!options.openBrowser);
 
     const mount = st({
         path: 'test/integration/assets',
@@ -996,6 +996,9 @@ async function executeRenderTests() {
         passthrough: true,
     });
     const server = http.createServer((req, res) => {
+        res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins, or specify 'http://your-frontend-domain.com'
+        res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, DELETE');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Include any custom headers your client might send
         mount(req, res, () => {
             if (req.url.includes('/sparse204/1-')) {
                 res.writeHead(204);

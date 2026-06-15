@@ -1,19 +1,21 @@
 # Introduction
 
-MapLibre GL JS is a TypeScript library that uses WebGL to render interactive maps from vector tiles in a browser. The customization of the map comply with the [MapLibre Style Spec](https://maplibre.org/maplibre-style-spec). It is part of the [MapLibre ecosystem](https://github.com/maplibre), with a counterpart for Android, iOS and other platforms called [MapLibre Native](https://github.com/maplibre/maplibre-native).
+MapLibre GL JS is a TypeScript library that uses WebGL to render interactive maps from vector tiles in a browser.
+The map’s appearance is controlled by a style document whose structure and properties are defined by the [MapLibre Style Spec](https://maplibre.org/maplibre-style-spec).
+It is part of the MapLibre ecosystem, with a counterpart for Android, iOS and other platforms called [MapLibre Native](https://github.com/maplibre/maplibre-native).
 
 ## Quickstart
 
-<iframe src="./examples/simple-map.html" width="100%" height="400px" style="border:none"></iframe>
+<iframe src="./examples/display-a-globe-with-a-vector-map.html" width="100%" height="400px" style="border:none"></iframe>
 
 ```html
 <div id="map"></div>
 <script>
     var map = new maplibregl.Map({
         container: 'map', // container id
-        style: 'https://demotiles.maplibre.org/style.json', // style URL
+        style: 'https://demotiles.maplibre.org/globe.json', // style URL
         center: [0, 0], // starting position [lng, lat]
-        zoom: 1 // starting zoom
+        zoom: 2 // starting zoom
     });
 </script>
 ```
@@ -36,9 +38,9 @@ Each section describes classes or objects as well as their **properties**, **par
 
 In the examples, we use vector tiles from our [Demo tiles repository](https://github.com/maplibre/demotiles) and from [MapTiler](https://maptiler.com). Get your own API key if you want to use MapTiler data in your project.
 
-## NPM
+## npm
 
-Install the MapLibre GL JS package via NPM.
+Install the MapLibre GL JS package via [npm](https://www.npmjs.com/package/maplibre-gl).
 
 ```bash
 npm install maplibre-gl
@@ -56,7 +58,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 
 const map = new maplibregl.Map({
     container: 'map', // container id
-    style: 'https://demotiles.maplibre.org/style.json', // style URL
+    style: 'https://demotiles.maplibre.org/globe.json', // style URL
     center: [0, 0], // starting position [lng, lat]
     zoom: 1 // starting zoom
 });
@@ -94,6 +96,6 @@ Note too that if the CSS isn't available by the first render, as soon as the CSS
 MapLibre GL JS is also distributed via UNPKG. Our latest version can installed by adding below tags this in the html `<head>`. Further instructions on how to select specific versions and semver ranges can be found on at [unpkg.com](https://unpkg.com).
 
 ```html
-<script src="https://unpkg.com/maplibre-gl@^4.7.0/dist/maplibre-gl.js"></script>
-<link href="https://unpkg.com/maplibre-gl@^4.7.0/dist/maplibre-gl.css" rel="stylesheet" />
+<script src="https://unpkg.com/maplibre-gl@^5.22.0/dist/maplibre-gl.js"></script>
+<link href="https://unpkg.com/maplibre-gl@^5.22.0/dist/maplibre-gl.css" rel="stylesheet" />
 ```
