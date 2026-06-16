@@ -3754,10 +3754,10 @@ devtools-protocol@0.0.1595872:
   resolved "https://registry.npmjs.org/devtools-protocol/-/devtools-protocol-0.0.1595872.tgz"
   integrity sha512-kRfgp8vWVjBu/fbYCiVFiOqsCk3CrMKEo3WbgGT2NXK2dG7vawWPBljixajVgGK9II8rDO9G0oD0zLt3I1daRg==
 
-devtools-protocol@^0.0.1617013:
-  version "0.0.1617013"
-  resolved "https://registry.npmjs.org/devtools-protocol/-/devtools-protocol-0.0.1617013.tgz"
-  integrity sha512-OHDEjnL5/cBLuKoSp10+vi06BiqCr1RIV1lRSR2JocwDDBEGrhp+UKkWEIx5y+dy8TwGUWVCv6CkCI12ZcNKEw==
+devtools-protocol@^0.0.1646372:
+  version "0.0.1646372"
+  resolved "https://registry.yarnpkg.com/devtools-protocol/-/devtools-protocol-0.0.1646372.tgz#0122e2e5461b6eef936ab2fa3c1b16c2e1dce493"
+  integrity sha512-pW7e4J7A+v0t7Kg4SecHpP18+ZmnRxw1pt6s9r9hUtfOna3tJ4D6c/apwLWWOGLxxB35kVMmdbEDIfi2RTNyAQ==
 
 diff@^4.0.1:
   version "4.0.2"
