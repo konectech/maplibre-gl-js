@@ -6816,10 +6816,10 @@ rolldown@1.0.0-rc.15:
     "@rolldown/binding-win32-arm64-msvc" "1.0.0-rc.15"
     "@rolldown/binding-win32-x64-msvc" "1.0.0-rc.15"
 
-rollup-plugin-sourcemaps2@^0.5.6:
-  version "0.5.6"
-  resolved "https://registry.npmjs.org/rollup-plugin-sourcemaps2/-/rollup-plugin-sourcemaps2-0.5.6.tgz"
-  integrity sha512-oalmewAT4GLVsW6NugcDybx0ypet94vU0dUK3VofdYoWiN4ZjoX1L4dizFd0OhoJ78r/Am9sARTR9gMrX0cJ7w==
+rollup-plugin-sourcemaps2@^0.5.7:
+  version "0.5.7"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-sourcemaps2/-/rollup-plugin-sourcemaps2-0.5.7.tgz#caa0fc33d885f6c20a4aa9f791294884fe387d52"
+  integrity sha512-z2biw/Bs4cFgVn9LKEE5EK5PXvT0aUGuZoQkTU1OENf1PTl9WsbsVRR5FsKqY6qQohltsGTp1sIQrR8tsezztQ==
   dependencies:
     "@rollup/pluginutils" "5.3.0"
 
