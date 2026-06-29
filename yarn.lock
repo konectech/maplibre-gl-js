@@ -1129,10 +1129,10 @@
   resolved "https://registry.npmjs.org/@keyv/serialize/-/serialize-1.1.1.tgz"
   integrity sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==
 
-"@mapbox/jsonlint-lines-primitives@^2.0.2", "@mapbox/jsonlint-lines-primitives@~2.0.2":
-  version "2.0.2"
-  resolved "https://registry.npmjs.org/@mapbox/jsonlint-lines-primitives/-/jsonlint-lines-primitives-2.0.2.tgz"
-  integrity sha512-rY0o9A5ECsTQRVhv7tL/OyDpGAoUB4tTvLiW1DSzQGq4bvTPhNw1VpSNjDJc5GFZ2XuyOtSWSVN05qOtcD71qQ==
+"@mapbox/jsonlint-lines-primitives@^2.0.2", "@mapbox/jsonlint-lines-primitives@~2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@mapbox/jsonlint-lines-primitives/-/jsonlint-lines-primitives-2.0.3.tgz#7d7b0b971fbaf6d60953272db4df03020d3fb004"
+  integrity sha512-0SElaV0uMxEnxzBhhX9WTuPyUeMsAN/SS0i16tjuba4/mio63MG9khjC1a0JAiPGXAwvwm4UfHJURCN7nyudQg==
 
 "@mapbox/mapbox-gl-rtl-text@^0.4.0":
   version "0.4.0"
@@ -1203,12 +1203,12 @@
   dependencies:
     kdbush "^4.1.0"
 
-"@maplibre/maplibre-gl-style-spec@^25.0.0":
-  version "25.0.0"
-  resolved "https://registry.yarnpkg.com/@maplibre/maplibre-gl-style-spec/-/maplibre-gl-style-spec-25.0.0.tgz#385ba620862d85ed2c809cb1754e54f4172d8b21"
-  integrity sha512-dgubbApKQmLR3TSNRlynStMjASTSxdiK+KH6xRA8WwIoMK2jQrBpNE5siIUGJ+oNXR7OHMy6XSQqgxvwcGAPEw==
+"@maplibre/maplibre-gl-style-spec@^25.0.1":
+  version "25.0.1"
+  resolved "https://registry.yarnpkg.com/@maplibre/maplibre-gl-style-spec/-/maplibre-gl-style-spec-25.0.1.tgz#9c9b77a8faa62ad85ba7af34fe54008fb37a5289"
+  integrity sha512-cppei6MsmpZnBgtZoHwQu8Ioie6LcHC+ME8/wcLDwzdLi6eWnMgoryiWnd00qQ5ZNTmFcAnw5EMZIqZxMamEBQ==
   dependencies:
-    "@mapbox/jsonlint-lines-primitives" "~2.0.2"
+    "@mapbox/jsonlint-lines-primitives" "~2.0.3"
     "@mapbox/unitbezier" "^1.0.0"
     json-stringify-pretty-compact "^4.0.0"
     minimist "^1.2.8"
