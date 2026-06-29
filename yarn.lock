@@ -1446,10 +1446,10 @@
     "@rollup/pluginutils" "^5.1.0"
     resolve "^1.22.1"
 
-"@rollup/pluginutils@5.3.0", "@rollup/pluginutils@^5.0.1", "@rollup/pluginutils@^5.1.0":
-  version "5.3.0"
-  resolved "https://registry.npmjs.org/@rollup/pluginutils/-/pluginutils-5.3.0.tgz"
-  integrity sha512-5EdhGZtnu3V88ces7s53hhfK5KSASnJZv8Lulpc04cWO3REESroJXg73DFsOmgbU2BhwV0E20bu2IDZb3VKW4Q==
+"@rollup/pluginutils@5.4.0", "@rollup/pluginutils@^5.0.1", "@rollup/pluginutils@^5.1.0":
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-5.4.0.tgz#ac23a29ced0247060a210815fca39c17de4d2f26"
+  integrity sha512-MfPp06CjRLfXQ3wY0R8vJDYBy/MvVcc9OulEfR0B8Iv9ko+GCNaRZ+EpJYFl27LhKsZK0o420sYCRHCjfCgeUg==
   dependencies:
     "@types/estree" "^1.0.0"
     estree-walker "^2.0.2"
@@ -6625,12 +6625,12 @@ rolldown@1.0.0-rc.15:
     "@rolldown/binding-win32-arm64-msvc" "1.0.0-rc.15"
     "@rolldown/binding-win32-x64-msvc" "1.0.0-rc.15"
 
-rollup-plugin-sourcemaps2@^0.5.7:
-  version "0.5.7"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-sourcemaps2/-/rollup-plugin-sourcemaps2-0.5.7.tgz#caa0fc33d885f6c20a4aa9f791294884fe387d52"
-  integrity sha512-z2biw/Bs4cFgVn9LKEE5EK5PXvT0aUGuZoQkTU1OENf1PTl9WsbsVRR5FsKqY6qQohltsGTp1sIQrR8tsezztQ==
+rollup-plugin-sourcemaps2@^0.5.8:
+  version "0.5.8"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-sourcemaps2/-/rollup-plugin-sourcemaps2-0.5.8.tgz#0ee7ee07f2f359ddb7ed88b4f3cd9c1f02df88e0"
+  integrity sha512-c5BfiVbKAmaz+RoEhFF44Tg/X2QoLxEB8F7wS/eNWDJF/NKxi0SF7srN3Dg0RUnIcYLyCOwscket5Mr3BImMbg==
   dependencies:
-    "@rollup/pluginutils" "5.3.0"
+    "@rollup/pluginutils" "5.4.0"
 
 rollup-plugin-visualizer@^7.0.1:
   version "7.0.1"
