@@ -5596,10 +5596,10 @@ modern-tar@^0.7.6:
   resolved "https://registry.yarnpkg.com/modern-tar/-/modern-tar-0.7.6.tgz#a01edcd55b976a2b191d857456e8abb7208a8199"
   integrity sha512-sweCIVXzx1aIGTCdzcMlSZt1h8k5Tmk08VNAuRk3IU28XamGiOH5ypi11g6De2CH7PhYqSSnGy2A/EFhbWnVKg==
 
-monocart-coverage-reports@^2.12.10:
-  version "2.12.10"
-  resolved "https://registry.npmjs.org/monocart-coverage-reports/-/monocart-coverage-reports-2.12.10.tgz"
-  integrity sha512-veL2la1QlqS4aPn1m5X+AjPtyK5SP72p/mypf7qRC2Yy0E/ba3gzOFYFMAcAp5Y5pgmSlkTa2SCfrOgUqPmc7g==
+monocart-coverage-reports@^2.12.12:
+  version "2.12.12"
+  resolved "https://registry.yarnpkg.com/monocart-coverage-reports/-/monocart-coverage-reports-2.12.12.tgz#ec96f23956f4bb1461241bdc9f1df0fc542a9f37"
+  integrity sha512-d9FdUr2dn58Crweon0IE0zVi8r/i4vLvfvb2G7eL5vL5LfrxCB2X6F6qzuiwV6RioA4zbAI//7CYi6LjCvN3zA==
   dependencies:
     acorn "^8.16.0"
     acorn-loose "^8.5.2"
