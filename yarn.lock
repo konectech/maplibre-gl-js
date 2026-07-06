@@ -3709,10 +3709,10 @@ dunder-proto@^1.0.0, dunder-proto@^1.0.1:
     es-errors "^1.3.0"
     gopd "^1.2.0"
 
-earcut@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/earcut/-/earcut-3.2.0.tgz#934517bd78f5cf91bca380910b2e7f800fd61cb7"
-  integrity sha512-qy0wTgkOKsKC0cHVd4cKFfaO5u7egzs0F2bQ/9l5Pvm0EJM4XDdUMFoCJrxmWc2Fc3sRFa8l6gds8tx+6BcN8g==
+earcut@^3.2.3:
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/earcut/-/earcut-3.2.3.tgz#74aec19555a7e28773429826729d2e4bfeb19022"
+  integrity sha512-vnS4AVwp1KHAF13i1vp1/2D5evWy3k5u/iW/B81QVsUZtV8cv2tU0b2VNFlqvh4kYwrFMDdjPCfAmfyJW9y14Q==
 
 eight-colors@^1.3.3:
   version "1.3.3"
