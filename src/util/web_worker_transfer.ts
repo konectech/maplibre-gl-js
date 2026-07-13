@@ -80,8 +80,13 @@ register('ResolvedImage', ResolvedImage);
 register('StylePropertyFunction', StylePropertyFunction);
 register('StyleExpression', StyleExpression, {omit: ['_evaluator']});
 
-register('ZoomDependentExpression', ZoomDependentExpression);
-register('ZoomConstantExpression', ZoomConstantExpression);
+// globalStateRefs is a Set added by newer @maplibre/maplibre-gl-style-spec
+// versions; this serializer has no Set support and nothing on the receiving
+// side reads it, so it must be omitted or worker transfer of any tile whose
+// buckets carry these expressions throws "can't serialize object of
+// unregistered class Set" and the tile never renders.
+register('ZoomDependentExpression', ZoomDependentExpression, {omit: ['globalStateRefs']});
+register('ZoomConstantExpression', ZoomConstantExpression, {omit: ['globalStateRefs']});
 register('CompoundExpression', CompoundExpression, {omit: ['_evaluate']});
 for (const name in expressions) {
     if ((expressions[name] as any)._classRegistryKey) continue;
