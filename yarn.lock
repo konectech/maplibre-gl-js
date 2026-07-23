@@ -6893,10 +6893,10 @@ spdx-license-ids@^3.0.0:
   resolved "https://registry.npmjs.org/spdx-license-ids/-/spdx-license-ids-3.0.21.tgz"
   integrity sha512-Bvg/8F5XephndSK3JffaRqdT+gyhfqIPwDHpX80tJrF8QQRYMo8sNMeaZ2Dp5+jhwKnUmIOyFFQfHRkjJm5nXg==
 
-st@^4.0.3:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/st/-/st-4.0.3.tgz#0bd360b77ff8a7592f2648fe11d40f9fdd260fad"
-  integrity sha512-wcVRrUJDQdOWtaDquQ2b+84kNfxfFVIwiGdYBghrQ78Z+lPdRi6ObFOEsUoYFD70cLqmVRv7jSav+ejAKSUSbg==
+st@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/st/-/st-4.0.4.tgz#9939ccb41631fbc7cb128178d4e1511f1b058f0d"
+  integrity sha512-uoDTCo2zGkt3xwJXZBUhxhajNgpY+VgMC1obX42yLv97hQUxCMiu8XsNk+yAbzlnPRqg8pmIWsexPO4fLt5gIA==
   dependencies:
     bl "^7.0.5"
     fd "^0.0.3"
