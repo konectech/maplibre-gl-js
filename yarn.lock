@@ -1209,10 +1209,10 @@
     quickselect "^3.0.0"
     tinyqueue "^3.0.0"
 
-"@maplibre/mlt@^1.1.12":
-  version "1.1.12"
-  resolved "https://registry.yarnpkg.com/@maplibre/mlt/-/mlt-1.1.12.tgz#32c5e41eeb765a107125ec92a8533cb27cddf253"
-  integrity sha512-ZeK5w2TTeHOajcLaEQs1KZXw2V9wIKo1PmThlxlsHoXsQsYlBqLJzPOd6tJHRtGTChUY3DPPmjXRArYVvAbmZw==
+"@maplibre/mlt@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@maplibre/mlt/-/mlt-1.2.0.tgz#fe13acd002b926c9eb683394be83c3fe5ef5c135"
+  integrity sha512-g45M8gEI4sMO3X9ib4K7n3ZKFf0qQOL+NMkHCnEK51lOrYFHiEssOuZncx1+miIgi1IEE2NcbRMcq8RBkL+QHA==
   dependencies:
     "@mapbox/point-geometry" "^1.1.0"
 
