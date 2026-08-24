@@ -2378,10 +2378,10 @@ acorn-walk@^8.1.1, acorn-walk@^8.3.5:
   dependencies:
     acorn "^8.11.0"
 
-acorn@^8.11.0, acorn@^8.15.0, acorn@^8.16.0, acorn@^8.4.1, acorn@^8.8.2:
-  version "8.16.0"
-  resolved "https://registry.npmjs.org/acorn/-/acorn-8.16.0.tgz"
-  integrity sha512-UVJyE9MttOsBQIDKw1skb9nAwQuR5wuGD3+82K6JgJlm/Y+KI92oNsMNGZCYdDsVtRHSak0pcV5Dno5+4jh9sw==
+acorn@^8.11.0, acorn@^8.15.0, acorn@^8.18.0, acorn@^8.4.1, acorn@^8.8.2:
+  version "8.18.0"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.18.0.tgz#4faf01b2d6d326bfeed97aea1f52220b5f4c1940"
+  integrity sha512-lGq+9yr1/GuAWaVYIHRjvvySG5/4VfKIvC8EWxStPdcDh/Ka7FG3twP6v4d5BkravUilhIAsG4Qj83t02LWUPQ==
 
 address@^2.0.3:
   version "2.0.3"
@@ -5517,12 +5517,12 @@ modern-tar@^0.8.0:
   resolved "https://registry.yarnpkg.com/modern-tar/-/modern-tar-0.8.4.tgz#25d2de2f522250012f33a3b366400b49741f6b8e"
   integrity sha512-gN54ddmyzEg10orwZ2u4OOv+bjpMWdIl5jIkodK97bMq8QBSL5c0D7YX0lT1Ooz+99S7+PvFbnxzdjgHo1r41g==
 
-monocart-coverage-reports@^2.12.10:
-  version "2.12.10"
-  resolved "https://registry.npmjs.org/monocart-coverage-reports/-/monocart-coverage-reports-2.12.10.tgz"
-  integrity sha512-veL2la1QlqS4aPn1m5X+AjPtyK5SP72p/mypf7qRC2Yy0E/ba3gzOFYFMAcAp5Y5pgmSlkTa2SCfrOgUqPmc7g==
+monocart-coverage-reports@^2.13.0:
+  version "2.13.0"
+  resolved "https://registry.yarnpkg.com/monocart-coverage-reports/-/monocart-coverage-reports-2.13.0.tgz#4d9e43454d4d2d3fd7fbd90e138602dc4c53a59c"
+  integrity sha512-RJfwzbn+EvR0OhCSU3bX2mKd0tSv4RLvood0weoCZV1L99+kBYH0Yq5SnnBFRik7nRoEoGB4mLuZAvO1Fr3DpQ==
   dependencies:
-    acorn "^8.16.0"
+    acorn "^8.18.0"
     acorn-loose "^8.5.2"
     acorn-walk "^8.3.5"
     commander "^14.0.3"
