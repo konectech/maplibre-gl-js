@@ -1197,10 +1197,10 @@
   dependencies:
     kdbush "^4.1.0"
 
-"@maplibre/maplibre-gl-style-spec@^26.2.1":
-  version "26.2.1"
-  resolved "https://registry.yarnpkg.com/@maplibre/maplibre-gl-style-spec/-/maplibre-gl-style-spec-26.2.1.tgz#00eb056468c6957bc762088a085ded91000caee8"
-  integrity sha512-QFKCXkOeSzOr8jF75jm6kySOg+dUvOehPhRi68gcOYPHb7U5JloUq0dJW0Y5/fZV8ygfT0Vp2RWodvq+fyxFWA==
+"@maplibre/maplibre-gl-style-spec@^26.4.0":
+  version "26.4.0"
+  resolved "https://registry.yarnpkg.com/@maplibre/maplibre-gl-style-spec/-/maplibre-gl-style-spec-26.4.0.tgz#928ae4add9865ff8ae201ea01f8fa056154ea0c5"
+  integrity sha512-FHR/9P4g2MrO4+yAQvhIWJEQ34vEBwupoTyGXH4OUAPSeApoOq0Mqc53i4tU4UfTOWxr5KxGM74w9oxK+Snklw==
   dependencies:
     "@mapbox/jsonlint-lines-primitives" "^2.0.3"
     "@mapbox/unitbezier" "^1.0.0"
