@@ -3221,7 +3221,7 @@ cssfontparser@^1.2.1:
   resolved "https://registry.npmjs.org/cssfontparser/-/cssfontparser-1.2.1.tgz"
   integrity sha512-6tun4LoZnj7VN6YeegOVb67KBX/7JJsqvj+pv3ZA7F878/eN33AbGa5b/S/wXxS/tcp8nc40xRUrsPlxIyNUPg==
 
-cssnano-preset-default@^9.0.0:
+cssnano-preset-default@^9.0.1:
   version "9.0.2"
   resolved "https://registry.yarnpkg.com/cssnano-preset-default/-/cssnano-preset-default-9.0.2.tgz#d2cdafa3aae940eade150b1a8b4fe094c649ffbf"
   integrity sha512-n6jUg5n4OBFLTNQ4e6l11dg+9JBoJE4qU+X/TovxgEepBnvrA76UpX9rV633oICZmfG4jEU2C+/d0lEoXHoYKg==
@@ -3261,12 +3261,12 @@ cssnano-utils@^7.0.1:
   resolved "https://registry.yarnpkg.com/cssnano-utils/-/cssnano-utils-7.0.1.tgz#b69561cb35cf78b74eaf66d4f42091102c42cbdc"
   integrity sha512-zeihe+mPmJTk0vZRGVRB/mRhA3rVUKp7JM1oBZ0207MwSuin0PH/21ALoHKd4lxFfhCkEioW3hwtzbSO1uUrHQ==
 
-cssnano@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-9.0.0.tgz#36845d5bffe34a46f19d159dd35c920ce37a4dd2"
-  integrity sha512-pEVG11SIRqeGUpMo3oRYZmy0C4l2KfKwuKh9dHtgAZXabO6lngvPUEj/SjJI3W06UFATbDCzzW/tFU61rU3pGw==
+cssnano@^9.0.1:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-9.0.1.tgz#4b3f9b3f5b298f7fbb55c8b2290248d880b0ce8e"
+  integrity sha512-nTcVXlnodhnQZQlH+8/NdpExRTJ4AEBTcV/sx4Xx1X0UdbrSSw4523RpE3bojlRzZdmdEy9n8F9XeipjUKJ3MQ==
   dependencies:
-    cssnano-preset-default "^9.0.0"
+    cssnano-preset-default "^9.0.1"
 
 csso@^5.0.5:
   version "5.0.5"
