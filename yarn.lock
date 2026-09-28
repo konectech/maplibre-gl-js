@@ -6275,10 +6275,10 @@ robust-predicates@^3.0.2:
   resolved "https://registry.npmjs.org/robust-predicates/-/robust-predicates-3.0.2.tgz"
   integrity sha512-IXgzBWvWQwE6PrDI05OvmXUIruQTcoMDzRsOd5CDvHCVLcLHMTSYvOK5Cm46kWqlV3yAbuSpBZdJ5oP5OUoStg==
 
-rollup-plugin-sourcemaps2@^0.5.8:
-  version "0.5.8"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-sourcemaps2/-/rollup-plugin-sourcemaps2-0.5.8.tgz#0ee7ee07f2f359ddb7ed88b4f3cd9c1f02df88e0"
-  integrity sha512-c5BfiVbKAmaz+RoEhFF44Tg/X2QoLxEB8F7wS/eNWDJF/NKxi0SF7srN3Dg0RUnIcYLyCOwscket5Mr3BImMbg==
+rollup-plugin-sourcemaps2@^0.5.9:
+  version "0.5.9"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-sourcemaps2/-/rollup-plugin-sourcemaps2-0.5.9.tgz#f80f62ff4c7d3cf57ca4728464755f512621fb99"
+  integrity sha512-0Dxlq9lg/JeAjK4Bula9XfZcFgZ4a6HXUTLXCTau6J7Ce0GYEMwE/oUMvGaccixk0JfKFsIXtCxS0RQrRJs4sQ==
   dependencies:
     "@rollup/pluginutils" "5.4.0"
 
